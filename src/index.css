@@ -219,6 +219,56 @@ body {
   gap: 10px;
 }
 
+.text-input {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #4fc3f7;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.text-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.setting-separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 20px 0;
+}
+
+.modal-body h4 {
+  color: #4fc3f7;
+  font-size: 16px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.setting-info {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.setting-info strong {
+  color: white;
+  font-weight: 600;
+}
+
+.connected-to {
+  color: #4caf50;
+  font-size: 12px;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

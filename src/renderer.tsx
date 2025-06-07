@@ -21,9 +21,30 @@ declare global {
 const App: React.FC = () => {
   const [messages, setMessages] = useState<LaplaceEvent[]>([])
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [opacity, setOpacity] = useState(90)
-  const [alwaysOnTop, setAlwaysOnTop] = useState(true)
-  const [clickThrough, setClickThrough] = useState(false)
+  const [opacity, setOpacity] = useState(() => {
+    const saved = localStorage.getItem('overlay-opacity')
+    return saved ? parseInt(saved) : 90
+  })
+  const [alwaysOnTop, setAlwaysOnTop] = useState(() => {
+    const saved = localStorage.getItem('overlay-alwaysOnTop')
+    return saved ? saved === 'true' : true
+  })
+  const [clickThrough, setClickThrough] = useState(() => {
+    const saved = localStorage.getItem('overlay-clickThrough')
+    return saved ? saved === 'true' : false
+  })
+  const [serverHost, setServerHost] = useState(() => {
+    const saved = localStorage.getItem('overlay-serverHost')
+    return saved || 'localhost'
+  })
+  const [serverPort, setServerPort] = useState(() => {
+    const saved = localStorage.getItem('overlay-serverPort')
+    return saved || '9696'
+  })
+  const [serverPassword, setServerPassword] = useState(() => {
+    const saved = localStorage.getItem('overlay-serverPassword')
+    return saved || ''
+  })
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [client, setClient] = useState<LaplaceEventBridgeClient | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -31,6 +52,7 @@ const App: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null)
   const clickThroughEnabledRef = useRef(false)
   const isSettingsOpenRef = useRef(false)
+  const clientRef = useRef<LaplaceEventBridgeClient | null>(null)
 
   // Keep refs in sync with state
   useEffect(() => {
@@ -51,23 +73,35 @@ const App: React.FC = () => {
   }, [messages])
 
   useEffect(() => {
+    // Disconnect previous client if exists
+    if (clientRef.current) {
+      clientRef.current.disconnect()
+      clientRef.current = null
+    }
+
     // Initialize the event bridge client
     const eventBridgeClient = new LaplaceEventBridgeClient({
-      url: 'ws://localhost:9696',
+      url: `ws://${serverHost}:${serverPort}`,
+      token: serverPassword,
       reconnect: true,
     })
 
-    // Listen for all events
-    eventBridgeClient.onAny(event => {
+    // Create event handlers
+    const handleEvent = (event: LaplaceEvent) => {
       console.log('Received event:', event)
       setMessages(prev => [...prev, event])
-    })
+    }
 
-    // Listen for connection state changes
-    eventBridgeClient.onConnectionStateChange(state => {
+    const handleConnectionStateChange = (state: ConnectionState) => {
       console.log(`Connection state changed to: ${state}`)
       setConnectionState(state)
-    })
+    }
+
+    // Listen for all events
+    eventBridgeClient.onAny(handleEvent)
+
+    // Listen for connection state changes
+    eventBridgeClient.onConnectionStateChange(handleConnectionStateChange)
 
     // Connect to the event bridge
     eventBridgeClient.connect().catch(err => {
@@ -75,12 +109,19 @@ const App: React.FC = () => {
     })
 
     setClient(eventBridgeClient)
+    clientRef.current = eventBridgeClient
 
-    // Cleanup on unmount
+    // Cleanup on unmount or when server settings change
     return () => {
+      // Remove event listeners before disconnecting
+      eventBridgeClient.offAny(handleEvent)
+      eventBridgeClient.offConnectionStateChange(handleConnectionStateChange)
       eventBridgeClient.disconnect()
+      clientRef.current = null
+      // Clear messages when disconnecting to avoid confusion
+      setMessages([])
     }
-  }, [])
+  }, [serverHost, serverPort, serverPassword])
 
   useEffect(() => {
     // Update the background opacity
@@ -141,18 +182,39 @@ const App: React.FC = () => {
   const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newOpacity = parseInt(e.target.value)
     setOpacity(newOpacity)
+    localStorage.setItem('overlay-opacity', newOpacity.toString())
   }
 
   const handleAlwaysOnTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setAlwaysOnTop(enabled)
+    localStorage.setItem('overlay-alwaysOnTop', enabled.toString())
     window.electronAPI.setAlwaysOnTop(enabled)
   }
 
   const handleClickThroughChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setClickThrough(enabled)
+    localStorage.setItem('overlay-clickThrough', enabled.toString())
     window.electronAPI.setClickThrough(enabled)
+  }
+
+  const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setServerHost(value)
+    localStorage.setItem('overlay-serverHost', value)
+  }
+
+  const handleServerPortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setServerPort(value)
+    localStorage.setItem('overlay-serverPort', value)
+  }
+
+  const handleServerPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setServerPassword(value)
+    localStorage.setItem('overlay-serverPassword', value)
   }
 
   // Update body class when click-through mode changes
@@ -330,6 +392,60 @@ const App: React.FC = () => {
               </label>
               <p className='setting-description'>
                 Make the chat area click-through while keeping the title bar interactive
+              </p>
+            </div>
+
+            <div className='setting-separator'></div>
+
+            <h4>Server Settings</h4>
+            <div className='setting-item'>
+              <label htmlFor='server-host'>Server Host:</label>
+              <input
+                type='text'
+                id='server-host'
+                className='text-input'
+                value={serverHost}
+                onChange={handleServerHostChange}
+                placeholder='localhost'
+              />
+              <p className='setting-description'>The host address of the LAPLACE Event Bridge server</p>
+            </div>
+
+            <div className='setting-item'>
+              <label htmlFor='server-port'>Server Port:</label>
+              <input
+                type='text'
+                id='server-port'
+                className='text-input'
+                value={serverPort}
+                onChange={handleServerPortChange}
+                placeholder='9696'
+              />
+              <p className='setting-description'>The port number of the LAPLACE Event Bridge server</p>
+            </div>
+
+            <div className='setting-item'>
+              <label htmlFor='server-password'>Server Password:</label>
+              <input
+                type='password'
+                id='server-password'
+                className='text-input'
+                value={serverPassword}
+                onChange={handleServerPasswordChange}
+                placeholder='Optional'
+              />
+              <p className='setting-description'>Authentication token for the server (if required)</p>
+            </div>
+
+            <div className='setting-item'>
+              <p className='setting-info'>
+                Connection Status: <strong>{connectionState}</strong>
+                <br />
+                {connectionState === ConnectionState.CONNECTED && (
+                  <span className='connected-to'>
+                    Connected to ws://{serverHost}:{serverPort}
+                  </span>
+                )}
               </p>
             </div>
           </div>

@@ -135,7 +135,18 @@ const App: React.FC = () => {
     // Create event handlers
     const handleEvent = (event: LaplaceEvent) => {
       console.log('Received event:', event)
-      setMessages(prev => [...prev, event])
+      // setMessages(prev => [...prev, event])
+
+      setMessages(prev => {
+        const keep = 500
+
+        // Keep only the most recent events for performance
+        const newMessages = [...prev, event]
+        if (newMessages.length > keep) {
+          return newMessages.slice(newMessages.length - keep)
+        }
+        return newMessages
+      })
     }
 
     const handleConnectionStateChange = (state: ConnectionState) => {

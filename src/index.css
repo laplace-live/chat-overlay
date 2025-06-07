@@ -24,8 +24,30 @@ body {
 }
 
 .title-bar-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 12px;
   font-weight: 500;
+}
+
+.online-count {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+
+  .animated-numbers {
+    transition: color 1s ease-in-out;
+  }
+
+  .red {
+    color: #ff6a82;
+    transition: none;
+  }
+
+  .green {
+    color: #75ff75;
+    transition: none;
+  }
 }
 
 .title-bar-left {

@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom/client'
 import { ConnectionState, LaplaceEventBridgeClient } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
 
+import AnimatedNumber from './utils/animated-numbers'
+
 import './index.css'
 
 // TypeScript declaration for the electronAPI
@@ -53,6 +55,7 @@ const App: React.FC = () => {
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [client, setClient] = useState<LaplaceEventBridgeClient | null>(null)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
+  const [onlineUserCount, setOnlineUserCount] = useState<number | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -139,8 +142,14 @@ const App: React.FC = () => {
     // Create event handlers
     const handleEvent = (event: LaplaceEvent) => {
       console.log('Received event:', event)
-      // setMessages(prev => [...prev, event])
 
+      // Handle online-update event
+      if (event.type === 'online-update') {
+        setOnlineUserCount(event.online)
+        return // Don't add online-update events to messages
+      }
+
+      // setMessages(prev => [...prev, event])
       setMessages(prev => {
         const keep = 500
 
@@ -413,7 +422,14 @@ const App: React.FC = () => {
           <div className='connection-status'>
             <span className={`status-dot ${connectionState}`}></span>
           </div>
-          <span className='title-bar-title'>LAPLACE Chat Overlay</span>
+          <span className='title-bar-title'>
+            LAPLACE Chat Overlay
+            {onlineUserCount !== null && (
+              <span className='online-count'>
+                <AnimatedNumber value={onlineUserCount} /> online
+              </span>
+            )}
+          </span>
         </div>
         <div className='title-bar-buttons'>
           <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>

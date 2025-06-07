@@ -385,11 +385,10 @@ const App: React.FC = () => {
     <>
       <div className='title-bar' ref={titleBarRef}>
         <div className='title-bar-left'>
-          <span className='title-bar-title'>LAPLACE Chat Overlay</span>
           <div className='connection-status'>
             <span className={`status-dot ${connectionState}`}></span>
-            <span className='status-text'>{connectionState}</span>
           </div>
+          <span className='title-bar-title'>LAPLACE Chat Overlay</span>
         </div>
         <div className='title-bar-buttons'>
           <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>

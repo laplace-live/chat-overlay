@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import clsx from 'clsx'
 import ReactDOM from 'react-dom/client'
 import { ConnectionState, LaplaceEventBridgeClient } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
@@ -125,7 +126,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     // Update the background opacity
-    const content = document.querySelector('.content') as HTMLElement
+    const titleBar = document.querySelector('.title-bar') satisfies HTMLElement
+    const content = document.querySelector('.content') satisfies HTMLElement
+
+    if (titleBar) {
+      titleBar.style.backgroundColor = `rgba(20, 20, 20, ${opacity / 100})`
+    }
+
     if (content) {
       content.style.backgroundColor = `rgba(20, 20, 20, ${opacity / 100})`
     }
@@ -244,7 +251,7 @@ const App: React.FC = () => {
   const renderMessage = (event: LaplaceEvent, index: number) => {
     if (event.type === 'system') {
       return (
-        <div key={index} className='message system-message'>
+        <div key={index} className='message system'>
           <span className='text'>{event.message}</span>
         </div>
       )
@@ -260,17 +267,16 @@ const App: React.FC = () => {
       }
 
       return (
-        <div key={index} className='message interaction-message'>
-          <span className='text'>
-            {event.username} {actionMap[event.action]}
-          </span>
+        <div key={index} className={clsx('message interaction', `guard-type-${event.guardType}`)}>
+          <span className='username'>{event.username}</span>
+          <span className='text'>{actionMap[event.action]}</span>
         </div>
       )
     }
 
     if (event.type === 'message') {
       return (
-        <div key={index} className='message'>
+        <div key={index} className={clsx('message', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='text'>{event.message}</span>
         </div>
@@ -279,7 +285,7 @@ const App: React.FC = () => {
 
     if (event.type === 'superchat') {
       return (
-        <div key={index} className='message superchat-message'>
+        <div key={index} className='message superchat'>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -289,7 +295,17 @@ const App: React.FC = () => {
 
     if (event.type === 'gift') {
       return (
-        <div key={index} className='message gift-message'>
+        <div key={index} className='message gift'>
+          <span className='username'>{event.username}:</span>
+          <span className='price'>[¥{event.priceNormalized}]</span>
+          <span className='text'>{event.message}</span>
+        </div>
+      )
+    }
+
+    if (event.type === 'toast') {
+      return (
+        <div key={index} className='message toast'>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -311,8 +327,15 @@ const App: React.FC = () => {
   return (
     <>
       <div className='title-bar' ref={titleBarRef}>
-        <span>LAPLACE Chat Overlay</span>
+        <div className='title-bar-left'>
+          <span className='title-bar-title'>LAPLACE Chat Overlay</span>
+          <div className='connection-status'>
+            <span className={`status-dot ${connectionState}`}></span>
+            <span className='status-text'>{connectionState}</span>
+          </div>
+        </div>
         <div className='title-bar-buttons'>
+          <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>
           <button id='settings-btn' title='Settings' onClick={() => setIsSettingsOpen(true)}>
             ⚙
           </button>
@@ -324,13 +347,6 @@ const App: React.FC = () => {
 
       <div className='content' ref={contentRef}>
         <div className='chat-container'>
-          <div className='chat-header'>
-            <h2>Chat Messages</h2>
-            <div className='connection-status'>
-              <span className={`status-dot ${connectionState}`}></span>
-              <span className='status-text'>{connectionState}</span>
-            </div>
-          </div>
           <div className='chat-messages'>
             {messages.length === 0 ? (
               <div className='no-messages'>
@@ -408,7 +424,7 @@ const App: React.FC = () => {
                 onChange={handleServerHostChange}
                 placeholder='localhost'
               />
-              <p className='setting-description'>The host address of the LAPLACE Event Bridge server</p>
+              <p className='input-description'>The host address of the LAPLACE Event Bridge server</p>
             </div>
 
             <div className='setting-item'>
@@ -421,7 +437,7 @@ const App: React.FC = () => {
                 onChange={handleServerPortChange}
                 placeholder='9696'
               />
-              <p className='setting-description'>The port number of the LAPLACE Event Bridge server</p>
+              <p className='input-description'>The port number of the LAPLACE Event Bridge server</p>
             </div>
 
             <div className='setting-item'>
@@ -434,7 +450,7 @@ const App: React.FC = () => {
                 onChange={handleServerPasswordChange}
                 placeholder='Optional'
               />
-              <p className='setting-description'>Authentication token for the server (if required)</p>
+              <p className='input-description'>Authentication token for the server (if required)</p>
             </div>
 
             <div className='setting-item'>
@@ -443,7 +459,7 @@ const App: React.FC = () => {
                 <br />
                 {connectionState === ConnectionState.CONNECTED && (
                   <span className='connected-to'>
-                    Connected to ws://{serverHost}:{serverPort}
+                    Connected to {serverHost}:{serverPort}
                   </span>
                 )}
               </p>

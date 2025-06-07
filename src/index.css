@@ -19,15 +19,29 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
+  padding-right: 5px;
   -webkit-app-region: drag;
+}
+
+.title-bar-title {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.title-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
 }
 
 .title-bar-buttons {
   display: flex;
-  gap: 5px;
   -webkit-app-region: no-drag;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
 }
 
+.click-through-indicator,
 .title-bar button {
   -webkit-app-region: no-drag;
   background: none;
@@ -35,17 +49,22 @@ body {
   color: white;
   font-size: 20px;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: background-color 0.2s;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
 }
 
 #settings-btn {
   font-size: 18px;
+}
+
+.click-through-indicator {
+  font-size: 16px;
 }
 
 .title-bar button:hover {
@@ -55,26 +74,23 @@ body {
 .content {
   height: calc(100vh - 32px);
   background-color: rgba(20, 20, 20, 0.9);
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .chat-container {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 15px;
   overflow: hidden;
 }
 
-.chat-container h2 {
+.chat-title {
   color: white;
-  margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .chat-messages {
@@ -83,23 +99,82 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 0 10px;
+}
+
+/* Message Type Styles */
+.no-messages {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 40px 20px;
+}
+
+/* Auto-scroll for new messages */
+.chat-messages {
+  scroll-behavior: smooth;
 }
 
 .message {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 10px;
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  font-size: 20px;
   border-radius: 6px;
   color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+
+  &.system {
+    background-color: rgba(33, 150, 243, 0.2);
+    border-left: 3px solid #2196f3;
+  }
+
+  &.interaction {
+    .text {
+      opacity: 0.6;
+    }
+  }
+
+  &.superchat {
+    background-color: rgba(255, 152, 0, 0.2);
+    border-left: 3px solid #ff9800;
+  }
+
+  &.gift {
+    background-color: rgba(233, 30, 99, 0.2);
+    border-left: 3px solid #e91e63;
+  }
+
+  &.entry-effect {
+    background-color: rgba(0, 188, 212, 0.2);
+    border-left: 3px solid #00bcd4;
+    padding-left: 10px;
+  }
 }
 
 .username {
-  font-weight: bold;
-  color: #4fc3f7;
+  font-weight: 600;
+  color: #effee3;
   margin-right: 5px;
+
+  .guard-type-1 & {
+    color: #ff96aa;
+  }
+
+  .guard-type-2 & {
+    color: #e7a9ff;
+  }
+
+  .guard-type-3 & {
+    color: #96deff;
+  }
 }
 
 .text {
-  color: #e0e0e0;
+  color: #fff;
+}
+
+.price {
+  color: #ffc107;
+  font-weight: bold;
+  margin: 0 5px;
 }
 
 /* Modal Styles */
@@ -193,10 +268,8 @@ body {
   margin-bottom: 5px !important;
 }
 
-.checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin-right: 10px;
+.checkbox-label input[type='checkbox'] {
+  margin-right: 15px;
   cursor: pointer;
   accent-color: #4fc3f7;
 }
@@ -209,8 +282,13 @@ body {
 .setting-description {
   color: rgba(255, 255, 255, 0.6);
   font-size: 12px;
-  margin: 0;
   padding-left: 28px;
+}
+
+.input-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .slider-container {
@@ -292,7 +370,7 @@ body {
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -310,88 +388,34 @@ body {
 }
 
 /* Connection Status Styles */
-.chat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
 .connection-status {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #fff;
 }
 
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #f44336;
+  background-color: #fd776d;
   transition: background-color 0.3s;
 }
 
 .status-dot.connected {
-  background-color: #4caf50;
+  background-color: #70f874;
 }
 
 .status-dot.connecting,
 .status-dot.reconnecting {
-  background-color: #ff9800;
+  background-color: #ffdf52;
   animation: pulse 1.5s infinite;
 }
 
 .status-text {
   text-transform: capitalize;
-}
-
-/* Message Type Styles */
-.no-messages {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 40px 20px;
-  font-style: italic;
-}
-
-.system-message {
-  background-color: rgba(33, 150, 243, 0.2);
-  border-left: 3px solid #2196f3;
-}
-
-.interaction-message {
-  background-color: rgba(255, 255, 255, 0.05);
-  opacity: 0.6;
-  font-size: 14px;
-}
-
-.superchat-message {
-  background-color: rgba(255, 152, 0, 0.2);
-  border-left: 3px solid #ff9800;
-}
-
-.gift-message {
-  background-color: rgba(233, 30, 99, 0.2);
-  border-left: 3px solid #e91e63;
-}
-
-.entry-effect {
-  background-color: rgba(0, 188, 212, 0.2);
-  border-left: 3px solid #00bcd4;
-  text-align: center;
-  font-style: italic;
-}
-
-.price {
-  color: #ffc107;
-  font-weight: bold;
-  margin: 0 5px;
-}
-
-/* Auto-scroll for new messages */
-.chat-messages {
-  scroll-behavior: smooth;
 }
 
 /* Pulse animation for connecting status */
@@ -408,23 +432,7 @@ body {
 }
 
 /* Click-through mode indicator */
-body.click-through .content {
+/* body.click-through .content {
   border: 2px dashed rgba(79, 195, 247, 0.3);
   border-top: none;
-}
-
-body.click-through .chat-container {
-  position: relative;
-}
-
-body.click-through .chat-container::after {
-  content: 'Click Pass-Through Mode';
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 10px;
-  color: rgba(79, 195, 247, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  pointer-events: none;
-}
+} */

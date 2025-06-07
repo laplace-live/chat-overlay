@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@laplace.live/event-bridge-sdk':
         specifier: latest
-        version: 0.1.4(@laplace.live/event-types@2.0.4(typescript@4.5.5))
+        version: 0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))
       '@laplace.live/event-types':
-        specifier: ^2.0.4
-        version: 2.0.4(typescript@4.5.5)
+        specifier: ^2.0.5
+        version: 2.0.5(typescript@4.5.5)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -478,8 +478,13 @@ packages:
     peerDependencies:
       '@laplace.live/event-types': ^2.0.4
 
-  '@laplace.live/event-types@2.0.4':
-    resolution: {integrity: sha512-Q1d2ToMPB/eofxbsytwLuUTe/MhVwznZjja+3T6/hhd73AUSMZM/vyK2/IsyEroULUt7XDFCicy+Grr7RntDlw==}
+  '@laplace.live/event-types@2.0.5':
+    resolution: {integrity: sha512-yFzOxghYmfrhg0nEr0w6jHmPB3s6hlwUuSMUyWmliSEni6KU+XO4XppdCXpNJVaVbEf4D3eZ+vYjeh7M5WTFnw==}
+    peerDependencies:
+      typescript: ^5.8.3
+
+  '@laplace.live/internal@1.1.103':
+    resolution: {integrity: sha512-E4flk+UMHlbRvG/cRzYWBFI9W+W1kdzENCSJab3EuEdme4MTafMeqB9/D4mYX1iBSBIq9O0dp3SuYAZxSPhdvA==}
     peerDependencies:
       typescript: ^5.8.3
 
@@ -3575,11 +3580,16 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@laplace.live/event-bridge-sdk@0.1.4(@laplace.live/event-types@2.0.4(typescript@4.5.5))':
+  '@laplace.live/event-bridge-sdk@0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))':
     dependencies:
-      '@laplace.live/event-types': 2.0.4(typescript@4.5.5)
+      '@laplace.live/event-types': 2.0.5(typescript@4.5.5)
 
-  '@laplace.live/event-types@2.0.4(typescript@4.5.5)':
+  '@laplace.live/event-types@2.0.5(typescript@4.5.5)':
+    dependencies:
+      '@laplace.live/internal': 1.1.103(typescript@4.5.5)
+      typescript: 4.5.5
+
+  '@laplace.live/internal@1.1.103(typescript@4.5.5)':
     dependencies:
       typescript: 4.5.5
 

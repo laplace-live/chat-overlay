@@ -124,6 +124,7 @@ body {
   border-radius: 6px;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+  word-break: break-word;
 
   &.system {
     background-color: rgba(33, 150, 243, 0.2);

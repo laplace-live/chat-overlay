@@ -13,7 +13,16 @@ const config: ForgeConfig = {
     icon: 'src/assets/icon',
   },
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    new MakerSquirrel({
+      authors: 'LAPLACE Live!',
+      description: 'A modern, transparent chat overlay application for Bilibili live streaming',
+      name: 'LAPLACE Chat Overlay',
+    }),
+    new MakerZIP({}, ['darwin']),
+    new MakerRpm({}),
+    new MakerDeb({}),
+  ],
   plugins: [
     new VitePlugin({
       // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.

@@ -34,6 +34,10 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('overlay-clickThrough')
     return saved ? saved === 'true' : false
   })
+  const [showInteractionEvents, setShowInteractionEvents] = useState(() => {
+    const saved = localStorage.getItem('overlay-showInteractionEvents')
+    return saved ? saved === 'true' : true
+  })
   const [serverHost, setServerHost] = useState(() => {
     const saved = localStorage.getItem('overlay-serverHost')
     return saved || 'localhost'
@@ -262,6 +266,12 @@ const App: React.FC = () => {
     window.electronAPI.setClickThrough(enabled)
   }
 
+  const handleShowInteractionEventsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enabled = e.target.checked
+    setShowInteractionEvents(enabled)
+    localStorage.setItem('overlay-showInteractionEvents', enabled.toString())
+  }
+
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setServerHost(value)
@@ -314,6 +324,10 @@ const App: React.FC = () => {
     }
 
     if (event.type === 'interaction') {
+      if (!showInteractionEvents) {
+        return null
+      }
+
       const actionMap: { [key: number]: string } = {
         1: '进入直播间',
         2: '关注',
@@ -485,6 +499,20 @@ const App: React.FC = () => {
               </label>
               <p className='setting-description'>
                 Make the chat area click-through while keeping the title bar interactive
+              </p>
+            </div>
+            <div className='setting-item'>
+              <label className='checkbox-label'>
+                <input
+                  type='checkbox'
+                  id='show-interaction-events'
+                  checked={showInteractionEvents}
+                  onChange={handleShowInteractionEventsChange}
+                />
+                <span>Show Interaction Events</span>
+              </label>
+              <p className='setting-description'>
+                Display interaction events like user entering the room, following, sharing, etc.
               </p>
             </div>
 

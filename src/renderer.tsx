@@ -48,12 +48,14 @@ const App: React.FC = () => {
   })
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [client, setClient] = useState<LaplaceEventBridgeClient | null>(null)
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const clickThroughEnabledRef = useRef(false)
   const isSettingsOpenRef = useRef(false)
   const clientRef = useRef<LaplaceEventBridgeClient | null>(null)
+  const chatMessagesRef = useRef<HTMLDivElement>(null)
 
   // Keep refs in sync with state
   useEffect(() => {
@@ -69,9 +71,46 @@ const App: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Check if user is at the bottom of the chat
+  const isAtBottom = () => {
+    const chatMessages = chatMessagesRef.current
+    if (!chatMessages) return true
+
+    const threshold = 50 // pixels from bottom to consider "at bottom"
+    return chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < threshold
+  }
+
+  // Handle scroll event to detect manual scrolling
+  const handleScroll = () => {
+    const chatMessages = chatMessagesRef.current
+    if (!chatMessages) return
+
+    if (isAtBottom()) {
+      // Resume auto-scroll if user scrolls back to bottom
+      setIsAutoScrollPaused(false)
+    } else {
+      // Pause auto-scroll if user scrolls up
+      setIsAutoScrollPaused(true)
+    }
+  }
+
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    // Only auto-scroll if not paused
+    if (!isAutoScrollPaused) {
+      scrollToBottom()
+    }
+  }, [messages, isAutoScrollPaused])
+
+  // Add scroll event listener
+  useEffect(() => {
+    const chatMessages = chatMessagesRef.current
+    if (!chatMessages) return
+
+    chatMessages.addEventListener('scroll', handleScroll)
+    return () => {
+      chatMessages.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   useEffect(() => {
     // Disconnect previous client if exists
@@ -347,7 +386,7 @@ const App: React.FC = () => {
 
       <div className='content' ref={contentRef}>
         <div className='chat-container'>
-          <div className='chat-messages'>
+          <div className='chat-messages' ref={chatMessagesRef}>
             {messages.length === 0 ? (
               <div className='no-messages'>
                 {connectionState === ConnectionState.CONNECTED

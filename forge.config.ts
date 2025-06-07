@@ -17,7 +17,6 @@ const config: ForgeConfig = {
     new MakerSquirrel({
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',
-      name: 'LAPLACE Chat Overlay',
     }),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),

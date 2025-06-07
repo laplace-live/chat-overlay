@@ -53,7 +53,6 @@ const App: React.FC = () => {
     return saved || ''
   })
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
-  const [client, setClient] = useState<LaplaceEventBridgeClient | null>(null)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const [onlineUserCount, setOnlineUserCount] = useState<number | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -178,7 +177,6 @@ const App: React.FC = () => {
       console.error('Failed to connect to event bridge:', err)
     })
 
-    setClient(eventBridgeClient)
     clientRef.current = eventBridgeClient
 
     // Cleanup on unmount or when server settings change
@@ -195,8 +193,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     // Update the background opacity
-    const titleBar = document.querySelector('.title-bar') satisfies HTMLElement
-    const content = document.querySelector('.content') satisfies HTMLElement
+    const titleBar = document.querySelector('.title-bar') as HTMLElement
+    const content = document.querySelector('.content') as HTMLElement
 
     if (titleBar) {
       titleBar.style.backgroundColor = `rgba(20, 20, 20, ${opacity / 100})`

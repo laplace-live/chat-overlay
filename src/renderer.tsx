@@ -71,12 +71,18 @@ const App: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Handle scroll to bottom button click
+  const handleScrollToBottom = () => {
+    scrollToBottom()
+    setIsAutoScrollPaused(false)
+  }
+
   // Check if user is at the bottom of the chat
   const isAtBottom = () => {
     const chatMessages = chatMessagesRef.current
     if (!chatMessages) return true
 
-    const threshold = 50 // pixels from bottom to consider "at bottom"
+    const threshold = 200 // pixels from bottom to consider "at bottom"
     return chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < threshold
   }
 
@@ -375,6 +381,16 @@ const App: React.FC = () => {
         </div>
         <div className='title-bar-buttons'>
           <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>
+          {isAutoScrollPaused && (
+            <button
+              id='scroll-to-bottom-btn'
+              className='scroll-to-bottom-btn'
+              title='Scroll to bottom'
+              onClick={handleScrollToBottom}
+            >
+              ⬇
+            </button>
+          )}
           <button id='settings-btn' title='Settings' onClick={() => setIsSettingsOpen(true)}>
             ⚙
           </button>

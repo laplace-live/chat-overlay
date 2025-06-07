@@ -63,6 +63,10 @@ body {
   font-size: 18px;
 }
 
+#scroll-to-bottom-btn {
+  font-size: 12px;
+}
+
 .click-through-indicator {
   font-size: 16px;
 }
@@ -428,6 +432,19 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Subtle pulse animation for scroll button */
+@keyframes subtle-pulse {
+  0% {
+    background-color: rgba(79, 195, 247, 0.2);
+  }
+  50% {
+    background-color: rgba(79, 195, 247, 0.3);
+  }
+  100% {
+    background-color: rgba(79, 195, 247, 0.2);
   }
 }
 

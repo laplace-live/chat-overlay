@@ -82,7 +82,7 @@ const App: React.FC = () => {
     const chatMessages = chatMessagesRef.current
     if (!chatMessages) return true
 
-    const threshold = 200 // pixels from bottom to consider "at bottom"
+    const threshold = 160 // pixels from bottom to consider "at bottom"
     return chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < threshold
   }
 
@@ -296,7 +296,7 @@ const App: React.FC = () => {
   const renderMessage = (event: LaplaceEvent, index: number) => {
     if (event.type === 'system') {
       return (
-        <div key={index} className='message system'>
+        <div key={index} className='event system'>
           <span className='text'>{event.message}</span>
         </div>
       )
@@ -312,25 +312,37 @@ const App: React.FC = () => {
       }
 
       return (
-        <div key={index} className={clsx('message interaction', `guard-type-${event.guardType}`)}>
+        <div key={index} className={clsx('event interaction', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}</span>
           <span className='text'>{actionMap[event.action]}</span>
         </div>
       )
     }
 
-    if (event.type === 'message') {
+    if (event.type === 'like-click') {
       return (
-        <div key={index} className={clsx('message', `guard-type-${event.guardType}`)}>
+        <div key={index} className={'event like-click'}>
           <span className='username'>{event.username}:</span>
           <span className='text'>{event.message}</span>
         </div>
       )
     }
 
+    if (event.type === 'message') {
+      return (
+        <div key={index} className={clsx('event message', `guard-type-${event.guardType}`)}>
+          <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
+          <div>
+            <span className='username'>{event.username}:</span>
+            <span className='text'>{event.message}</span>
+          </div>
+        </div>
+      )
+    }
+
     if (event.type === 'superchat') {
       return (
-        <div key={index} className='message superchat'>
+        <div key={index} className={clsx('event superchat', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -340,7 +352,7 @@ const App: React.FC = () => {
 
     if (event.type === 'gift') {
       return (
-        <div key={index} className='message gift'>
+        <div key={index} className={clsx('event gift', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -350,7 +362,7 @@ const App: React.FC = () => {
 
     if (event.type === 'toast') {
       return (
-        <div key={index} className='message toast'>
+        <div key={index} className='event toast'>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -360,7 +372,7 @@ const App: React.FC = () => {
 
     if (event.type === 'entry-effect') {
       return (
-        <div key={index} className='message entry-effect'>
+        <div key={index} className={clsx('event entry-effect', `guard-type-${event.guardType}`)}>
           <span className='text'>{event.message}</span>
         </div>
       )

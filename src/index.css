@@ -118,7 +118,7 @@ body {
   scroll-behavior: smooth;
 }
 
-.message {
+.event {
   /* background-color: rgba(255, 255, 255, 0.1); */
   font-size: 20px;
   border-radius: 6px;
@@ -130,10 +130,15 @@ body {
     border-left: 3px solid #2196f3;
   }
 
+  &.message {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
   &.interaction {
-    .text {
-      opacity: 0.6;
-    }
+    font-size: 18px;
+    opacity: 0.6;
   }
 
   &.superchat {
@@ -151,6 +156,18 @@ body {
     border-left: 3px solid #00bcd4;
     padding-left: 10px;
   }
+
+  &.like-click {
+    .text {
+      color: #ffd455;
+    }
+  }
+}
+
+.avatar {
+  width: 1lh;
+  height: 1lh;
+  border-radius: 50%;
 }
 
 .username {

@@ -45,10 +45,35 @@ jobs:
       - name: Run linter
         run: pnpm lint
 
-      - name: Build application
+      - name: Package application
+        if: matrix.os == 'windows-latest'
+        run: pnpm package
+
+      - name: Sign Windows application executable
+        if: matrix.os == 'windows-latest'
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://eus.codesigning.azure.net/
+          trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE_NAME }}
+          files-folder: out/chat-overlay-win32-x64
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Create installer with signed executable
+        if: matrix.os == 'windows-latest'
+        run: pnpm dlx electron-forge make --skip-package
+
+      - name: Build application (non-Windows)
+        if: matrix.os != 'windows-latest'
         run: pnpm make
 
-      - name: Sign Windows binaries with Trusted Signing
+      - name: Sign Windows installer
         if: matrix.os == 'windows-latest'
         uses: azure/trusted-signing-action@v0
         with:

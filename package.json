@@ -33,6 +33,7 @@
     "@electron-forge/plugin-fuses": "^7.8.1",
     "@electron-forge/plugin-vite": "^7.8.1",
     "@electron/fuses": "^1.8.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
     "@types/electron-squirrel-startup": "^1.0.2",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
@@ -41,6 +42,7 @@
     "electron": "36.3.1",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.31.0",
+    "prettier-plugin-tailwindcss": "^0.6.12",
     "ts-node": "^10.9.2",
     "typescript": "~4.5.5",
     "vite": "^5.4.19"

@@ -2,6 +2,8 @@
 
 A modern, transparent chat overlay application for Bilibili live streaming built with Electron, React, and TypeScript. This overlay connects to the LAPLACE Event Bridge to display real-time chat messages, interactions, and viewer engagement metrics.
 
+![image](https://github.com/user-attachments/assets/4b36bee7-8944-4ce1-9a85-77a62e4fd9d7)
+
 ## Features
 
 - **Transparent Overlay**: Seamlessly integrates with your streaming setup

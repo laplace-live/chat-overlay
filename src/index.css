@@ -140,6 +140,41 @@ body {
   scroll-behavior: smooth;
 }
 
+/* Chat components */
+.avatar {
+  width: 1lh;
+  height: 1lh;
+  border-radius: 50%;
+}
+
+.username {
+  font-weight: 600;
+  color: #effee3;
+  margin-right: 5px;
+
+  .guard-type-1 & {
+    color: #ff96aa;
+  }
+
+  .guard-type-2 & {
+    color: #e7a9ff;
+  }
+
+  .guard-type-3 & {
+    color: #96deff;
+  }
+}
+
+.text {
+  color: #fff;
+}
+
+.price {
+  color: #ffc107;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
 .event {
   /* background-color: rgba(255, 255, 255, 0.1); */
   font-size: 20px;
@@ -177,7 +212,30 @@ body {
   &.entry-effect {
     background-color: rgba(0, 188, 212, 0.2);
     border-left: 3px solid #00bcd4;
-    padding-left: 10px;
+    padding-left: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .avatar {
+      width: 0.6lh;
+      height: 0.6lh;
+    }
+
+    &.guard-type-1 {
+      background-color: rgba(255, 0, 64, 0.2);
+      border-left: 3px solid #ff5f5f;
+    }
+
+    &.guard-type-2 {
+      background-color: rgba(226, 30, 233, 0.2);
+      border-left: 3px solid #e59bfb;
+    }
+
+    &.guard-type-3 {
+      background-color: rgba(0, 188, 212, 0.2);
+      border-left: 3px solid #73efff;
+    }
   }
 
   &.like-click {
@@ -185,40 +243,6 @@ body {
       color: #ffd455;
     }
   }
-}
-
-.avatar {
-  width: 1lh;
-  height: 1lh;
-  border-radius: 50%;
-}
-
-.username {
-  font-weight: 600;
-  color: #effee3;
-  margin-right: 5px;
-
-  .guard-type-1 & {
-    color: #ff96aa;
-  }
-
-  .guard-type-2 & {
-    color: #e7a9ff;
-  }
-
-  .guard-type-3 & {
-    color: #96deff;
-  }
-}
-
-.text {
-  color: #fff;
-}
-
-.price {
-  color: #ffc107;
-  font-weight: bold;
-  margin: 0 5px;
 }
 
 /* Modal Styles */

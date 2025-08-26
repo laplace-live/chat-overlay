@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [opacity, setOpacity] = useState(() => {
     const saved = localStorage.getItem('overlay-opacity')
-    return saved ? parseInt(saved) : 90
+    return saved ? parseInt(saved, 10) : 90
   })
   const [alwaysOnTop, setAlwaysOnTop] = useState(() => {
     const saved = localStorage.getItem('overlay-alwaysOnTop')
@@ -52,6 +52,10 @@ const App: React.FC = () => {
     const saved = localStorage.getItem('overlay-serverPassword')
     return saved || ''
   })
+  const [allowedOrigins, setAllowedOrigins] = useState(() => {
+    const saved = localStorage.getItem('overlay-allowedOrigins')
+    return saved || ''
+  })
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const [onlineUserCount, setOnlineUserCount] = useState<number | null>(null)
@@ -62,6 +66,7 @@ const App: React.FC = () => {
   const isSettingsOpenRef = useRef(false)
   const clientRef = useRef<LaplaceEventBridgeClient | null>(null)
   const chatMessagesRef = useRef<HTMLDivElement>(null)
+  const allowedOriginsRef = useRef(allowedOrigins)
 
   // Keep refs in sync with state
   useEffect(() => {
@@ -71,6 +76,10 @@ const App: React.FC = () => {
   useEffect(() => {
     isSettingsOpenRef.current = isSettingsOpen
   }, [isSettingsOpen])
+
+  useEffect(() => {
+    allowedOriginsRef.current = allowedOrigins
+  }, [allowedOrigins])
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -141,6 +150,26 @@ const App: React.FC = () => {
     // Create event handlers
     const handleEvent = (event: LaplaceEvent) => {
       console.log('Received event:', event)
+
+      // Filter by allowed origins if specified
+      if (allowedOriginsRef.current) {
+        // Parse allowed origins (comma-separated)
+        const allowedOriginsList = allowedOriginsRef.current
+          .split(',')
+          .map(o => o.trim())
+          .filter(o => o)
+
+        // Check if event has origin and if it's in the allowed list
+        if (allowedOriginsList.length > 0 && 'origin' in event) {
+          const eventOrigin = String(event.origin)
+          if (!allowedOriginsList.includes(eventOrigin)) {
+            console.log(
+              `Filtered out event from origin ${eventOrigin} (not in allowed list: ${allowedOriginsList.join(', ')})`
+            )
+            return // Skip this event
+          }
+        }
+      }
 
       // Handle online-update event
       if (event.type === 'online-update') {
@@ -254,7 +283,7 @@ const App: React.FC = () => {
   }
 
   const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newOpacity = parseInt(e.target.value)
+    const newOpacity = parseInt(e.target.value, 10)
     setOpacity(newOpacity)
     localStorage.setItem('overlay-opacity', newOpacity.toString())
   }
@@ -295,6 +324,12 @@ const App: React.FC = () => {
     const value = e.target.value
     setServerPassword(value)
     localStorage.setItem('overlay-serverPassword', value)
+  }
+
+  const handleAllowedOriginsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setAllowedOrigins(value)
+    localStorage.setItem('overlay-allowedOrigins', value)
   }
 
   // Update body class when click-through mode changes
@@ -403,9 +438,13 @@ const App: React.FC = () => {
     }
 
     if (event.type === 'entry-effect') {
+      // Remove special markers <%...%> but keep the text inside
+      const message = event.message.replace(/<%([^%>]+)%>/g, '$1').trim()
+
       return (
         <div key={index} className={clsx('event entry-effect', `guard-type-${event.guardType}`)}>
-          <span className='text'>{event.message}</span>
+          <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
+          <span className='text'>{message}</span>
         </div>
       )
     }
@@ -433,6 +472,7 @@ const App: React.FC = () => {
           <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>
           {isAutoScrollPaused && (
             <button
+              type='button'
               id='scroll-to-bottom-btn'
               className='scroll-to-bottom-btn'
               title='Scroll to bottom'
@@ -570,6 +610,21 @@ const App: React.FC = () => {
                 placeholder='Optional'
               />
               <p className='input-description'>Authentication token for the server (if required)</p>
+            </div>
+
+            <div className='setting-item'>
+              <label htmlFor='allowed-origins'>Allowed Rooms:</label>
+              <input
+                type='text'
+                id='allowed-origins'
+                className='text-input'
+                value={allowedOrigins}
+                onChange={handleAllowedOriginsChange}
+                placeholder='e.g., 12345, 67890 (leave empty to allow all)'
+              />
+              <p className='input-description'>
+                Filter events by room numbers (comma-separated). Leave empty to receive events from all rooms.
+              </p>
             </div>
 
             <div className='setting-item'>

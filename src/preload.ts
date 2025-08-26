@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setClickThrough: (enabled: boolean) => ipcRenderer.send('set-click-through', enabled),
   setIgnoreMouseEvents: (ignore: boolean) => ipcRenderer.send('set-ignore-mouse-events', ignore),
   onClickThroughEnabled: (callback: (enabled: boolean) => void) => {
-    const handler = (event: Electron.IpcRendererEvent, enabled: boolean) => callback(enabled)
+    const handler = (_event: Electron.IpcRendererEvent, enabled: boolean) => callback(enabled)
     ipcRenderer.on('click-through-enabled', handler)
 
     // Return unsubscribe function

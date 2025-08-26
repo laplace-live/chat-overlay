@@ -34,17 +34,17 @@ const createWindow = () => {
   // mainWindow.webContents.openDevTools();
 
   // Handle opacity changes
-  ipcMain.on('set-window-opacity', (event, opacity) => {
+  ipcMain.on('set-window-opacity', (_event, opacity) => {
     mainWindow.setOpacity(opacity)
   })
 
   // Handle always on top toggle
-  ipcMain.on('set-always-on-top', (event, enabled) => {
+  ipcMain.on('set-always-on-top', (_event, enabled) => {
     mainWindow.setAlwaysOnTop(enabled)
   })
 
   // Handle click pass-through toggle
-  ipcMain.on('set-click-through', (event, enabled) => {
+  ipcMain.on('set-click-through', (_event, enabled) => {
     if (enabled) {
       // Don't make the entire window click-through immediately
       // Instead, let the renderer handle mouse tracking
@@ -57,7 +57,7 @@ const createWindow = () => {
   })
 
   // Handle mouse enter/leave events for click-through mode
-  ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
+  ipcMain.on('set-ignore-mouse-events', (_event, ignore) => {
     mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
   })
 }

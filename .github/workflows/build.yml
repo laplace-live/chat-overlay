@@ -141,55 +141,38 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Release ${{ github.ref_name }}" \
+            --notes "Release ${{ github.ref_name }}" \
+            --verify-tag
 
-      - name: Upload Windows Release Assets
-        if: steps.find_windows_exe.outputs.setup_exe != ''
-        uses: actions/upload-release-asset@v1
+      - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find_windows_exe.outputs.setup_exe }}
-          asset_name: chat-overlay-${{ github.ref_name }}-windows-setup.exe
-          asset_content_type: application/octet-stream
+        run: |
+          # Upload Windows setup if found
+          if [ -n "${{ steps.find_windows_exe.outputs.setup_exe }}" ]; then
+            gh release upload "${{ github.ref_name }}" \
+              "${{ steps.find_windows_exe.outputs.setup_exe }}#chat-overlay-${{ github.ref_name }}-windows-setup.exe"
+          fi
 
-      - name: Upload macOS Release Assets
-        if: steps.find_macos_zip.outputs.mac_zip != ''
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find_macos_zip.outputs.mac_zip }}
-          asset_name: chat-overlay-${{ github.ref_name }}-macos.zip
-          asset_content_type: application/zip
+          # Upload macOS zip if found
+          if [ -n "${{ steps.find_macos_zip.outputs.mac_zip }}" ]; then
+            gh release upload "${{ github.ref_name }}" \
+              "${{ steps.find_macos_zip.outputs.mac_zip }}#chat-overlay-${{ github.ref_name }}-macos.zip"
+          fi
 
-      - name: Upload Linux DEB Release Assets
-        if: steps.find_linux_deb.outputs.linux_deb != ''
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find_linux_deb.outputs.linux_deb }}
-          asset_name: chat-overlay-${{ github.ref_name }}-linux-amd64.deb
-          asset_content_type: application/octet-stream
+          # Upload Linux DEB if found
+          if [ -n "${{ steps.find_linux_deb.outputs.linux_deb }}" ]; then
+            gh release upload "${{ github.ref_name }}" \
+              "${{ steps.find_linux_deb.outputs.linux_deb }}#chat-overlay-${{ github.ref_name }}-linux-amd64.deb"
+          fi
 
-      - name: Upload Linux RPM Release Assets
-        if: steps.find_linux_rpm.outputs.linux_rpm != ''
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.find_linux_rpm.outputs.linux_rpm }}
-          asset_name: chat-overlay-${{ github.ref_name }}-linux-x86_64.rpm
-          asset_content_type: application/octet-stream
+          # Upload Linux RPM if found
+          if [ -n "${{ steps.find_linux_rpm.outputs.linux_rpm }}" ]; then
+            gh release upload "${{ github.ref_name }}" \
+              "${{ steps.find_linux_rpm.outputs.linux_rpm }}#chat-overlay-${{ github.ref_name }}-linux-x86_64.rpm"
+          fi

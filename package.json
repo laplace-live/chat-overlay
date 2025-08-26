@@ -1,7 +1,7 @@
 {
   "name": "chat-overlay",
   "productName": "chat-overlay",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {

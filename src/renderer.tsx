@@ -151,12 +151,6 @@ const App: React.FC = () => {
     const handleEvent = (event: LaplaceEvent) => {
       console.log('Received event:', event)
 
-      // Handle online-update event
-      if (event.type === 'online-update') {
-        setOnlineUserCount(event.online)
-        return // Don't add online-update events to messages
-      }
-
       // Filter by allowed origins if specified
       if (allowedOriginsRef.current) {
         // Parse allowed origins (comma-separated)
@@ -175,6 +169,12 @@ const App: React.FC = () => {
             return // Skip this event
           }
         }
+      }
+
+      // Handle online-update event
+      if (event.type === 'online-update') {
+        setOnlineUserCount(event.online)
+        return // Don't add online-update events to messages
       }
 
       // setMessages(prev => [...prev, event])

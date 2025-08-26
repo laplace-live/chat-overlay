@@ -403,9 +403,13 @@ const App: React.FC = () => {
     }
 
     if (event.type === 'entry-effect') {
+      // Remove special markers <%...%> but keep the text inside
+      const message = event.message.replace(/<%([^%>]+)%>/g, '$1').trim()
+
       return (
         <div key={index} className={clsx('event entry-effect', `guard-type-${event.guardType}`)}>
-          <span className='text'>{event.message}</span>
+          <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
+          <span className='text'>{message}</span>
         </div>
       )
     }

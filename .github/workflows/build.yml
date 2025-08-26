@@ -106,6 +106,39 @@ jobs:
         with:
           path: artifacts
 
+      - name: List artifact contents
+        run: |
+          echo "=== Listing all artifacts ==="
+          find artifacts -type f -name "*.exe" -o -name "*.zip" -o -name "*.deb" -o -name "*.rpm" | sort
+
+      - name: Find Windows Setup Executable
+        id: find_windows_exe
+        run: |
+          SETUP_EXE=$(find artifacts/chat-overlay-win-${{ github.sha }} -name "*Setup*.exe" -o -name "*setup*.exe" | head -1)
+          echo "setup_exe=$SETUP_EXE" >> $GITHUB_OUTPUT
+          echo "Found Windows setup: $SETUP_EXE"
+
+      - name: Find macOS ZIP
+        id: find_macos_zip
+        run: |
+          MAC_ZIP=$(find artifacts/chat-overlay-darwin-${{ github.sha }} -name "*.zip" | head -1)
+          echo "mac_zip=$MAC_ZIP" >> $GITHUB_OUTPUT
+          echo "Found macOS zip: $MAC_ZIP"
+
+      - name: Find Linux DEB
+        id: find_linux_deb
+        run: |
+          LINUX_DEB=$(find artifacts/chat-overlay-linux-${{ github.sha }} -name "*.deb" | head -1)
+          echo "linux_deb=$LINUX_DEB" >> $GITHUB_OUTPUT
+          echo "Found Linux deb: $LINUX_DEB"
+
+      - name: Find Linux RPM
+        id: find_linux_rpm
+        run: |
+          LINUX_RPM=$(find artifacts/chat-overlay-linux-${{ github.sha }} -name "*.rpm" | head -1)
+          echo "linux_rpm=$LINUX_RPM" >> $GITHUB_OUTPUT
+          echo "Found Linux rpm: $LINUX_RPM"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -118,41 +151,45 @@ jobs:
           prerelease: false
 
       - name: Upload Windows Release Assets
+        if: steps.find_windows_exe.outputs.setup_exe != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/chat-overlay-win-${{ github.sha }}/squirrel.windows/x64/chat-overlay-${{ github.ref_name }}-Setup.exe
+          asset_path: ${{ steps.find_windows_exe.outputs.setup_exe }}
           asset_name: chat-overlay-${{ github.ref_name }}-windows-setup.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS Release Assets
+        if: steps.find_macos_zip.outputs.mac_zip != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/chat-overlay-darwin-${{ github.sha }}/zip/darwin/x64/chat-overlay-darwin-x64-${{ github.ref_name }}.zip
+          asset_path: ${{ steps.find_macos_zip.outputs.mac_zip }}
           asset_name: chat-overlay-${{ github.ref_name }}-macos.zip
           asset_content_type: application/zip
 
       - name: Upload Linux DEB Release Assets
+        if: steps.find_linux_deb.outputs.linux_deb != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/chat-overlay-linux-${{ github.sha }}/deb/x64/chat-overlay_${{ github.ref_name }}_amd64.deb
+          asset_path: ${{ steps.find_linux_deb.outputs.linux_deb }}
           asset_name: chat-overlay-${{ github.ref_name }}-linux-amd64.deb
           asset_content_type: application/octet-stream
 
       - name: Upload Linux RPM Release Assets
+        if: steps.find_linux_rpm.outputs.linux_rpm != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/chat-overlay-linux-${{ github.sha }}/rpm/x64/chat-overlay-${{ github.ref_name }}.x86_64.rpm
+          asset_path: ${{ steps.find_linux_rpm.outputs.linux_rpm }}
           asset_name: chat-overlay-${{ github.ref_name }}-linux-x86_64.rpm
           asset_content_type: application/octet-stream

@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@laplace.live/event-bridge-sdk':
         specifier: latest
-        version: 0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))
+        version: 1.0.4(typescript@4.5.5)
       '@laplace.live/event-types':
         specifier: ^2.0.5
         version: 2.0.5(typescript@4.5.5)
@@ -128,6 +128,9 @@ packages:
   '@babel/types@7.27.6':
     resolution: {integrity: sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==}
     engines: {node: '>=6.9.0'}
+
+  '@bufbuild/protobuf@2.7.0':
+    resolution: {integrity: sha512-qn6tAIZEw5i/wiESBF4nQxZkl86aY4KoO0IkUa2Lh+rya64oTOdJQFlZuMwI1Qz9VBJQrQC4QlSA2DNek5gCOA==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -473,10 +476,13 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@laplace.live/event-bridge-sdk@0.1.4':
-    resolution: {integrity: sha512-spQ5OtYLZaBHtQ9W2VqAjpHkjLdOTXJ6zJ60FUZlyNBbXF0JfgzwydgHu+fv19YoQDIYXbp3nXBWDc3n/NqdFQ==}
+  '@laplace.live/event-bridge-sdk@1.0.4':
+    resolution: {integrity: sha512-vGOKpwFMSmnemi13F+phoYB78xs1qmx4y7H53D3mgwXOKpfzwxn4dz4m+nDGyy07FHZ+hTQ7siUUrVNjVbAiMw==}
+
+  '@laplace.live/event-types@2.0.12':
+    resolution: {integrity: sha512-7KkMnn9+BhnkZkPKTXZpiArZFwoC1K9NG98O02Q0V8v+VnSzCsxUOV9yTLtfyststlkw4jou1yT/FzZe/IGgBw==}
     peerDependencies:
-      '@laplace.live/event-types': ^2.0.4
+      typescript: ^5.8.3
 
   '@laplace.live/event-types@2.0.5':
     resolution: {integrity: sha512-yFzOxghYmfrhg0nEr0w6jHmPB3s6hlwUuSMUyWmliSEni6KU+XO4XppdCXpNJVaVbEf4D3eZ+vYjeh7M5WTFnw==}
@@ -485,6 +491,11 @@ packages:
 
   '@laplace.live/internal@1.1.103':
     resolution: {integrity: sha512-E4flk+UMHlbRvG/cRzYWBFI9W+W1kdzENCSJab3EuEdme4MTafMeqB9/D4mYX1iBSBIq9O0dp3SuYAZxSPhdvA==}
+    peerDependencies:
+      typescript: ^5.8.3
+
+  '@laplace.live/internal@1.2.1':
+    resolution: {integrity: sha512-KG5GY191jAqt+wETmfRxxWFwNQt/y+3j4DpYEzy5PHVRa5JMBTWHR9Iaex0J9ADVSZyDoXP5PlpD7u9IEMTOGg==}
     peerDependencies:
       typescript: ^5.8.3
 
@@ -890,6 +901,9 @@ packages:
 
   brace-expansion@2.0.1:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+
+  brace-expansion@2.0.2:
+    resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
 
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
@@ -1676,8 +1690,8 @@ packages:
     resolution: {integrity: sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==}
     engines: {node: '>=10.13.0'}
 
-  ip-address@9.0.5:
-    resolution: {integrity: sha512-zHtQzGojZXTwZTHQqra+ETKd4Sn3vgi7uBmlPoXVWZqYvuKmtI0l/VZTjqGmJY9x88GGOaZ9+G9ES8hC4T4X8g==}
+  ip-address@10.0.1:
+    resolution: {integrity: sha512-NWv9YLW4PoW2B7xtzaS3NCot75m6nK7Icdv0o3lfMceJVRfSoQwqD4wEH5rLwoKJwUiZ/rfpiVBhnaF0FK4HoA==}
     engines: {node: '>= 12'}
 
   ipaddr.js@1.9.1:
@@ -1834,9 +1848,6 @@ packages:
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
-
-  jsbn@1.1.0:
-    resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
 
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
@@ -2606,8 +2617,8 @@ packages:
     resolution: {integrity: sha512-Fgl0YPZ902wEsAyiQ+idGd1A7rSFx/ayC1CQVMw5P+EQx2V0SgpGtf6OKFhVjPflPUl9YMmEOnmfjCdMUsygww==}
     engines: {node: '>= 10'}
 
-  socks@2.8.4:
-    resolution: {integrity: sha512-D3YaD0aRxR3mEcqnidIs7ReYJFVzWdd6fXJYUM8ixcQcJRGTka/b3saV0KflYhyVJXKhb947GndU35SxYNResQ==}
+  socks@2.8.7:
+    resolution: {integrity: sha512-HLpt+uLy/pxB+bum/9DzAgiKS8CX1EvbWxI4zlmgGCExImLdiad2iCwXT5Z4c9c3Eq8rP2318mPW2c+QbtjK8A==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
 
   source-map-js@1.2.1:
@@ -3057,6 +3068,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
+
+  '@bufbuild/protobuf@2.7.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -3588,9 +3601,17 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@laplace.live/event-bridge-sdk@0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))':
+  '@laplace.live/event-bridge-sdk@1.0.4(typescript@4.5.5)':
     dependencies:
-      '@laplace.live/event-types': 2.0.5(typescript@4.5.5)
+      '@laplace.live/event-types': 2.0.12(typescript@4.5.5)
+    transitivePeerDependencies:
+      - typescript
+
+  '@laplace.live/event-types@2.0.12(typescript@4.5.5)':
+    dependencies:
+      '@bufbuild/protobuf': 2.7.0
+      '@laplace.live/internal': 1.2.1(typescript@4.5.5)
+      typescript: 4.5.5
 
   '@laplace.live/event-types@2.0.5(typescript@4.5.5)':
     dependencies:
@@ -3598,6 +3619,10 @@ snapshots:
       typescript: 4.5.5
 
   '@laplace.live/internal@1.1.103(typescript@4.5.5)':
+    dependencies:
+      typescript: 4.5.5
+
+  '@laplace.live/internal@1.2.1(typescript@4.5.5)':
     dependencies:
       typescript: 4.5.5
 
@@ -4009,6 +4034,10 @@ snapshots:
       concat-map: 0.0.1
 
   brace-expansion@2.0.1:
+    dependencies:
+      balanced-match: 1.0.2
+
+  brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
 
@@ -5051,10 +5080,7 @@ snapshots:
 
   interpret@3.1.1: {}
 
-  ip-address@9.0.5:
-    dependencies:
-      jsbn: 1.1.0
-      sprintf-js: 1.1.3
+  ip-address@10.0.1: {}
 
   ipaddr.js@1.9.1: {}
 
@@ -5194,8 +5220,6 @@ snapshots:
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
-
-  jsbn@1.1.0: {}
 
   jsesc@3.1.0: {}
 
@@ -5359,7 +5383,7 @@ snapshots:
 
   minimatch@5.1.6:
     dependencies:
-      brace-expansion: 2.0.1
+      brace-expansion: 2.0.2
 
   minimatch@9.0.5:
     dependencies:
@@ -5959,13 +5983,13 @@ snapshots:
     dependencies:
       agent-base: 6.0.2
       debug: 4.4.1
-      socks: 2.8.4
+      socks: 2.8.7
     transitivePeerDependencies:
       - supports-color
 
-  socks@2.8.4:
+  socks@2.8.7:
     dependencies:
-      ip-address: 9.0.5
+      ip-address: 10.0.1
       smart-buffer: 4.2.0
 
   source-map-js@1.2.1: {}
@@ -5991,7 +6015,8 @@ snapshots:
 
   spdx-license-ids@3.0.21: {}
 
-  sprintf-js@1.1.3: {}
+  sprintf-js@1.1.3:
+    optional: true
 
   ssri@9.0.1:
     dependencies:

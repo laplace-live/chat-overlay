@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [opacity, setOpacity] = useState(() => {
     const saved = localStorage.getItem('overlay-opacity')
-    return saved ? parseInt(saved) : 90
+    return saved ? parseInt(saved, 10) : 90
   })
   const [alwaysOnTop, setAlwaysOnTop] = useState(() => {
     const saved = localStorage.getItem('overlay-alwaysOnTop')
@@ -254,7 +254,7 @@ const App: React.FC = () => {
   }
 
   const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newOpacity = parseInt(e.target.value)
+    const newOpacity = parseInt(e.target.value, 10)
     setOpacity(newOpacity)
     localStorage.setItem('overlay-opacity', newOpacity.toString())
   }
@@ -433,6 +433,7 @@ const App: React.FC = () => {
           <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>
           {isAutoScrollPaused && (
             <button
+              type='button'
               id='scroll-to-bottom-btn'
               className='scroll-to-bottom-btn'
               title='Scroll to bottom'

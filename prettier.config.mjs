@@ -12,37 +12,6 @@ const config = {
   jsxSingleQuote: true,
   arrowParens: "avoid",
   endOfLine: "lf",
-  plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-
-  // @ianvs/prettier-plugin-sort-imports
-  // https://github.com/IanVS/prettier-plugin-sort-imports
-  importOrder: [
-    '<BUILTIN_MODULES>',
-    '^react$',
-    '^next(\/.*)?',
-    '<THIRD_PARTY_MODULES>',
-    '@(?=[^\/]).*',
-    '',
-    '^@/types(.*)$',
-    '',
-    '^@/const(.*)$',
-    '',
-    '^@/lib(.*)$',
-    '',
-    '^@/utils(.*)$',
-    '',
-    '^@/hooks(.*)$',
-    '',
-    '^@/handlers(.*)$',
-    '',
-    '^@/components(.*)$',
-    '',
-    '^@/app(.*)$',
-    '',
-    '^@/pages(.*)$',
-    '',
-    '^[.]',
-  ]
 }
 
 export default config

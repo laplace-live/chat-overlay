@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@laplace.live/event-bridge-sdk':
         specifier: latest
-        version: 0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))
+        version: 1.0.5(typescript@4.5.5)
       '@laplace.live/event-types':
         specifier: ^2.0.5
         version: 2.0.5(typescript@4.5.5)
@@ -27,6 +27,9 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.2.2
+        version: 2.2.2
       '@electron-forge/cli':
         specifier: ^7.8.1
         version: 7.8.1(encoding@0.1.13)
@@ -54,9 +57,6 @@ importers:
       '@electron/fuses':
         specifier: ^1.8.0
         version: 1.8.0
-      '@ianvs/prettier-plugin-sort-imports':
-        specifier: ^4.4.2
-        version: 4.4.2(prettier@3.5.3)
       '@types/electron-squirrel-startup':
         specifier: ^1.0.2
         version: 1.0.2
@@ -81,9 +81,9 @@ importers:
       eslint-plugin-import:
         specifier: ^2.31.0
         version: 2.31.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@4.5.5))(eslint@8.57.1)
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.12
-        version: 0.6.12(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.5.3))(prettier@3.5.3)
+      prettier:
+        specifier: ^3.6.2
+        version: 3.6.2
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.15.30)(typescript@4.5.5)
@@ -96,38 +96,61 @@ importers:
 
 packages:
 
-  '@babel/code-frame@7.27.1':
-    resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/generator@7.27.5':
-    resolution: {integrity: sha512-ZGhA37l0e/g2s1Cnzdix0O3aLYm66eF8aufiVteOgnwxgnRP8GoyMj7VWsgWnQbVKXyge7hqrFh2K2TQM6t1Hw==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-string-parser@7.27.1':
-    resolution: {integrity: sha512-qMlSxKbpRlAridDExk92nSobyDdpPijUq2DW6oDnUqd0iOGxmQjyqhMIihI9+zv4LPyZdRje2cavWPbCbWm3eA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/helper-validator-identifier@7.27.1':
-    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/parser@7.27.5':
-    resolution: {integrity: sha512-OsQd175SxWkGlzbny8J3K8TnnDD0N3lrIUtB92xwyRpzaenGZhxDvxN/JgU00U3CDZNj9tPuDJ5H0WS4Nt3vKg==}
-    engines: {node: '>=6.0.0'}
+  '@biomejs/biome@2.2.2':
+    resolution: {integrity: sha512-j1omAiQWCkhuLgwpMKisNKnsM6W8Xtt1l0WZmqY/dFj8QPNkIoTvk4tSsi40FaAAkBE1PU0AFG2RWFBWenAn+w==}
+    engines: {node: '>=14.21.3'}
     hasBin: true
 
-  '@babel/template@7.27.2':
-    resolution: {integrity: sha512-LPDZ85aEJyYSd18/DkjNh4/y1ntkE5KwUHWTiqgRxruuZL2F1yuHligVHLvcHY2vMHXttKFpJn6LwfI7cw7ODw==}
-    engines: {node: '>=6.9.0'}
+  '@biomejs/cli-darwin-arm64@2.2.2':
+    resolution: {integrity: sha512-6ePfbCeCPryWu0CXlzsWNZgVz/kBEvHiPyNpmViSt6A2eoDf4kXs3YnwQPzGjy8oBgQulrHcLnJL0nkCh80mlQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [darwin]
 
-  '@babel/traverse@7.27.4':
-    resolution: {integrity: sha512-oNcu2QbHqts9BtOWJosOVJapWjBDSxGCpFvikNR5TGDYDQf3JwpIoMzIKrvfoti93cLfPJEG4tH9SPVeyCGgdA==}
-    engines: {node: '>=6.9.0'}
+  '@biomejs/cli-darwin-x64@2.2.2':
+    resolution: {integrity: sha512-Tn4JmVO+rXsbRslml7FvKaNrlgUeJot++FkvYIhl1OkslVCofAtS35MPlBMhXgKWF9RNr9cwHanrPTUUXcYGag==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
 
-  '@babel/types@7.27.6':
-    resolution: {integrity: sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==}
-    engines: {node: '>=6.9.0'}
+  '@biomejs/cli-linux-arm64-musl@2.2.2':
+    resolution: {integrity: sha512-/MhYg+Bd6renn6i1ylGFL5snYUn/Ct7zoGVKhxnro3bwekiZYE8Kl39BSb0MeuqM+72sThkQv4TnNubU9njQRw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-arm64@2.2.2':
+    resolution: {integrity: sha512-JfrK3gdmWWTh2J5tq/rcWCOsImVyzUnOS2fkjhiYKCQ+v8PqM+du5cfB7G1kXas+7KQeKSWALv18iQqdtIMvzw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64-musl@2.2.2':
+    resolution: {integrity: sha512-ZCLXcZvjZKSiRY/cFANKg+z6Fhsf9MHOzj+NrDQcM+LbqYRT97LyCLWy2AS+W2vP+i89RyRM+kbGpUzbRTYWig==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64@2.2.2':
+    resolution: {integrity: sha512-Ogb+77edO5LEP/xbNicACOWVLt8mgC+E1wmpUakr+O4nKwLt9vXe74YNuT3T1dUBxC/SnrVmlzZFC7kQJEfquQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-win32-arm64@2.2.2':
+    resolution: {integrity: sha512-wBe2wItayw1zvtXysmHJQoQqXlTzHSpQRyPpJKiNIR21HzH/CrZRDFic1C1jDdp+zAPtqhNExa0owKMbNwW9cQ==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@biomejs/cli-win32-x64@2.2.2':
+    resolution: {integrity: sha512-DAuHhHekGfiGb6lCcsT4UyxQmVwQiBCBUMwVra/dcOSs9q8OhfaZgey51MlekT3p8UwRqtXQfFuEJBhJNdLZwg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [win32]
+
+  '@bufbuild/protobuf@2.7.0':
+    resolution: {integrity: sha512-qn6tAIZEw5i/wiESBF4nQxZkl86aY4KoO0IkUa2Lh+rya64oTOdJQFlZuMwI1Qz9VBJQrQC4QlSA2DNek5gCOA==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -443,40 +466,23 @@ packages:
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
     deprecated: Use @eslint/object-schema instead
 
-  '@ianvs/prettier-plugin-sort-imports@4.4.2':
-    resolution: {integrity: sha512-KkVFy3TLh0OFzimbZglMmORi+vL/i2OFhEs5M07R9w0IwWAGpsNNyE4CY/2u0YoMF5bawKC2+8/fUH60nnNtjw==}
-    peerDependencies:
-      '@vue/compiler-sfc': 2.7.x || 3.x
-      prettier: 2 || 3 || ^4.0.0-0
-    peerDependenciesMeta:
-      '@vue/compiler-sfc':
-        optional: true
-
-  '@jridgewell/gen-mapping@0.3.8':
-    resolution: {integrity: sha512-imAbBGkb+ebQyxKgzv5Hu2nmROxoDOXHh80evxdoXNOrvAnVx7zimzc1Oo5h9RlfV4vPXaE2iM5pOFbvOCClWA==}
-    engines: {node: '>=6.0.0'}
-
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
-    engines: {node: '>=6.0.0'}
-
-  '@jridgewell/set-array@1.2.1':
-    resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
     engines: {node: '>=6.0.0'}
 
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
-  '@jridgewell/trace-mapping@0.3.25':
-    resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
-
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@laplace.live/event-bridge-sdk@0.1.4':
-    resolution: {integrity: sha512-spQ5OtYLZaBHtQ9W2VqAjpHkjLdOTXJ6zJ60FUZlyNBbXF0JfgzwydgHu+fv19YoQDIYXbp3nXBWDc3n/NqdFQ==}
+  '@laplace.live/event-bridge-sdk@1.0.5':
+    resolution: {integrity: sha512-fYzhNV40EoozBPiEe4NAudAZ4a9VwIMX2tKvMCHEJRvQZe3DOMhzaA3RMNV8ZmWsbFc7b4cm2QK30nHYdomMLA==}
+
+  '@laplace.live/event-types@2.0.12':
+    resolution: {integrity: sha512-7KkMnn9+BhnkZkPKTXZpiArZFwoC1K9NG98O02Q0V8v+VnSzCsxUOV9yTLtfyststlkw4jou1yT/FzZe/IGgBw==}
     peerDependencies:
-      '@laplace.live/event-types': ^2.0.4
+      typescript: ^5.8.3
 
   '@laplace.live/event-types@2.0.5':
     resolution: {integrity: sha512-yFzOxghYmfrhg0nEr0w6jHmPB3s6hlwUuSMUyWmliSEni6KU+XO4XppdCXpNJVaVbEf4D3eZ+vYjeh7M5WTFnw==}
@@ -485,6 +491,11 @@ packages:
 
   '@laplace.live/internal@1.1.103':
     resolution: {integrity: sha512-E4flk+UMHlbRvG/cRzYWBFI9W+W1kdzENCSJab3EuEdme4MTafMeqB9/D4mYX1iBSBIq9O0dp3SuYAZxSPhdvA==}
+    peerDependencies:
+      typescript: ^5.8.3
+
+  '@laplace.live/internal@1.2.2':
+    resolution: {integrity: sha512-s/BWEn8XBdMzd4uLWxYdTYheA2m+qe+LYdCc3oFpczrzzgNqu60/c1ONxPD+Jv/rrMzXKMxqb9E+QslHGEwLvQ==}
     peerDependencies:
       typescript: ^5.8.3
 
@@ -1545,10 +1556,6 @@ packages:
     resolution: {integrity: sha512-NBcGGFbBA9s1VzD41QXDG+3++t9Mn5t1FpLdhESY6oKY4gYTFpX4wO3sqGUa0Srjtbfj3szX0RnemmrVRUdULA==}
     engines: {node: '>=10'}
 
-  globals@11.12.0:
-    resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
-    engines: {node: '>=4'}
-
   globals@13.24.0:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
     engines: {node: '>=8'}
@@ -1837,11 +1844,6 @@ packages:
 
   jsbn@1.1.0:
     resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
-
-  jsesc@3.1.0:
-    resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
-    engines: {node: '>=6'}
-    hasBin: true
 
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
@@ -2280,63 +2282,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-plugin-tailwindcss@0.6.12:
-    resolution: {integrity: sha512-OuTQKoqNwV7RnxTPwXWzOFXy6Jc4z8oeRZYGuMpRyG3WbuR3jjXdQFK8qFBMBx8UHWdHrddARz2fgUenild6aw==}
-    engines: {node: '>=14.21.3'}
-    peerDependencies:
-      '@ianvs/prettier-plugin-sort-imports': '*'
-      '@prettier/plugin-pug': '*'
-      '@shopify/prettier-plugin-liquid': '*'
-      '@trivago/prettier-plugin-sort-imports': '*'
-      '@zackad/prettier-plugin-twig': '*'
-      prettier: ^3.0
-      prettier-plugin-astro: '*'
-      prettier-plugin-css-order: '*'
-      prettier-plugin-import-sort: '*'
-      prettier-plugin-jsdoc: '*'
-      prettier-plugin-marko: '*'
-      prettier-plugin-multiline-arrays: '*'
-      prettier-plugin-organize-attributes: '*'
-      prettier-plugin-organize-imports: '*'
-      prettier-plugin-sort-imports: '*'
-      prettier-plugin-style-order: '*'
-      prettier-plugin-svelte: '*'
-    peerDependenciesMeta:
-      '@ianvs/prettier-plugin-sort-imports':
-        optional: true
-      '@prettier/plugin-pug':
-        optional: true
-      '@shopify/prettier-plugin-liquid':
-        optional: true
-      '@trivago/prettier-plugin-sort-imports':
-        optional: true
-      '@zackad/prettier-plugin-twig':
-        optional: true
-      prettier-plugin-astro:
-        optional: true
-      prettier-plugin-css-order:
-        optional: true
-      prettier-plugin-import-sort:
-        optional: true
-      prettier-plugin-jsdoc:
-        optional: true
-      prettier-plugin-marko:
-        optional: true
-      prettier-plugin-multiline-arrays:
-        optional: true
-      prettier-plugin-organize-attributes:
-        optional: true
-      prettier-plugin-organize-imports:
-        optional: true
-      prettier-plugin-sort-imports:
-        optional: true
-      prettier-plugin-style-order:
-        optional: true
-      prettier-plugin-svelte:
-        optional: true
-
-  prettier@3.5.3:
-    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -3013,50 +2960,42 @@ packages:
 
 snapshots:
 
-  '@babel/code-frame@7.27.1':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.27.1
-      js-tokens: 4.0.0
-      picocolors: 1.1.1
+  '@biomejs/biome@2.2.2':
+    optionalDependencies:
+      '@biomejs/cli-darwin-arm64': 2.2.2
+      '@biomejs/cli-darwin-x64': 2.2.2
+      '@biomejs/cli-linux-arm64': 2.2.2
+      '@biomejs/cli-linux-arm64-musl': 2.2.2
+      '@biomejs/cli-linux-x64': 2.2.2
+      '@biomejs/cli-linux-x64-musl': 2.2.2
+      '@biomejs/cli-win32-arm64': 2.2.2
+      '@biomejs/cli-win32-x64': 2.2.2
 
-  '@babel/generator@7.27.5':
-    dependencies:
-      '@babel/parser': 7.27.5
-      '@babel/types': 7.27.6
-      '@jridgewell/gen-mapping': 0.3.8
-      '@jridgewell/trace-mapping': 0.3.25
-      jsesc: 3.1.0
+  '@biomejs/cli-darwin-arm64@2.2.2':
+    optional: true
 
-  '@babel/helper-string-parser@7.27.1': {}
+  '@biomejs/cli-darwin-x64@2.2.2':
+    optional: true
 
-  '@babel/helper-validator-identifier@7.27.1': {}
+  '@biomejs/cli-linux-arm64-musl@2.2.2':
+    optional: true
 
-  '@babel/parser@7.27.5':
-    dependencies:
-      '@babel/types': 7.27.6
+  '@biomejs/cli-linux-arm64@2.2.2':
+    optional: true
 
-  '@babel/template@7.27.2':
-    dependencies:
-      '@babel/code-frame': 7.27.1
-      '@babel/parser': 7.27.5
-      '@babel/types': 7.27.6
+  '@biomejs/cli-linux-x64-musl@2.2.2':
+    optional: true
 
-  '@babel/traverse@7.27.4':
-    dependencies:
-      '@babel/code-frame': 7.27.1
-      '@babel/generator': 7.27.5
-      '@babel/parser': 7.27.5
-      '@babel/template': 7.27.2
-      '@babel/types': 7.27.6
-      debug: 4.4.1
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
+  '@biomejs/cli-linux-x64@2.2.2':
+    optional: true
 
-  '@babel/types@7.27.6':
-    dependencies:
-      '@babel/helper-string-parser': 7.27.1
-      '@babel/helper-validator-identifier': 7.27.1
+  '@biomejs/cli-win32-arm64@2.2.2':
+    optional: true
+
+  '@biomejs/cli-win32-x64@2.2.2':
+    optional: true
+
+  '@bufbuild/protobuf@2.7.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -3555,42 +3494,26 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
-  '@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.5.3)':
-    dependencies:
-      '@babel/generator': 7.27.5
-      '@babel/parser': 7.27.5
-      '@babel/traverse': 7.27.4
-      '@babel/types': 7.27.6
-      prettier: 3.5.3
-      semver: 7.7.2
-    transitivePeerDependencies:
-      - supports-color
-
-  '@jridgewell/gen-mapping@0.3.8':
-    dependencies:
-      '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.5.0
-      '@jridgewell/trace-mapping': 0.3.25
-
   '@jridgewell/resolve-uri@3.1.2': {}
 
-  '@jridgewell/set-array@1.2.1': {}
-
   '@jridgewell/sourcemap-codec@1.5.0': {}
-
-  '@jridgewell/trace-mapping@0.3.25':
-    dependencies:
-      '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.0
 
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@laplace.live/event-bridge-sdk@0.1.4(@laplace.live/event-types@2.0.5(typescript@4.5.5))':
+  '@laplace.live/event-bridge-sdk@1.0.5(typescript@4.5.5)':
     dependencies:
-      '@laplace.live/event-types': 2.0.5(typescript@4.5.5)
+      '@laplace.live/event-types': 2.0.12(typescript@4.5.5)
+    transitivePeerDependencies:
+      - typescript
+
+  '@laplace.live/event-types@2.0.12(typescript@4.5.5)':
+    dependencies:
+      '@bufbuild/protobuf': 2.7.0
+      '@laplace.live/internal': 1.2.2(typescript@4.5.5)
+      typescript: 4.5.5
 
   '@laplace.live/event-types@2.0.5(typescript@4.5.5)':
     dependencies:
@@ -3598,6 +3521,10 @@ snapshots:
       typescript: 4.5.5
 
   '@laplace.live/internal@1.1.103(typescript@4.5.5)':
+    dependencies:
+      typescript: 4.5.5
+
+  '@laplace.live/internal@1.2.2(typescript@4.5.5)':
     dependencies:
       typescript: 4.5.5
 
@@ -4912,8 +4839,6 @@ snapshots:
     dependencies:
       ini: 2.0.0
 
-  globals@11.12.0: {}
-
   globals@13.24.0:
     dependencies:
       type-fest: 0.20.2
@@ -5196,8 +5121,6 @@ snapshots:
       argparse: 2.0.1
 
   jsbn@1.1.0: {}
-
-  jsesc@3.1.0: {}
 
   json-buffer@3.0.1: {}
 
@@ -5622,13 +5545,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss@0.6.12(@ianvs/prettier-plugin-sort-imports@4.4.2(prettier@3.5.3))(prettier@3.5.3):
-    dependencies:
-      prettier: 3.5.3
-    optionalDependencies:
-      '@ianvs/prettier-plugin-sort-imports': 4.4.2(prettier@3.5.3)
-
-  prettier@3.5.3: {}
+  prettier@3.6.2: {}
 
   proc-log@2.0.1: {}
 

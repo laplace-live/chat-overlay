@@ -468,9 +468,6 @@ const App: React.FC = () => {
       >
         <div className='flex items-center justify-between w-full'>
           <div className='flex items-center gap-1 text-shadow-xs'>
-            <div className='connection-status'>
-              <span className={`status-dot ${connectionState}`}></span>
-            </div>
             <span className='flex items-center gap-1 text-xs font-medium'>
               LAPLACE Chat Overlay
               {onlineUserCount !== null && (
@@ -479,6 +476,17 @@ const App: React.FC = () => {
                 </span>
               )}
             </span>
+
+            {/* Status dot */}
+            <div className='flex items-center'>
+              <span
+                className={cn('size-2 rounded-full bg-red-300 transition-colors', {
+                  'bg-emerald-300': connectionState === ConnectionState.CONNECTED,
+                  'bg-yellow-300 animate-pulse': connectionState === ConnectionState.CONNECTING,
+                  'bg-orange-300 animate-pulse': connectionState === ConnectionState.RECONNECTING,
+                })}
+              ></span>
+            </div>
           </div>
           <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
             {clickThrough && (

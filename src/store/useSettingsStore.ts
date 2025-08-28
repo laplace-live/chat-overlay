@@ -50,12 +50,6 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'overlay-settings', // unique name for localStorage key
-      // Optional: You can specify which fields to persist
-      // partialize: (state) => ({
-      //   opacity: state.opacity,
-      //   alwaysOnTop: state.alwaysOnTop,
-      //   // ... etc
-      // }),
     }
   )
 )

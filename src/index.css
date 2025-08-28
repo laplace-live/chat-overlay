@@ -42,6 +42,12 @@
     /* Disable text selection by default for Electron */
     user-select: none;
   }
+
+  /* Specific optimizations for animated elements */
+  [class*='animate-'],
+  [class*='transition-'] {
+    will-change: transform, opacity;
+  }
 }
 
 /* .content {

@@ -11,10 +11,12 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     icon: 'src/assets/icon',
+    executableName: 'chat-overlay',
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
+      // https://www.electronforge.io/config/makers/squirrel.windows?q=setAppUserModelId#spaces-in-the-app-name
       name: 'LAPLACEChatOverlay',
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',

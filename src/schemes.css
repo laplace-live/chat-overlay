@@ -1,0 +1,66 @@
+@layer kladewind {
+  :root {
+    /* Colors */
+    /* 目前 canary 等浏览器处理 OKLCH 的 colors.bg 100% 亮度时有 bug，建议值为 0.04 */
+    /* --primary-c: 0.01; */
+    --primary-c: 0;
+    --primary-h: 10.31;
+    --secondary-c: 0.212;
+    --secondary-h: 8;
+    --mix-base: #fff;
+    --mix-factor: 100%;
+
+    /* OKLCH lightness helpers */
+    --fg-l: 30%;
+    --bg-l: 100%;
+    --ac-l: 64%;
+    --hl-l: 77.7%;
+
+    /* OKLCH helpers */
+    --lch-l-offset: 0%;
+    --lch-l-clamp-min: 15%;
+    --lch-l-clamp-max: 99%;
+    /* Used by colors except fg, bg, ac and hl which needs to be dynamic */
+    --lch-c: 0.2;
+
+    /* Tailwind built-in color hue in OKLCH */
+    /* https://tailwindcss.com/docs/colors */
+    --hue-gray: 262;
+    --hue-red: 20;
+    --hue-orange: 50;
+    --hue-amber: 75;
+    --hue-yellow: 102;
+    --hue-lime: 128;
+    --hue-green: 155;
+    --hue-emerald: 170;
+    --hue-teal: 181;
+    --hue-cyan: 195;
+    --hue-sky: 230;
+    --hue-blue: 262;
+    --hue-indigo: 275;
+    --hue-violet: 288;
+    --hue-purple: 300;
+    --hue-fuchsia: 328;
+    --hue-pink: 350;
+    --hue-rose: 10;
+  }
+
+  /* Global dark theme overrides */
+  [data-theme='dark'] {
+    /* --primary-c: 0.02; */
+    --primary-c: 0.01;
+    --primary-h: 4.45;
+    --secondary-c: 0.212;
+    --secondary-h: 8;
+    --mix-base: #fff;
+    --mix-factor: 75%;
+
+    /* OKLCH lightness helpers */
+    --fg-l: 78%;
+    --bg-l: 0%;
+    --ac-l: 70%;
+    --hl-l: 33.66%;
+
+    --lch-l-offset: 20%;
+  }
+}

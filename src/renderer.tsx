@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import clsx from 'clsx'
 import ReactDOM from 'react-dom/client'
 import { ConnectionState, LaplaceEventBridgeClient } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
@@ -7,6 +6,9 @@ import type { LaplaceEvent } from '@laplace.live/event-types'
 import AnimatedNumber from './utils/animated-numbers'
 
 import './index.css'
+import { cn } from './lib/cn'
+import { Button } from './components/ui/button'
+import { IconArrowDownDashed, IconHandFingerOff, IconMouseOff, IconSettings, IconX } from '@tabler/icons-react'
 
 // TypeScript declaration for the electronAPI
 declare global {
@@ -59,8 +61,9 @@ const App: React.FC = () => {
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const [onlineUserCount, setOnlineUserCount] = useState<number | null>(null)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const clickThroughEnabledRef = useRef(false)
   const isSettingsOpenRef = useRef(false)
@@ -220,17 +223,13 @@ const App: React.FC = () => {
     }
   }, [serverHost, serverPort, serverPassword])
 
+  // Update the background opacity
   useEffect(() => {
-    // Update the background opacity
-    const titleBar = document.querySelector('.title-bar') as HTMLElement
-    const content = document.querySelector('.content') as HTMLElement
+    const root = rootRef.current
+    const guardedOpacity = Math.max(0.15, opacity / 100)
 
-    if (titleBar) {
-      titleBar.style.backgroundColor = `rgba(20, 20, 20, ${opacity / 100})`
-    }
-
-    if (content) {
-      content.style.backgroundColor = `rgba(20, 20, 20, ${opacity / 100})`
+    if (root) {
+      root.style.backgroundColor = `rgba(20, 20, 20, ${guardedOpacity})`
     }
   }, [opacity])
 
@@ -379,7 +378,7 @@ const App: React.FC = () => {
       }
 
       return (
-        <div key={index} className={clsx('event interaction', `guard-type-${event.guardType}`)}>
+        <div key={index} className={cn('event interaction', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}</span>
           <span className='text'>{actionMap[event.action]}</span>
         </div>
@@ -397,7 +396,7 @@ const App: React.FC = () => {
 
     if (event.type === 'message') {
       return (
-        <div key={index} className={clsx('event message', `guard-type-${event.guardType}`)}>
+        <div key={index} className={cn('event message', `guard-type-${event.guardType}`)}>
           <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
           <div>
             <span className='username'>{event.username}:</span>
@@ -409,7 +408,7 @@ const App: React.FC = () => {
 
     if (event.type === 'superchat') {
       return (
-        <div key={index} className={clsx('event superchat', `guard-type-${event.guardType}`)}>
+        <div key={index} className={cn('event superchat', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -419,7 +418,7 @@ const App: React.FC = () => {
 
     if (event.type === 'gift') {
       return (
-        <div key={index} className={clsx('event gift', `guard-type-${event.guardType}`)}>
+        <div key={index} className={cn('event gift', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -442,7 +441,7 @@ const App: React.FC = () => {
       const message = event.message.replace(/<%([^%>]+)%>/g, '$1').trim()
 
       return (
-        <div key={index} className={clsx('event entry-effect', `guard-type-${event.guardType}`)}>
+        <div key={index} className={cn('event entry-effect', `guard-type-${event.guardType}`)}>
           <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
           <span className='text'>{message}</span>
         </div>
@@ -453,57 +452,93 @@ const App: React.FC = () => {
   }
 
   return (
-    <>
-      <div className='title-bar' ref={titleBarRef}>
-        <div className='title-bar-left'>
-          <div className='connection-status'>
-            <span className={`status-dot ${connectionState}`}></span>
+    <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden' ref={rootRef}>
+      <div
+        id={'title-bar'}
+        className={cn(
+          'sticky z-10 top-0 h-12 text-white flex items-start pt-1.5 pl-2 pr-1.5',
+          '[-webkit-app-region:drag]'
+        )}
+        ref={titleBarRef}
+      >
+        <div className='flex items-center justify-between w-full'>
+          <div className='flex items-center gap-1 text-shadow-xs'>
+            <div className='connection-status'>
+              <span className={`status-dot ${connectionState}`}></span>
+            </div>
+            <span className='flex items-center gap-1 text-xs font-medium'>
+              LAPLACE Chat Overlay
+              {onlineUserCount !== null && (
+                <span className='font-normal'>
+                  <AnimatedNumber value={onlineUserCount} /> online
+                </span>
+              )}
+            </span>
           </div>
-          <span className='title-bar-title'>
-            LAPLACE Chat Overlay
-            {onlineUserCount !== null && (
-              <span className='online-count'>
-                <AnimatedNumber value={onlineUserCount} /> online
-              </span>
+          <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
+            {clickThrough && (
+              <Button variant='link' size='icon' tint='white' type='button' disabled>
+                <IconHandFingerOff size={14} />
+              </Button>
             )}
-          </span>
-        </div>
-        <div className='title-bar-buttons'>
-          <div>{clickThrough && <div className='click-through-indicator'>⇣</div>}</div>
-          {isAutoScrollPaused && (
-            <button
+            {isAutoScrollPaused && (
+              <Button
+                variant='link'
+                size='icon'
+                tint='white'
+                type='button'
+                id='scroll-to-bottom-btn'
+                title='Scroll to bottom'
+                onClick={handleScrollToBottom}
+              >
+                <IconArrowDownDashed size={14} />
+              </Button>
+            )}
+            <Button
+              variant='link'
+              size='icon'
+              tint='white'
               type='button'
-              id='scroll-to-bottom-btn'
-              className='scroll-to-bottom-btn'
-              title='Scroll to bottom'
-              onClick={handleScrollToBottom}
+              id='settings-btn'
+              title='Settings'
+              onClick={() => setIsSettingsOpen(true)}
             >
-              ⬇
-            </button>
-          )}
-          <button id='settings-btn' title='Settings' onClick={() => setIsSettingsOpen(true)}>
-            ⚙
-          </button>
-          <button id='close-btn' title='Close' onClick={handleClose}>
-            ×
-          </button>
+              <IconSettings size={14} />
+            </Button>
+            <Button
+              variant='link'
+              size='icon'
+              tint='white'
+              type='button'
+              id='close-btn'
+              title='Close'
+              onClick={handleClose}
+            >
+              <IconX size={14} />
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className='content' ref={contentRef}>
-        <div className='chat-container'>
-          <div className='chat-messages' ref={chatMessagesRef}>
-            {messages.length === 0 ? (
-              <div className='no-messages'>
-                {connectionState === ConnectionState.CONNECTED
-                  ? 'Waiting for messages...'
-                  : 'Connecting to LAPLACE Event Bridge...'}
-              </div>
-            ) : (
-              messages.map((message, index) => renderMessage(message, index))
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+      <div
+        id='content'
+        className={cn(
+          'h-[100vh] flex flex-col',
+          '[mask-image:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.1)_24px,black_48px,black_100%,transparent)]'
+        )}
+        ref={contentRef}
+      >
+        <div id='chat-messages' className='p-2 pt-8 space-y-2 overflow-y-auto scroll-smooth' ref={chatMessagesRef}>
+          {messages.length === 0 ? (
+            <div className='text-center py-4 text-white/50'>
+              {connectionState === ConnectionState.CONNECTED
+                ? 'Waiting for messages…'
+                : 'Connecting to LAPLACE Event Bridge…'}
+            </div>
+          ) : (
+            messages.map((message, index) => renderMessage(message, index))
+          )}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
@@ -641,7 +676,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

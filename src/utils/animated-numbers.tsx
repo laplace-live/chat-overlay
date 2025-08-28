@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import clsx from 'clsx'
 
 import { nf } from './numberFormat'
+import { cn } from '../lib/cn'
 
 const AnimatedNumber = ({ value, className = '' }: { value: number; className?: string }) => {
   const [isAnimating, setIsAnimating] = useState(false)
@@ -23,7 +23,13 @@ const AnimatedNumber = ({ value, className = '' }: { value: number; className?: 
   }, [value])
 
   return (
-    <span className={clsx(className, isAnimating && (isIncreasing ? 'green' : 'red'), 'animated-numbers')}>
+    <span
+      className={cn(
+        className,
+        isAnimating && (isIncreasing ? 'text-emerald-300 transition-none' : 'text-rose-300 transition-none'),
+        'transition-colors duration-1000'
+      )}
+    >
       {nf.format(value)}
     </span>
   )

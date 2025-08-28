@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import { ConnectionState, LaplaceEventBridgeClient } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
+import { IconArrowDownDashed, IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
 
 import AnimatedNumber from './utils/animated-numbers'
+import { useSettingsStore } from './store/useSettingsStore'
 
-import './index.css'
 import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
-import { IconArrowDownDashed, IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
+
+import './index.css'
 
 // TypeScript declaration for the electronAPI
 declare global {
@@ -26,38 +28,26 @@ declare global {
 const App: React.FC = () => {
   const [messages, setMessages] = useState<LaplaceEvent[]>([])
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [opacity, setOpacity] = useState(() => {
-    const saved = localStorage.getItem('overlay-opacity')
-    return saved ? parseInt(saved, 10) : 90
-  })
-  const [alwaysOnTop, setAlwaysOnTop] = useState(() => {
-    const saved = localStorage.getItem('overlay-alwaysOnTop')
-    return saved ? saved === 'true' : true
-  })
-  const [clickThrough, setClickThrough] = useState(() => {
-    const saved = localStorage.getItem('overlay-clickThrough')
-    return saved ? saved === 'true' : false
-  })
-  const [showInteractionEvents, setShowInteractionEvents] = useState(() => {
-    const saved = localStorage.getItem('overlay-showInteractionEvents')
-    return saved ? saved === 'true' : true
-  })
-  const [serverHost, setServerHost] = useState(() => {
-    const saved = localStorage.getItem('overlay-serverHost')
-    return saved || 'localhost'
-  })
-  const [serverPort, setServerPort] = useState(() => {
-    const saved = localStorage.getItem('overlay-serverPort')
-    return saved || '9696'
-  })
-  const [serverPassword, setServerPassword] = useState(() => {
-    const saved = localStorage.getItem('overlay-serverPassword')
-    return saved || ''
-  })
-  const [allowedOrigins, setAllowedOrigins] = useState(() => {
-    const saved = localStorage.getItem('overlay-allowedOrigins')
-    return saved || ''
-  })
+
+  // Get settings from zustand store
+  const {
+    opacity,
+    alwaysOnTop,
+    clickThrough,
+    showInteractionEvents,
+    serverHost,
+    serverPort,
+    serverPassword,
+    allowedOrigins,
+    setOpacity,
+    setAlwaysOnTop,
+    setClickThrough,
+    setShowInteractionEvents,
+    setServerHost,
+    setServerPort,
+    setServerPassword,
+    setAllowedOrigins,
+  } = useSettingsStore()
   const [connectionState, setConnectionState] = useState<ConnectionState>(ConnectionState.DISCONNECTED)
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const [onlineUserCount, setOnlineUserCount] = useState<number | null>(null)
@@ -289,51 +279,43 @@ const App: React.FC = () => {
   const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newOpacity = parseInt(e.target.value, 10)
     setOpacity(newOpacity)
-    localStorage.setItem('overlay-opacity', newOpacity.toString())
   }
 
   const handleAlwaysOnTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setAlwaysOnTop(enabled)
-    localStorage.setItem('overlay-alwaysOnTop', enabled.toString())
     window.electronAPI.setAlwaysOnTop(enabled)
   }
 
   const handleClickThroughChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setClickThrough(enabled)
-    localStorage.setItem('overlay-clickThrough', enabled.toString())
     window.electronAPI.setClickThrough(enabled)
   }
 
   const handleShowInteractionEventsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setShowInteractionEvents(enabled)
-    localStorage.setItem('overlay-showInteractionEvents', enabled.toString())
   }
 
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setServerHost(value)
-    localStorage.setItem('overlay-serverHost', value)
   }
 
   const handleServerPortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setServerPort(value)
-    localStorage.setItem('overlay-serverPort', value)
   }
 
   const handleServerPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setServerPassword(value)
-    localStorage.setItem('overlay-serverPassword', value)
   }
 
   const handleAllowedOriginsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setAllowedOrigins(value)
-    localStorage.setItem('overlay-allowedOrigins', value)
   }
 
   // Update body class when click-through mode changes

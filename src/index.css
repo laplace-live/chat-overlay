@@ -9,6 +9,9 @@
 @import './kladewind.css';
 @import './schemes.css';
 
+/* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 /* Extends tailwind css layers */
 /* https://tailwindcss.com/docs/preflight */
 @layer kladenets, kladewind, template, remote-css, custom-css;

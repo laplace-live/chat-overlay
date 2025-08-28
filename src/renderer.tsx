@@ -84,6 +84,11 @@ const App: React.FC = () => {
     allowedOriginsRef.current = allowedOrigins
   }, [allowedOrigins])
 
+  // Apply saved alwaysOnTop setting on mount
+  useEffect(() => {
+    window.electronAPI.setAlwaysOnTop(alwaysOnTop)
+  }, [])
+
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })

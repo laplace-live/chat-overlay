@@ -117,15 +117,6 @@ const App: React.FC = () => {
     window.close()
   }
 
-  // Update body class when click-through mode changes
-  useEffect(() => {
-    if (clickThrough) {
-      document.body.classList.add('click-through')
-    } else {
-      document.body.classList.remove('click-through')
-    }
-  }, [clickThrough])
-
   return (
     <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden rounded-lg' ref={rootRef}>
       <div

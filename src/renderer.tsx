@@ -457,7 +457,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden' ref={rootRef}>
+    <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden rounded-lg' ref={rootRef}>
       <div
         id={'title-bar'}
         className={cn(

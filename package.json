@@ -32,7 +32,8 @@
     "electron-squirrel-startup": "^1.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.2",

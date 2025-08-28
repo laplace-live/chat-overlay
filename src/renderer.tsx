@@ -42,17 +42,6 @@ const App: React.FC = () => {
 
   const rootRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
-  const clickThroughEnabledRef = useRef(false)
-  const isSettingsOpenRef = useRef(false)
-
-  // Keep refs in sync with state
-  useEffect(() => {
-    clickThroughEnabledRef.current = clickThrough
-  }, [clickThrough])
-
-  useEffect(() => {
-    isSettingsOpenRef.current = isSettingsOpen
-  }, [isSettingsOpen])
 
   // Apply saved alwaysOnTop setting on mount
   useEffect(() => {
@@ -73,7 +62,7 @@ const App: React.FC = () => {
     // Set up mouse tracking for click-through functionality
     const handleMouseMove = (e: MouseEvent) => {
       // Only process if click-through is enabled and settings modal is not open
-      if (!clickThroughEnabledRef.current || isSettingsOpenRef.current) {
+      if (!clickThrough || isSettingsOpen) {
         window.electronAPI.setIgnoreMouseEvents(false)
         return
       }
@@ -93,7 +82,6 @@ const App: React.FC = () => {
 
     // Listen for click-through state changes from main process
     const unsubscribe = window.electronAPI.onClickThroughEnabled(enabled => {
-      clickThroughEnabledRef.current = enabled
       if (!enabled) {
         window.electronAPI.setIgnoreMouseEvents(false)
       }
@@ -104,7 +92,7 @@ const App: React.FC = () => {
       window.electronAPI.setIgnoreMouseEvents(false)
       unsubscribe() // Clean up the IPC listener
     }
-  }, [])
+  }, [clickThrough, isSettingsOpen])
 
   // Ensure click-through is disabled when settings modal is open
   useEffect(() => {

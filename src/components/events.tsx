@@ -165,21 +165,24 @@ export function ChatEvents() {
 
   return (
     <>
-      {isAutoScrollPaused && (
-        <div className='absolute top-12 right-[52px] z-10'>
-          <Button
-            variant='link'
-            size='icon'
-            tint='white'
-            type='button'
-            id='scroll-to-bottom-btn'
-            title='Scroll to bottom'
-            onClick={handleScrollToBottom}
-          >
-            <IconArrowDownDashed size={14} />
-          </Button>
-        </div>
-      )}
+      <div
+        className={cn(
+          'absolute bottom-4 left-1/2 -translate-x-1/2 z-10 transition-opacity duration-200 bg-black/50 rounded-full p-1',
+          isAutoScrollPaused ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        )}
+      >
+        <Button
+          variant='link'
+          size='icon'
+          tint='white'
+          type='button'
+          id='scroll-to-bottom-btn'
+          title='Scroll to bottom'
+          onClick={handleScrollToBottom}
+        >
+          <IconArrowDownDashed size={20} />
+        </Button>
+      </div>
 
       <div
         id='content'

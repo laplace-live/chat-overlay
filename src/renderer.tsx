@@ -8,7 +8,7 @@ import AnimatedNumber from './utils/animated-numbers'
 import './index.css'
 import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
-import { IconArrowDownDashed, IconHandFingerOff, IconMouseOff, IconSettings, IconX } from '@tabler/icons-react'
+import { IconArrowDownDashed, IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
 
 // TypeScript declaration for the electronAPI
 declare global {

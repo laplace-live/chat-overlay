@@ -12,9 +12,11 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 400,
     height: 800,
+    minWidth: 320,
+    minHeight: 64,
     transparent: true,
     frame: false,
-    alwaysOnTop: true,
+    alwaysOnTop: false,
     hasShadow: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

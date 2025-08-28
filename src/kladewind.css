@@ -1,0 +1,368 @@
+/* https://tailwindcss.com/docs/theme#default-theme-variable-reference */
+
+/* prettier-ignore */
+/* biome-ignore format: keep long lines for better readability */
+@theme inline static {
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Colors */
+  --color-fg: oklch(clamp(0%, calc(var(--fg-l) + var(--lch-l-offset)), 100%) var(--primary-c) var(--primary-h));
+  --color-bg: oklch(clamp(0%, calc(var(--bg-l) + var(--lch-l-offset)), 100%) var(--primary-c) var(--primary-h));
+  --color-ac: oklch(clamp(0%, calc(var(--ac-l) + var(--lch-l-offset)), 100%) var(--secondary-c) var(--secondary-h));
+  --color-hl: oklch(clamp(0%, calc(var(--hl-l) + var(--lch-l-offset)), 100%) var(--primary-c) var(--primary-h));
+  --color-black: oklch(calc(0% + var(--lch-l-offset)) 0 0);
+  --color-white: oklch(calc(100% + var(--lch-l-offset)) 0 0);
+
+  --color-gray-50: oklch(clamp(var(--lch-l-clamp-min), calc(99% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-100: oklch(clamp(var(--lch-l-clamp-min), calc(97% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-200: oklch(clamp(var(--lch-l-clamp-min), calc(95% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-300: oklch(clamp(var(--lch-l-clamp-min), calc(90% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-400: oklch(clamp(var(--lch-l-clamp-min), calc(85% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-500: oklch(clamp(var(--lch-l-clamp-min), calc(75% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-600: oklch(clamp(var(--lch-l-clamp-min), calc(65% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-700: oklch(clamp(var(--lch-l-clamp-min), calc(55% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-800: oklch(clamp(var(--lch-l-clamp-min), calc(45% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-900: oklch(clamp(var(--lch-l-clamp-min), calc(25% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+  --color-gray-950: oklch(clamp(var(--lch-l-clamp-min), calc(15% + var(--lch-l-offset)), var(--lch-l-clamp-max)) 0.02 var(--hue-gray));
+
+  --color-red-50: color-mix(in oklch, oklch(0.971 0.013 17.38) var(--mix-factor), var(--mix-base));
+  --color-red-100: color-mix(in oklch, oklch(0.936 0.032 17.717) var(--mix-factor), var(--mix-base));
+  --color-red-200: color-mix(in oklch, oklch(0.885 0.062 18.334) var(--mix-factor), var(--mix-base));
+  --color-red-300: color-mix(in oklch, oklch(0.808 0.114 19.571) var(--mix-factor), var(--mix-base));
+  --color-red-400: color-mix(in oklch, oklch(0.704 0.191 22.216) var(--mix-factor), var(--mix-base));
+  --color-red-500: color-mix(in oklch, oklch(0.637 0.237 25.331) var(--mix-factor), var(--mix-base));
+  --color-red-600: color-mix(in oklch, oklch(0.577 0.245 27.325) var(--mix-factor), var(--mix-base));
+  --color-red-700: color-mix(in oklch, oklch(0.505 0.213 27.518) var(--mix-factor), var(--mix-base));
+  --color-red-800: color-mix(in oklch, oklch(0.444 0.177 26.899) var(--mix-factor), var(--mix-base));
+  --color-red-900: color-mix(in oklch, oklch(0.396 0.141 25.723) var(--mix-factor), var(--mix-base));
+  --color-red-950: color-mix(in oklch, oklch(0.258 0.092 26.042) var(--mix-factor), var(--mix-base));
+
+  --color-orange-50: color-mix(in oklch, oklch(0.98 0.016 73.684) var(--mix-factor), var(--mix-base));
+  --color-orange-100: color-mix(in oklch, oklch(0.954 0.038 75.164) var(--mix-factor), var(--mix-base));
+  --color-orange-200: color-mix(in oklch, oklch(0.901 0.076 70.697) var(--mix-factor), var(--mix-base));
+  --color-orange-300: color-mix(in oklch, oklch(0.837 0.128 66.29) var(--mix-factor), var(--mix-base));
+  --color-orange-400: color-mix(in oklch, oklch(0.75 0.183 55.934) var(--mix-factor), var(--mix-base));
+  --color-orange-500: color-mix(in oklch, oklch(0.705 0.213 47.604) var(--mix-factor), var(--mix-base));
+  --color-orange-600: color-mix(in oklch, oklch(0.646 0.222 41.116) var(--mix-factor), var(--mix-base));
+  --color-orange-700: color-mix(in oklch, oklch(0.553 0.195 38.402) var(--mix-factor), var(--mix-base));
+  --color-orange-800: color-mix(in oklch, oklch(0.47 0.157 37.304) var(--mix-factor), var(--mix-base));
+  --color-orange-900: color-mix(in oklch, oklch(0.408 0.123 38.172) var(--mix-factor), var(--mix-base));
+  --color-orange-950: color-mix(in oklch, oklch(0.266 0.079 36.259) var(--mix-factor), var(--mix-base));
+
+  --color-amber-50: color-mix(in oklch, oklch(0.987 0.022 95.277) var(--mix-factor), var(--mix-base));
+  --color-amber-100: color-mix(in oklch, oklch(0.962 0.059 95.617) var(--mix-factor), var(--mix-base));
+  --color-amber-200: color-mix(in oklch, oklch(0.924 0.12 95.746) var(--mix-factor), var(--mix-base));
+  --color-amber-300: color-mix(in oklch, oklch(0.879 0.169 91.605) var(--mix-factor), var(--mix-base));
+  --color-amber-400: color-mix(in oklch, oklch(0.828 0.189 84.429) var(--mix-factor), var(--mix-base));
+  --color-amber-500: color-mix(in oklch, oklch(0.769 0.188 70.08) var(--mix-factor), var(--mix-base));
+  --color-amber-600: color-mix(in oklch, oklch(0.666 0.179 58.318) var(--mix-factor), var(--mix-base));
+  --color-amber-700: color-mix(in oklch, oklch(0.555 0.163 48.998) var(--mix-factor), var(--mix-base));
+  --color-amber-800: color-mix(in oklch, oklch(0.473 0.137 46.201) var(--mix-factor), var(--mix-base));
+  --color-amber-900: color-mix(in oklch, oklch(0.414 0.112 45.904) var(--mix-factor), var(--mix-base));
+  --color-amber-950: color-mix(in oklch, oklch(0.279 0.077 45.635) var(--mix-factor), var(--mix-base));
+
+  --color-yellow-50: color-mix(in oklch, oklch(0.987 0.026 102.212) var(--mix-factor), var(--mix-base));
+  --color-yellow-100: color-mix(in oklch, oklch(0.973 0.071 103.193) var(--mix-factor), var(--mix-base));
+  --color-yellow-200: color-mix(in oklch, oklch(0.945 0.129 101.54) var(--mix-factor), var(--mix-base));
+  --color-yellow-300: color-mix(in oklch, oklch(0.905 0.182 98.111) var(--mix-factor), var(--mix-base));
+  --color-yellow-400: color-mix(in oklch, oklch(0.852 0.199 91.936) var(--mix-factor), var(--mix-base));
+  --color-yellow-500: color-mix(in oklch, oklch(0.795 0.184 86.047) var(--mix-factor), var(--mix-base));
+  --color-yellow-600: color-mix(in oklch, oklch(0.681 0.162 75.834) var(--mix-factor), var(--mix-base));
+  --color-yellow-700: color-mix(in oklch, oklch(0.554 0.135 66.442) var(--mix-factor), var(--mix-base));
+  --color-yellow-800: color-mix(in oklch, oklch(0.476 0.114 61.907) var(--mix-factor), var(--mix-base));
+  --color-yellow-900: color-mix(in oklch, oklch(0.421 0.095 57.708) var(--mix-factor), var(--mix-base));
+  --color-yellow-950: color-mix(in oklch, oklch(0.286 0.066 53.813) var(--mix-factor), var(--mix-base));
+
+  --color-lime-50: color-mix(in oklch, oklch(0.986 0.031 120.757) var(--mix-factor), var(--mix-base));
+  --color-lime-100: color-mix(in oklch, oklch(0.967 0.067 122.328) var(--mix-factor), var(--mix-base));
+  --color-lime-200: color-mix(in oklch, oklch(0.938 0.127 124.321) var(--mix-factor), var(--mix-base));
+  --color-lime-300: color-mix(in oklch, oklch(0.897 0.196 126.665) var(--mix-factor), var(--mix-base));
+  --color-lime-400: color-mix(in oklch, oklch(0.841 0.238 128.85) var(--mix-factor), var(--mix-base));
+  --color-lime-500: color-mix(in oklch, oklch(0.768 0.233 130.85) var(--mix-factor), var(--mix-base));
+  --color-lime-600: color-mix(in oklch, oklch(0.648 0.2 131.684) var(--mix-factor), var(--mix-base));
+  --color-lime-700: color-mix(in oklch, oklch(0.532 0.157 131.589) var(--mix-factor), var(--mix-base));
+  --color-lime-800: color-mix(in oklch, oklch(0.453 0.124 130.933) var(--mix-factor), var(--mix-base));
+  --color-lime-900: color-mix(in oklch, oklch(0.405 0.101 131.063) var(--mix-factor), var(--mix-base));
+  --color-lime-950: color-mix(in oklch, oklch(0.274 0.072 132.109) var(--mix-factor), var(--mix-base));
+
+  --color-green-50: color-mix(in oklch, oklch(0.982 0.018 155.826) var(--mix-factor), var(--mix-base));
+  --color-green-100: color-mix(in oklch, oklch(0.962 0.044 156.743) var(--mix-factor), var(--mix-base));
+  --color-green-200: color-mix(in oklch, oklch(0.925 0.084 155.995) var(--mix-factor), var(--mix-base));
+  --color-green-300: color-mix(in oklch, oklch(0.871 0.15 154.449) var(--mix-factor), var(--mix-base));
+  --color-green-400: color-mix(in oklch, oklch(0.792 0.209 151.711) var(--mix-factor), var(--mix-base));
+  --color-green-500: color-mix(in oklch, oklch(0.723 0.219 149.579) var(--mix-factor), var(--mix-base));
+  --color-green-600: color-mix(in oklch, oklch(0.627 0.194 149.214) var(--mix-factor), var(--mix-base));
+  --color-green-700: color-mix(in oklch, oklch(0.527 0.154 150.069) var(--mix-factor), var(--mix-base));
+  --color-green-800: color-mix(in oklch, oklch(0.448 0.119 151.328) var(--mix-factor), var(--mix-base));
+  --color-green-900: color-mix(in oklch, oklch(0.393 0.095 152.535) var(--mix-factor), var(--mix-base));
+  --color-green-950: color-mix(in oklch, oklch(0.266 0.065 152.934) var(--mix-factor), var(--mix-base));
+
+  --color-emerald-50: color-mix(in oklch, oklch(0.979 0.021 166.113) var(--mix-factor), var(--mix-base));
+  --color-emerald-100: color-mix(in oklch, oklch(0.95 0.052 163.051) var(--mix-factor), var(--mix-base));
+  --color-emerald-200: color-mix(in oklch, oklch(0.905 0.093 164.15) var(--mix-factor), var(--mix-base));
+  --color-emerald-300: color-mix(in oklch, oklch(0.845 0.143 164.978) var(--mix-factor), var(--mix-base));
+  --color-emerald-400: color-mix(in oklch, oklch(0.765 0.177 163.223) var(--mix-factor), var(--mix-base));
+  --color-emerald-500: color-mix(in oklch, oklch(0.696 0.17 162.48) var(--mix-factor), var(--mix-base));
+  --color-emerald-600: color-mix(in oklch, oklch(0.596 0.145 163.225) var(--mix-factor), var(--mix-base));
+  --color-emerald-700: color-mix(in oklch, oklch(0.508 0.118 165.612) var(--mix-factor), var(--mix-base));
+  --color-emerald-800: color-mix(in oklch, oklch(0.432 0.095 166.913) var(--mix-factor), var(--mix-base));
+  --color-emerald-900: color-mix(in oklch, oklch(0.378 0.077 168.94) var(--mix-factor), var(--mix-base));
+  --color-emerald-950: color-mix(in oklch, oklch(0.262 0.051 172.552) var(--mix-factor), var(--mix-base));
+
+  --color-teal-50: color-mix(in oklch, oklch(0.984 0.014 180.72) var(--mix-factor), var(--mix-base));
+  --color-teal-100: color-mix(in oklch, oklch(0.953 0.051 180.801) var(--mix-factor), var(--mix-base));
+  --color-teal-200: color-mix(in oklch, oklch(0.91 0.096 180.426) var(--mix-factor), var(--mix-base));
+  --color-teal-300: color-mix(in oklch, oklch(0.855 0.138 181.071) var(--mix-factor), var(--mix-base));
+  --color-teal-400: color-mix(in oklch, oklch(0.777 0.152 181.912) var(--mix-factor), var(--mix-base));
+  --color-teal-500: color-mix(in oklch, oklch(0.704 0.14 182.503) var(--mix-factor), var(--mix-base));
+  --color-teal-600: color-mix(in oklch, oklch(0.6 0.118 184.704) var(--mix-factor), var(--mix-base));
+  --color-teal-700: color-mix(in oklch, oklch(0.511 0.096 186.391) var(--mix-factor), var(--mix-base));
+  --color-teal-800: color-mix(in oklch, oklch(0.437 0.078 188.216) var(--mix-factor), var(--mix-base));
+  --color-teal-900: color-mix(in oklch, oklch(0.386 0.063 188.416) var(--mix-factor), var(--mix-base));
+  --color-teal-950: color-mix(in oklch, oklch(0.277 0.046 192.524) var(--mix-factor), var(--mix-base));
+
+  --color-cyan-50: color-mix(in oklch, oklch(0.984 0.019 200.873) var(--mix-factor), var(--mix-base));
+  --color-cyan-100: color-mix(in oklch, oklch(0.956 0.045 203.388) var(--mix-factor), var(--mix-base));
+  --color-cyan-200: color-mix(in oklch, oklch(0.917 0.08 205.041) var(--mix-factor), var(--mix-base));
+  --color-cyan-300: color-mix(in oklch, oklch(0.865 0.127 207.078) var(--mix-factor), var(--mix-base));
+  --color-cyan-400: color-mix(in oklch, oklch(0.789 0.154 211.53) var(--mix-factor), var(--mix-base));
+  --color-cyan-500: color-mix(in oklch, oklch(0.715 0.143 215.221) var(--mix-factor), var(--mix-base));
+  --color-cyan-600: color-mix(in oklch, oklch(0.609 0.126 221.723) var(--mix-factor), var(--mix-base));
+  --color-cyan-700: color-mix(in oklch, oklch(0.52 0.105 223.128) var(--mix-factor), var(--mix-base));
+  --color-cyan-800: color-mix(in oklch, oklch(0.45 0.085 224.283) var(--mix-factor), var(--mix-base));
+  --color-cyan-900: color-mix(in oklch, oklch(0.398 0.07 227.392) var(--mix-factor), var(--mix-base));
+  --color-cyan-950: color-mix(in oklch, oklch(0.302 0.056 229.695) var(--mix-factor), var(--mix-base));
+
+  --color-sky-50: color-mix(in oklch, oklch(0.977 0.013 236.62) var(--mix-factor), var(--mix-base));
+  --color-sky-100: color-mix(in oklch, oklch(0.951 0.026 236.824) var(--mix-factor), var(--mix-base));
+  --color-sky-200: color-mix(in oklch, oklch(0.901 0.058 230.902) var(--mix-factor), var(--mix-base));
+  --color-sky-300: color-mix(in oklch, oklch(0.828 0.111 230.318) var(--mix-factor), var(--mix-base));
+  --color-sky-400: color-mix(in oklch, oklch(0.746 0.16 232.661) var(--mix-factor), var(--mix-base));
+  --color-sky-500: color-mix(in oklch, oklch(0.685 0.169 237.323) var(--mix-factor), var(--mix-base));
+  --color-sky-600: color-mix(in oklch, oklch(0.588 0.158 241.966) var(--mix-factor), var(--mix-base));
+  --color-sky-700: color-mix(in oklch, oklch(0.5 0.134 242.749) var(--mix-factor), var(--mix-base));
+  --color-sky-800: color-mix(in oklch, oklch(0.443 0.11 240.79) var(--mix-factor), var(--mix-base));
+  --color-sky-900: color-mix(in oklch, oklch(0.391 0.09 240.876) var(--mix-factor), var(--mix-base));
+  --color-sky-950: color-mix(in oklch, oklch(0.293 0.066 243.157) var(--mix-factor), var(--mix-base));
+
+  --color-blue-50: color-mix(in oklch, oklch(0.97 0.014 254.604) var(--mix-factor), var(--mix-base));
+  --color-blue-100: color-mix(in oklch, oklch(0.932 0.032 255.585) var(--mix-factor), var(--mix-base));
+  --color-blue-200: color-mix(in oklch, oklch(0.882 0.059 254.128) var(--mix-factor), var(--mix-base));
+  --color-blue-300: color-mix(in oklch, oklch(0.809 0.105 251.813) var(--mix-factor), var(--mix-base));
+  --color-blue-400: color-mix(in oklch, oklch(0.707 0.165 254.624) var(--mix-factor), var(--mix-base));
+  --color-blue-500: color-mix(in oklch, oklch(0.623 0.214 259.815) var(--mix-factor), var(--mix-base));
+  --color-blue-600: color-mix(in oklch, oklch(0.546 0.245 262.881) var(--mix-factor), var(--mix-base));
+  --color-blue-700: color-mix(in oklch, oklch(0.488 0.243 264.376) var(--mix-factor), var(--mix-base));
+  --color-blue-800: color-mix(in oklch, oklch(0.424 0.199 265.638) var(--mix-factor), var(--mix-base));
+  --color-blue-900: color-mix(in oklch, oklch(0.379 0.146 265.522) var(--mix-factor), var(--mix-base));
+  --color-blue-950: color-mix(in oklch, oklch(0.282 0.091 267.935) var(--mix-factor), var(--mix-base));
+
+  --color-indigo-50: color-mix(in oklch, oklch(0.962 0.018 272.314) var(--mix-factor), var(--mix-base));
+  --color-indigo-100: color-mix(in oklch, oklch(0.93 0.034 272.788) var(--mix-factor), var(--mix-base));
+  --color-indigo-200: color-mix(in oklch, oklch(0.87 0.065 274.039) var(--mix-factor), var(--mix-base));
+  --color-indigo-300: color-mix(in oklch, oklch(0.785 0.115 274.713) var(--mix-factor), var(--mix-base));
+  --color-indigo-400: color-mix(in oklch, oklch(0.673 0.182 276.935) var(--mix-factor), var(--mix-base));
+  --color-indigo-500: color-mix(in oklch, oklch(0.585 0.233 277.117) var(--mix-factor), var(--mix-base));
+  --color-indigo-600: color-mix(in oklch, oklch(0.511 0.262 276.966) var(--mix-factor), var(--mix-base));
+  --color-indigo-700: color-mix(in oklch, oklch(0.457 0.24 277.023) var(--mix-factor), var(--mix-base));
+  --color-indigo-800: color-mix(in oklch, oklch(0.398 0.195 277.366) var(--mix-factor), var(--mix-base));
+  --color-indigo-900: color-mix(in oklch, oklch(0.359 0.144 278.697) var(--mix-factor), var(--mix-base));
+  --color-indigo-950: color-mix(in oklch, oklch(0.257 0.09 281.288) var(--mix-factor), var(--mix-base));
+
+  --color-violet-50: color-mix(in oklch, oklch(0.969 0.016 293.756) var(--mix-factor), var(--mix-base));
+  --color-violet-100: color-mix(in oklch, oklch(0.943 0.029 294.588) var(--mix-factor), var(--mix-base));
+  --color-violet-200: color-mix(in oklch, oklch(0.894 0.057 293.283) var(--mix-factor), var(--mix-base));
+  --color-violet-300: color-mix(in oklch, oklch(0.811 0.111 293.571) var(--mix-factor), var(--mix-base));
+  --color-violet-400: color-mix(in oklch, oklch(0.702 0.183 293.541) var(--mix-factor), var(--mix-base));
+  --color-violet-500: color-mix(in oklch, oklch(0.606 0.25 292.717) var(--mix-factor), var(--mix-base));
+  --color-violet-600: color-mix(in oklch, oklch(0.541 0.281 293.009) var(--mix-factor), var(--mix-base));
+  --color-violet-700: color-mix(in oklch, oklch(0.491 0.27 292.581) var(--mix-factor), var(--mix-base));
+  --color-violet-800: color-mix(in oklch, oklch(0.432 0.232 292.759) var(--mix-factor), var(--mix-base));
+  --color-violet-900: color-mix(in oklch, oklch(0.38 0.189 293.745) var(--mix-factor), var(--mix-base));
+  --color-violet-950: color-mix(in oklch, oklch(0.283 0.141 291.089) var(--mix-factor), var(--mix-base));
+
+  --color-purple-50: color-mix(in oklch, oklch(0.977 0.014 308.299) var(--mix-factor), var(--mix-base));
+  --color-purple-100: color-mix(in oklch, oklch(0.946 0.033 307.174) var(--mix-factor), var(--mix-base));
+  --color-purple-200: color-mix(in oklch, oklch(0.902 0.063 306.703) var(--mix-factor), var(--mix-base));
+  --color-purple-300: color-mix(in oklch, oklch(0.827 0.119 306.383) var(--mix-factor), var(--mix-base));
+  --color-purple-400: color-mix(in oklch, oklch(0.714 0.203 305.504) var(--mix-factor), var(--mix-base));
+  --color-purple-500: color-mix(in oklch, oklch(0.627 0.265 303.9) var(--mix-factor), var(--mix-base));
+  --color-purple-600: color-mix(in oklch, oklch(0.558 0.288 302.321) var(--mix-factor), var(--mix-base));
+  --color-purple-700: color-mix(in oklch, oklch(0.496 0.265 301.924) var(--mix-factor), var(--mix-base));
+  --color-purple-800: color-mix(in oklch, oklch(0.438 0.218 303.724) var(--mix-factor), var(--mix-base));
+  --color-purple-900: color-mix(in oklch, oklch(0.381 0.176 304.987) var(--mix-factor), var(--mix-base));
+  --color-purple-950: color-mix(in oklch, oklch(0.291 0.149 302.717) var(--mix-factor), var(--mix-base));
+
+  --color-fuchsia-50: color-mix(in oklch, oklch(0.977 0.017 320.058) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-100: color-mix(in oklch, oklch(0.952 0.037 318.852) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-200: color-mix(in oklch, oklch(0.903 0.076 319.62) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-300: color-mix(in oklch, oklch(0.833 0.145 321.434) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-400: color-mix(in oklch, oklch(0.74 0.238 322.16) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-500: color-mix(in oklch, oklch(0.667 0.295 322.15) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-600: color-mix(in oklch, oklch(0.591 0.293 322.896) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-700: color-mix(in oklch, oklch(0.518 0.253 323.949) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-800: color-mix(in oklch, oklch(0.452 0.211 324.591) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-900: color-mix(in oklch, oklch(0.401 0.17 325.612) var(--mix-factor), var(--mix-base));
+  --color-fuchsia-950: color-mix(in oklch, oklch(0.293 0.136 325.661) var(--mix-factor), var(--mix-base));
+
+  --color-pink-50: color-mix(in oklch, oklch(0.971 0.014 343.198) var(--mix-factor), var(--mix-base));
+  --color-pink-100: color-mix(in oklch, oklch(0.948 0.028 342.258) var(--mix-factor), var(--mix-base));
+  --color-pink-200: color-mix(in oklch, oklch(0.899 0.061 343.231) var(--mix-factor), var(--mix-base));
+  --color-pink-300: color-mix(in oklch, oklch(0.823 0.12 346.018) var(--mix-factor), var(--mix-base));
+  --color-pink-400: color-mix(in oklch, oklch(0.718 0.202 349.761) var(--mix-factor), var(--mix-base));
+  --color-pink-500: color-mix(in oklch, oklch(0.656 0.241 354.308) var(--mix-factor), var(--mix-base));
+  --color-pink-600: color-mix(in oklch, oklch(0.592 0.249 0.584) var(--mix-factor), var(--mix-base));
+  --color-pink-700: color-mix(in oklch, oklch(0.525 0.223 3.958) var(--mix-factor), var(--mix-base));
+  --color-pink-800: color-mix(in oklch, oklch(0.459 0.187 3.815) var(--mix-factor), var(--mix-base));
+  --color-pink-900: color-mix(in oklch, oklch(0.408 0.153 2.432) var(--mix-factor), var(--mix-base));
+  --color-pink-950: color-mix(in oklch, oklch(0.284 0.109 3.907) var(--mix-factor), var(--mix-base));
+
+  --color-rose-50: color-mix(in oklch, oklch(0.969 0.015 12.422) var(--mix-factor), var(--mix-base));
+  --color-rose-100: color-mix(in oklch, oklch(0.941 0.03 12.58) var(--mix-factor), var(--mix-base));
+  --color-rose-200: color-mix(in oklch, oklch(0.892 0.058 10.001) var(--mix-factor), var(--mix-base));
+  --color-rose-300: color-mix(in oklch, oklch(0.81 0.117 11.638) var(--mix-factor), var(--mix-base));
+  --color-rose-400: color-mix(in oklch, oklch(0.712 0.194 13.428) var(--mix-factor), var(--mix-base));
+  --color-rose-500: color-mix(in oklch, oklch(0.645 0.246 16.439) var(--mix-factor), var(--mix-base));
+  --color-rose-600: color-mix(in oklch, oklch(0.586 0.253 17.585) var(--mix-factor), var(--mix-base));
+  --color-rose-700: color-mix(in oklch, oklch(0.514 0.222 16.935) var(--mix-factor), var(--mix-base));
+  --color-rose-800: color-mix(in oklch, oklch(0.455 0.188 13.697) var(--mix-factor), var(--mix-base));
+  --color-rose-900: color-mix(in oklch, oklch(0.41 0.159 10.272) var(--mix-factor), var(--mix-base));
+  --color-rose-950: color-mix(in oklch, oklch(0.271 0.105 12.094) var(--mix-factor), var(--mix-base));
+
+  --color-slate-50: color-mix(in oklch, oklch(0.984 0.003 247.858) var(--mix-factor), var(--mix-base));
+  --color-slate-100: color-mix(in oklch, oklch(0.968 0.007 247.896) var(--mix-factor), var(--mix-base));
+  --color-slate-200: color-mix(in oklch, oklch(0.929 0.013 255.508) var(--mix-factor), var(--mix-base));
+  --color-slate-300: color-mix(in oklch, oklch(0.869 0.022 252.894) var(--mix-factor), var(--mix-base));
+  --color-slate-400: color-mix(in oklch, oklch(0.704 0.04 256.788) var(--mix-factor), var(--mix-base));
+  --color-slate-500: color-mix(in oklch, oklch(0.554 0.046 257.417) var(--mix-factor), var(--mix-base));
+  --color-slate-600: color-mix(in oklch, oklch(0.446 0.043 257.281) var(--mix-factor), var(--mix-base));
+  --color-slate-700: color-mix(in oklch, oklch(0.372 0.044 257.287) var(--mix-factor), var(--mix-base));
+  --color-slate-800: color-mix(in oklch, oklch(0.279 0.041 260.031) var(--mix-factor), var(--mix-base));
+  --color-slate-900: color-mix(in oklch, oklch(0.208 0.042 265.755) var(--mix-factor), var(--mix-base));
+  --color-slate-950: color-mix(in oklch, oklch(0.129 0.042 264.695) var(--mix-factor), var(--mix-base));
+
+  --color-gray-50: color-mix(in oklch, oklch(0.985 0.002 247.839) var(--mix-factor), var(--mix-base));
+  --color-gray-100: color-mix(in oklch, oklch(0.967 0.003 264.542) var(--mix-factor), var(--mix-base));
+  --color-gray-200: color-mix(in oklch, oklch(0.928 0.006 264.531) var(--mix-factor), var(--mix-base));
+  --color-gray-300: color-mix(in oklch, oklch(0.872 0.01 258.338) var(--mix-factor), var(--mix-base));
+  --color-gray-400: color-mix(in oklch, oklch(0.707 0.022 261.325) var(--mix-factor), var(--mix-base));
+  --color-gray-500: color-mix(in oklch, oklch(0.551 0.027 264.364) var(--mix-factor), var(--mix-base));
+  --color-gray-600: color-mix(in oklch, oklch(0.446 0.03 256.802) var(--mix-factor), var(--mix-base));
+  --color-gray-700: color-mix(in oklch, oklch(0.373 0.034 259.733) var(--mix-factor), var(--mix-base));
+  --color-gray-800: color-mix(in oklch, oklch(0.278 0.033 256.848) var(--mix-factor), var(--mix-base));
+  --color-gray-900: color-mix(in oklch, oklch(0.21 0.034 264.665) var(--mix-factor), var(--mix-base));
+  --color-gray-950: color-mix(in oklch, oklch(0.13 0.028 261.692) var(--mix-factor), var(--mix-base));
+
+  --color-zinc-50: color-mix(in oklch, oklch(0.985 0 0) var(--mix-factor), var(--mix-base));
+  --color-zinc-100: color-mix(in oklch, oklch(0.967 0.001 286.375) var(--mix-factor), var(--mix-base));
+  --color-zinc-200: color-mix(in oklch, oklch(0.92 0.004 286.32) var(--mix-factor), var(--mix-base));
+  --color-zinc-300: color-mix(in oklch, oklch(0.871 0.006 286.286) var(--mix-factor), var(--mix-base));
+  --color-zinc-400: color-mix(in oklch, oklch(0.705 0.015 286.067) var(--mix-factor), var(--mix-base));
+  --color-zinc-500: color-mix(in oklch, oklch(0.552 0.016 285.938) var(--mix-factor), var(--mix-base));
+  --color-zinc-600: color-mix(in oklch, oklch(0.442 0.017 285.786) var(--mix-factor), var(--mix-base));
+  --color-zinc-700: color-mix(in oklch, oklch(0.37 0.013 285.805) var(--mix-factor), var(--mix-base));
+  --color-zinc-800: color-mix(in oklch, oklch(0.274 0.006 286.033) var(--mix-factor), var(--mix-base));
+  --color-zinc-900: color-mix(in oklch, oklch(0.21 0.006 285.885) var(--mix-factor), var(--mix-base));
+  --color-zinc-950: color-mix(in oklch, oklch(0.141 0.005 285.823) var(--mix-factor), var(--mix-base));
+
+  --color-neutral-50: color-mix(in oklch, oklch(0.985 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-100: color-mix(in oklch, oklch(0.97 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-200: color-mix(in oklch, oklch(0.922 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-300: color-mix(in oklch, oklch(0.87 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-400: color-mix(in oklch, oklch(0.708 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-500: color-mix(in oklch, oklch(0.556 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-600: color-mix(in oklch, oklch(0.439 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-700: color-mix(in oklch, oklch(0.371 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-800: color-mix(in oklch, oklch(0.269 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-900: color-mix(in oklch, oklch(0.205 0 0) var(--mix-factor), var(--mix-base));
+  --color-neutral-950: color-mix(in oklch, oklch(0.145 0 0) var(--mix-factor), var(--mix-base));
+
+  --color-stone-50: color-mix(in oklch, oklch(0.985 0.001 106.423) var(--mix-factor), var(--mix-base));
+  --color-stone-100: color-mix(in oklch, oklch(0.97 0.001 106.424) var(--mix-factor), var(--mix-base));
+  --color-stone-200: color-mix(in oklch, oklch(0.923 0.003 48.717) var(--mix-factor), var(--mix-base));
+  --color-stone-300: color-mix(in oklch, oklch(0.869 0.005 56.366) var(--mix-factor), var(--mix-base));
+  --color-stone-400: color-mix(in oklch, oklch(0.709 0.01 56.259) var(--mix-factor), var(--mix-base));
+  --color-stone-500: color-mix(in oklch, oklch(0.553 0.013 58.071) var(--mix-factor), var(--mix-base));
+  --color-stone-600: color-mix(in oklch, oklch(0.444 0.011 73.639) var(--mix-factor), var(--mix-base));
+  --color-stone-700: color-mix(in oklch, oklch(0.374 0.01 67.558) var(--mix-factor), var(--mix-base));
+  --color-stone-800: color-mix(in oklch, oklch(0.268 0.007 34.298) var(--mix-factor), var(--mix-base));
+  --color-stone-900: color-mix(in oklch, oklch(0.216 0.006 56.043) var(--mix-factor), var(--mix-base));
+  --color-stone-950: color-mix(in oklch, oklch(0.147 0.004 49.25) var(--mix-factor), var(--mix-base));
+
+  /* Shadows */
+  --shadow-2xs: 0 1px color-mix(in oklch, var(--color-fg) 5%, var(--color-ac) 2.5%);
+  --shadow-xs: 0 1px 2px 0 color-mix(in oklch, var(--color-fg) 5%, var(--color-ac) 2.5%);
+  --shadow-sm: 0 1px 3px 0 color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%), 0 1px 2px -1px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%);
+  --shadow-md: 0 4px 6px -1px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%), 0 2px 4px -2px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%);
+  --shadow-lg: 0 10px 15px -3px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%), 0 4px 6px -4px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%);
+  --shadow-xl: 0 20px 25px -5px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%), 0 8px 10px -6px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%);
+  --shadow-2xl: 0 25px 50px -12px color-mix(in oklch, var(--color-fg) 25%, var(--color-ac) 17.5%);
+
+  --inset-shadow-2xs: inset 0 1px color-mix(in oklch, var(--color-fg) 10%, transparent);
+  --inset-shadow-xs: inset 0 1px 1px color-mix(in oklch, var(--color-fg) 10%, transparent);
+  --inset-shadow-sm: inset 0 2px 4px color-mix(in oklch, var(--color-fg) 10%, transparent);
+
+  --drop-shadow-xs: 0 1px 1px color-mix(in oklch, var(--color-fg) 5%, var(--color-ac) 2.5%);
+  --drop-shadow-sm: 0 2px 2px color-mix(in oklch, var(--color-fg) 12%, var(--color-ac) 6%);
+  --drop-shadow-md: 0 3px 3px color-mix(in oklch, var(--color-fg) 12%, var(--color-ac) 6%);
+  --drop-shadow-lg: 0 4px 4px color-mix(in oklch, var(--color-fg) 15%, var(--color-ac) 7.5%);
+  --drop-shadow-xl: 0 9px 7px color-mix(in oklch, var(--color-fg) 10%, var(--color-ac) 5%);
+  --drop-shadow-2xl: 0 25px 25px color-mix(in oklch, var(--color-fg) 15%, var(--color-ac) 7.5%);
+
+  /* Custom shadows */
+  --shadow-border: 0 0 0 1px color-mix(in oklch, var(--color-fg) 30%, transparent);
+  --shadow-border-t: 0 -1px 0 0 color-mix(in oklch, var(--color-fg) 30%, transparent);
+  --shadow-border-b: 0 1px 0 0 color-mix(in oklch, var(--color-fg) 30%, transparent);
+  --shadow-border-r: 1px 0 0 0 color-mix(in oklch, var(--color-fg) 30%, transparent);
+  --shadow-border-l: -1px 0 0 0 color-mix(in oklch, var(--color-fg) 30%, transparent);
+  --inset-shadow-input: inset 0 1px 1px color-mix(in oklch, var(--color-black) 10%, transparent);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+@utility focus-ring {
+  @apply focus-visible:border-ac focus-visible:ring-ac/30 focus:outline-none focus-visible:ring-2;
+}
+
+@utility floating {
+  box-shadow:
+    0 0 0 0.5px color-mix(in oklch, var(--color-black) 40%, transparent),
+    0 20px 60px 0
+    color-mix(
+      in oklch,
+      color-mix(in oklch, var(--color-ac) 20%, transparent) 60%,
+      color-mix(in oklch, var(--color-black) 20%, transparent)
+    );
+  backdrop-filter: saturate(2) blur(40px);
+  @apply z-100 border border-white/40 bg-white/90 outline-none;
+
+  @variant dark {
+    box-shadow:
+      0 0 0 0.5px color-mix(in oklch, var(--color-black) 80%, transparent),
+      0 20px 60px 0 color-mix(in oklch, var(--color-black) 60%, transparent);
+    backdrop-filter: brightness(0.5) saturate(2) contrast(0.9) blur(40px);
+    @apply bg-bg/20 border-fg/20;
+  }
+}

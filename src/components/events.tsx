@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { LaplaceEvent } from '@laplace.live/event-types'
 import { IconArrowDownDashed } from '@tabler/icons-react'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
@@ -67,10 +67,10 @@ export function ChatEvents() {
   }, [])
 
   // Function to render a message based on its type
-  const renderMessage = (event: LaplaceEvent, index: number) => {
+  const renderMessage = (event: LaplaceEvent) => {
     if (event.type === 'system') {
       return (
-        <div key={index} className='event system'>
+        <div key={event.id} className='event system'>
           <span className='text'>{event.message}</span>
         </div>
       )
@@ -90,7 +90,7 @@ export function ChatEvents() {
       }
 
       return (
-        <div key={index} className={cn('event interaction', `guard-type-${event.guardType}`)}>
+        <div key={event.id} className={cn('event interaction', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}</span>
           <span className='text'>{actionMap[event.action]}</span>
         </div>
@@ -99,7 +99,7 @@ export function ChatEvents() {
 
     if (event.type === 'like-click') {
       return (
-        <div key={index} className={'event like-click'}>
+        <div key={event.id} className={'event like-click'}>
           <span className='username'>{event.username}:</span>
           <span className='text'>{event.message}</span>
         </div>
@@ -108,7 +108,7 @@ export function ChatEvents() {
 
     if (event.type === 'message') {
       return (
-        <div key={index} className={cn('event message', `guard-type-${event.guardType}`)}>
+        <div key={event.id} className={cn('event message', `guard-type-${event.guardType}`)}>
           <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
           <div>
             <span className='username'>{event.username}:</span>
@@ -120,7 +120,7 @@ export function ChatEvents() {
 
     if (event.type === 'superchat') {
       return (
-        <div key={index} className={cn('event superchat', `guard-type-${event.guardType}`)}>
+        <div key={event.id} className={cn('event superchat', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -130,7 +130,7 @@ export function ChatEvents() {
 
     if (event.type === 'gift') {
       return (
-        <div key={index} className={cn('event gift', `guard-type-${event.guardType}`)}>
+        <div key={event.id} className={cn('event gift', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -140,7 +140,7 @@ export function ChatEvents() {
 
     if (event.type === 'toast') {
       return (
-        <div key={index} className='event toast'>
+        <div key={event.id} className='event toast'>
           <span className='username'>{event.username}:</span>
           <span className='price'>[¥{event.priceNormalized}]</span>
           <span className='text'>{event.message}</span>
@@ -153,7 +153,7 @@ export function ChatEvents() {
       const message = event.message.replace(/<%([^%>]+)%>/g, '$1').trim()
 
       return (
-        <div key={index} className={cn('event entry-effect', `guard-type-${event.guardType}`)}>
+        <div key={event.id} className={cn('event entry-effect', `guard-type-${event.guardType}`)}>
           <img src={event.avatar} alt='avatar' className='avatar' referrerPolicy='no-referrer' />
           <span className='text'>{message}</span>
         </div>
@@ -199,7 +199,7 @@ export function ChatEvents() {
                 : 'Connecting to LAPLACE Event Bridge…'}
             </div>
           ) : (
-            messages.map((message, index) => renderMessage(message, index))
+            messages.map(message => renderMessage(message))
           )}
           <div ref={messagesEndRef} />
         </div>

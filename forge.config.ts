@@ -33,6 +33,7 @@ const config: ForgeConfig = {
         name: 'chat-overlay',
       },
       generateReleaseNotes: true,
+      draft: false,
     }),
   ],
   plugins: [

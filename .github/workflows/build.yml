@@ -24,6 +24,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -90,89 +93,8 @@ jobs:
             out/make/deb/x64/*.deb
             out/make/rpm/x64/*.rpm
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v5
-        with:
-          path: artifacts
-
-      - name: List artifact contents
-        run: |
-          echo "=== Listing all artifacts ==="
-          find artifacts -type f -name "*.exe" -o -name "*.zip" -o -name "*.deb" -o -name "*.rpm" | sort
-
-      - name: Find Windows Setup Executable
-        id: find_windows_exe
-        run: |
-          SETUP_EXE=$(find artifacts/chat-overlay-win-${{ github.sha }} -name "*Setup*.exe" -o -name "*setup*.exe" | head -1)
-          echo "setup_exe=$SETUP_EXE" >> $GITHUB_OUTPUT
-          echo "Found Windows setup: $SETUP_EXE"
-
-      - name: Find macOS ZIP
-        id: find_macos_zip
-        run: |
-          MAC_ZIP=$(find artifacts/chat-overlay-darwin-${{ github.sha }} -name "*.zip" | head -1)
-          echo "mac_zip=$MAC_ZIP" >> $GITHUB_OUTPUT
-          echo "Found macOS zip: $MAC_ZIP"
-
-      - name: Find Linux DEB
-        id: find_linux_deb
-        run: |
-          LINUX_DEB=$(find artifacts/chat-overlay-linux-${{ github.sha }} -name "*.deb" | head -1)
-          echo "linux_deb=$LINUX_DEB" >> $GITHUB_OUTPUT
-          echo "Found Linux deb: $LINUX_DEB"
-
-      - name: Find Linux RPM
-        id: find_linux_rpm
-        run: |
-          LINUX_RPM=$(find artifacts/chat-overlay-linux-${{ github.sha }} -name "*.rpm" | head -1)
-          echo "linux_rpm=$LINUX_RPM" >> $GITHUB_OUTPUT
-          echo "Found Linux rpm: $LINUX_RPM"
-
-      - name: Create Release
-        id: create_release
+      - name: Publish to GitHub
+        if: startsWith(github.ref, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "${{ github.ref_name }}" \
-            --title "Release ${{ github.ref_name }}" \
-            --notes "Release ${{ github.ref_name }}" \
-            --verify-tag
-
-      - name: Upload Release Assets
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Upload Windows setup if found
-          if [ -n "${{ steps.find_windows_exe.outputs.setup_exe }}" ]; then
-            gh release upload "${{ github.ref_name }}" \
-              "${{ steps.find_windows_exe.outputs.setup_exe }}#chat-overlay-${{ github.ref_name }}-windows-setup.exe"
-          fi
-
-          # Upload macOS zip if found
-          if [ -n "${{ steps.find_macos_zip.outputs.mac_zip }}" ]; then
-            gh release upload "${{ github.ref_name }}" \
-              "${{ steps.find_macos_zip.outputs.mac_zip }}#chat-overlay-${{ github.ref_name }}-macos.zip"
-          fi
-
-          # Upload Linux DEB if found
-          if [ -n "${{ steps.find_linux_deb.outputs.linux_deb }}" ]; then
-            gh release upload "${{ github.ref_name }}" \
-              "${{ steps.find_linux_deb.outputs.linux_deb }}#chat-overlay-${{ github.ref_name }}-linux-amd64.deb"
-          fi
-
-          # Upload Linux RPM if found
-          if [ -n "${{ steps.find_linux_rpm.outputs.linux_rpm }}" ]; then
-            gh release upload "${{ github.ref_name }}" \
-              "${{ steps.find_linux_rpm.outputs.linux_rpm }}#chat-overlay-${{ github.ref_name }}-linux-x86_64.rpm"
-          fi
+        run: pnpm publish

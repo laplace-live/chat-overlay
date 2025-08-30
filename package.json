@@ -54,7 +54,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "@types/electron-squirrel-startup": "^1.0.2",
     "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.8",
+    "@types/react-dom": "^19.1.9",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "electron": "37.3.1",

@@ -21,6 +21,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     alwaysOnTop,
     clickThrough,
     showInteractionEvents,
+    showGiftFree,
     serverHost,
     serverPort,
     serverPassword,
@@ -29,6 +30,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setAlwaysOnTop,
     setClickThrough,
     setShowInteractionEvents,
+    setShowGiftFree,
     setServerHost,
     setServerPort,
     setServerPassword,
@@ -58,6 +60,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const handleShowInteractionEventsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setShowInteractionEvents(enabled)
+  }
+
+  const handleShowGiftFreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enabled = e.target.checked
+    setShowGiftFree(enabled)
   }
 
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +129,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <p className='text-fg/60 text-sm ml-5'>
                 Display interaction events like user entering the room, following, sharing, etc.
               </p>
+            </div>
+            <div className='space-y-1'>
+              <div className='flex'>
+                <Checkbox id='show-gift-free' checked={showGiftFree} onChange={handleShowGiftFreeChange} />
+                <Label className='pl-1' htmlFor='show-gift-free'>
+                  Show Free Gifts
+                </Label>
+              </div>
+              <p className='text-fg/60 text-sm ml-5'>Display free gifts (silver coins) in the chat overlay</p>
             </div>
             <div className='space-y-1'>
               <Label>Background Opacity</Label>

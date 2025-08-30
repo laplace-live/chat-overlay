@@ -8,7 +8,7 @@ import { useSettingsStore } from '../store/useSettingsStore'
 import { useRuntimeStore } from '../store/useRuntimeStore'
 
 export function ChatEvents() {
-  const { showInteractionEvents } = useSettingsStore()
+  const { showInteractionEvents, showGiftFree } = useSettingsStore()
   const { connectionState, messages } = useRuntimeStore()
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -129,6 +129,10 @@ export function ChatEvents() {
     }
 
     if (event.type === 'gift') {
+      if (!showGiftFree && event.coinType === 'silver') {
+        return null
+      }
+
       return (
         <div key={event.id} className={cn('event gift', `guard-type-${event.guardType}`)}>
           <span className='username'>{event.username}:</span>

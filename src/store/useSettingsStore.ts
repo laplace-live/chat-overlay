@@ -7,6 +7,7 @@ interface SettingsState {
   alwaysOnTop: boolean
   clickThrough: boolean
   showInteractionEvents: boolean
+  showGiftFree: boolean
 
   // Server Settings
   serverHost: string
@@ -19,6 +20,7 @@ interface SettingsState {
   setAlwaysOnTop: (enabled: boolean) => void
   setClickThrough: (enabled: boolean) => void
   setShowInteractionEvents: (enabled: boolean) => void
+  setShowGiftFree: (enabled: boolean) => void
   setServerHost: (host: string) => void
   setServerPort: (port: string) => void
   setServerPassword: (password: string) => void
@@ -33,6 +35,7 @@ export const useSettingsStore = create<SettingsState>()(
       alwaysOnTop: false,
       clickThrough: false,
       showInteractionEvents: true,
+      showGiftFree: false,
       serverHost: 'localhost',
       serverPort: '9696',
       serverPassword: '',
@@ -43,6 +46,7 @@ export const useSettingsStore = create<SettingsState>()(
       setAlwaysOnTop: alwaysOnTop => set({ alwaysOnTop }),
       setClickThrough: clickThrough => set({ clickThrough }),
       setShowInteractionEvents: showInteractionEvents => set({ showInteractionEvents }),
+      setShowGiftFree: showGiftFree => set({ showGiftFree }),
       setServerHost: serverHost => set({ serverHost }),
       setServerPort: serverPort => set({ serverPort }),
       setServerPassword: serverPassword => set({ serverPassword }),

@@ -156,7 +156,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 </Label>
               </div>
               <p className='text-fg/60 text-sm ml-5'>
-                Display interaction events like user entering the room, following, sharing, etc.
+                Display interaction events like user entering the room, following, sharing, likes, etc.
               </p>
             </div>
 

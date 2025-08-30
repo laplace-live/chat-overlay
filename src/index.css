@@ -9,6 +9,9 @@
 @import './kladewind.css';
 @import './schemes.css';
 
+/* Components */
+@import './components/events.css';
+
 /* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -47,113 +50,6 @@
   [class*='animate-'],
   [class*='transition-'] {
     will-change: transform, opacity;
-  }
-}
-
-/* Chat components */
-@layer components {
-  .avatar {
-    width: 1lh;
-    height: 1lh;
-    border-radius: 50%;
-  }
-
-  .username {
-    font-weight: 600;
-    color: #effee3;
-    margin-right: 5px;
-
-    .guard-type-1 & {
-      color: #ff96aa;
-    }
-
-    .guard-type-2 & {
-      color: #e7a9ff;
-    }
-
-    .guard-type-3 & {
-      color: #96deff;
-    }
-  }
-
-  .text {
-    color: #fff;
-  }
-
-  .price {
-    color: #ffc107;
-    font-weight: bold;
-    margin: 0 5px;
-  }
-
-  .event {
-    /* background-color: rgba(255, 255, 255, 0.1); */
-    font-size: 20px;
-    border-radius: 6px;
-    color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
-    word-break: break-word;
-
-    &.system {
-      background-color: rgba(33, 150, 243, 0.2);
-      border-left: 3px solid #2196f3;
-    }
-
-    &.message {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    &.interaction {
-      font-size: 18px;
-      opacity: 0.6;
-    }
-
-    &.superchat {
-      background-color: rgba(255, 152, 0, 0.2);
-      border-left: 3px solid #ff9800;
-    }
-
-    &.gift {
-      background-color: rgba(233, 30, 99, 0.2);
-      border-left: 3px solid #e91e63;
-    }
-
-    &.entry-effect {
-      background-color: rgba(0, 188, 212, 0.2);
-      border-left: 3px solid #00bcd4;
-      padding-left: 6px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-
-      .avatar {
-        width: 0.6lh;
-        height: 0.6lh;
-      }
-
-      &.guard-type-1 {
-        background-color: rgba(255, 0, 64, 0.2);
-        border-left: 3px solid #ff5f5f;
-      }
-
-      &.guard-type-2 {
-        background-color: rgba(226, 30, 233, 0.2);
-        border-left: 3px solid #e59bfb;
-      }
-
-      &.guard-type-3 {
-        background-color: rgba(0, 188, 212, 0.2);
-        border-left: 3px solid #73efff;
-      }
-    }
-
-    &.like-click {
-      .text {
-        color: #ffd455;
-      }
-    }
   }
 }
 

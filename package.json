@@ -16,7 +16,7 @@
     "name": "laplace-anon",
     "email": "150580554+laplace-anon@users.noreply.github.com"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",

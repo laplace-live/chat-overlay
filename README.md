@@ -43,4 +43,4 @@ The packaged applications will be available in the `out` directory.
 
 ## License
 
-MIT
+AGPL-3.0

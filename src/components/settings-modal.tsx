@@ -22,6 +22,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     clickThrough,
     showInteractionEvents,
     showGiftFree,
+    showEntryEffect,
     serverHost,
     serverPort,
     serverPassword,
@@ -31,6 +32,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setClickThrough,
     setShowInteractionEvents,
     setShowGiftFree,
+    setShowEntryEffect,
     setServerHost,
     setServerPort,
     setServerPassword,
@@ -65,6 +67,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const handleShowGiftFreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const enabled = e.target.checked
     setShowGiftFree(enabled)
+  }
+
+  const handleShowEntryEffectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const enabled = e.target.checked
+    setShowEntryEffect(enabled)
   }
 
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,6 +111,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               </div>
               <p className='text-fg/60 text-sm ml-5'>Keep the overlay window above all other windows</p>
             </div>
+
             <div className='space-y-1'>
               <div className='flex'>
                 <Checkbox id='click-through' checked={clickThrough} onChange={handleClickThroughChange} />
@@ -115,6 +123,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 Make the chat area click-through while keeping the title bar interactive
               </p>
             </div>
+
+            <div className='space-y-1'>
+              <div className='flex'>
+                <Checkbox id='show-gift-free' checked={showGiftFree} onChange={handleShowGiftFreeChange} />
+                <Label className='pl-1' htmlFor='show-gift-free'>
+                  Show Free Gifts
+                </Label>
+              </div>
+              <p className='text-fg/60 text-sm ml-5'>Display free gifts (silver coins) in the chat overlay</p>
+            </div>
+
+            <div className='space-y-1'>
+              <div className='flex'>
+                <Checkbox id='show-entry-effect' checked={showEntryEffect} onChange={handleShowEntryEffectChange} />
+                <Label className='pl-1' htmlFor='show-entry-effect'>
+                  Show Entry Effects
+                </Label>
+              </div>
+              <p className='text-fg/60 text-sm ml-5'>Display entry effects when VIP users enter the room</p>
+            </div>
+
             <div className='space-y-1'>
               <div className='flex'>
                 <Checkbox
@@ -130,15 +159,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 Display interaction events like user entering the room, following, sharing, etc.
               </p>
             </div>
-            <div className='space-y-1'>
-              <div className='flex'>
-                <Checkbox id='show-gift-free' checked={showGiftFree} onChange={handleShowGiftFreeChange} />
-                <Label className='pl-1' htmlFor='show-gift-free'>
-                  Show Free Gifts
-                </Label>
-              </div>
-              <p className='text-fg/60 text-sm ml-5'>Display free gifts (silver coins) in the chat overlay</p>
-            </div>
+
             <div className='space-y-1'>
               <Label>Background Opacity</Label>
               <div>

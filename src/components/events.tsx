@@ -8,7 +8,7 @@ import { useSettingsStore } from '../store/useSettingsStore'
 import { useRuntimeStore } from '../store/useRuntimeStore'
 
 export function ChatEvents() {
-  const { showInteractionEvents, showGiftFree } = useSettingsStore()
+  const { showInteractionEvents, showGiftFree, showEntryEffect } = useSettingsStore()
   const { connectionState, messages } = useRuntimeStore()
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -153,6 +153,10 @@ export function ChatEvents() {
     }
 
     if (event.type === 'entry-effect') {
+      if (!showEntryEffect) {
+        return null
+      }
+
       // Remove special markers <%...%> but keep the text inside
       const message = event.message.replace(/<%([^%>]+)%>/g, '$1').trim()
 

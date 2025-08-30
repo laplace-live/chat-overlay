@@ -98,6 +98,10 @@ export function ChatEvents() {
     }
 
     if (event.type === 'like-click') {
+      if (!showInteractionEvents) {
+        return null
+      }
+
       return (
         <div key={event.id} className={'event like-click'}>
           <span className='username'>{event.username}:</span>

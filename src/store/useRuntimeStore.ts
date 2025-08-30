@@ -17,7 +17,7 @@ interface RuntimeState {
   clearMessages: () => void
 }
 
-const MAX_MESSAGES = 500
+const MAX_MESSAGES = 100
 
 export const useRuntimeStore = create<RuntimeState>()(set => ({
   // Default values

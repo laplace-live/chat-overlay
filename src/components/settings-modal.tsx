@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 import { useSettingsStore } from '../store/useSettingsStore'
 import { useRuntimeStore } from '../store/useRuntimeStore'
@@ -41,6 +41,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
   // Get connection state from runtime store
   const { connectionState } = useRuntimeStore()
+
+  // State for app version
+  const [appVersion, setAppVersion] = useState<string>('')
+
+  // Fetch app version when component mounts
+  useEffect(() => {
+    window.electronAPI.getAppVersion().then(version => {
+      setAppVersion(version)
+    })
+  }, [])
 
   const handleOpacityChange = (values: number[]) => {
     const newOpacity = values[0]
@@ -239,6 +249,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   </span>
                 )}
               </p>
+            </div>
+
+            <div className='border-t border-fg/10 pt-4 mt-4'>
+              <p className='text-sm text-fg/60'>Version {appVersion}</p>
             </div>
           </div>
         </ScrollArea>

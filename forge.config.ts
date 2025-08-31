@@ -12,6 +12,7 @@ const config: ForgeConfig = {
     asar: true,
     icon: 'src/assets/icon',
     executableName: 'chat-overlay',
+    appBundleId: 'com.laplace.chat-overlay',
     osxSign: process.env.APPLE_IDENTITY
       ? {
           identity: process.env.APPLE_IDENTITY,

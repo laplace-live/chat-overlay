@@ -12,6 +12,14 @@ const config: ForgeConfig = {
     asar: true,
     icon: 'src/assets/icon',
     executableName: 'chat-overlay',
+    osxSign: process.env.APPLE_IDENTITY ? {} : undefined,
+    osxNotarize: process.env.APPLE_API_KEY_ID
+      ? {
+          appleApiKey: `~/private_keys/AuthKey_${process.env.APPLE_API_KEY_ID}.p8`,
+          appleApiKeyId: process.env.APPLE_API_KEY_ID,
+          appleApiIssuer: process.env.APPLE_API_ISSUER,
+        }
+      : undefined,
   },
   rebuildConfig: {},
   makers: [
@@ -20,8 +28,14 @@ const config: ForgeConfig = {
       name: 'LAPLACEChatOverlay',
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',
+      setupIcon: 'src/assets/icon.ico',
     }),
-    new MakerZIP({}, ['darwin']),
+    new MakerZIP(
+      {
+        macUpdateManifestBaseUrl: 'https://github.com/laplace-live/chat-overlay/releases/latest/download',
+      },
+      ['darwin']
+    ),
     new MakerRpm({}),
     new MakerDeb({}),
   ],

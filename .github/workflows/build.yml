@@ -67,34 +67,66 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
-      - name: Upload artifacts (Windows)
-        if: matrix.os == 'windows-latest'
+      - name: Upload Windows Release Assets
+        if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          generate_release_notes: true
+          files: |
+            out/make/squirrel.windows/x64/*.exe
+            out/make/squirrel.windows/x64/*.nupkg
+            out/make/squirrel.windows/x64/RELEASES
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload macOS Release Assets
+        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          generate_release_notes: true
+          files: out/make/zip/darwin/**/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Linux Release Assets
+        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          generate_release_notes: true
+          files: |
+            out/make/deb/x64/*.deb
+            out/make/rpm/x64/*.rpm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts for debugging (Windows)
+        if: matrix.os == 'windows-latest' && !startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4
         with:
-          name: chat-overlay-${{ matrix.platform }}-${{ github.sha }}
+          name: build-win-${{ github.sha }}
           path: |
             out/make/squirrel.windows/x64/*.exe
             out/make/squirrel.windows/x64/*.nupkg
             out/make/squirrel.windows/x64/RELEASES
+          retention-days: 7
 
-      - name: Upload artifacts (macOS)
-        if: matrix.os == 'macos-latest'
+      - name: Upload artifacts for debugging (macOS)
+        if: matrix.os == 'macos-latest' && !startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4
         with:
-          name: chat-overlay-${{ matrix.platform }}-${{ github.sha }}
+          name: build-darwin-${{ github.sha }}
           path: out/make/zip/darwin/**/*.zip
+          retention-days: 7
 
-      - name: Upload artifacts (Linux)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Upload artifacts for debugging (Linux)
+        if: matrix.os == 'ubuntu-latest' && !startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4
         with:
-          name: chat-overlay-${{ matrix.platform }}-${{ github.sha }}
+          name: build-linux-${{ github.sha }}
           path: |
             out/make/deb/x64/*.deb
             out/make/rpm/x64/*.rpm
-
-      - name: Publish to GitHub
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm run publish
+          retention-days: 7

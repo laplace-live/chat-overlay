@@ -1,7 +1,7 @@
 {
   "name": "chat-overlay",
   "productName": "LAPLACE Chat Overlay",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A modern, transparent chat overlay application for Bilibili live streaming",
   "main": ".vite/build/main.js",
   "scripts": {

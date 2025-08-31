@@ -12,7 +12,11 @@ const config: ForgeConfig = {
     asar: true,
     icon: 'src/assets/icon',
     executableName: 'chat-overlay',
-    osxSign: process.env.APPLE_IDENTITY ? {} : undefined,
+    osxSign: process.env.APPLE_IDENTITY
+      ? {
+          identity: process.env.APPLE_IDENTITY,
+        }
+      : undefined,
     osxNotarize: process.env.APPLE_API_KEY_ID
       ? {
           appleApiKey: `~/private_keys/AuthKey_${process.env.APPLE_API_KEY_ID}.p8`,

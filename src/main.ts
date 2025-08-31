@@ -1,11 +1,18 @@
 import path from 'node:path'
 import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
 import started from 'electron-squirrel-startup'
+import { updateElectronApp } from 'update-electron-app'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit()
 }
+
+// Configure auto-updates
+updateElectronApp({
+  notifyUser: true,
+  logger: console,
+})
 
 // Force dark theme
 nativeTheme.themeSource = 'dark'

@@ -24,6 +24,7 @@ declare global {
       setClickThrough: (enabled: boolean) => void
       setIgnoreMouseEvents: (ignore: boolean) => void
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
+      getAppVersion: () => Promise<string>
     }
   }
 }

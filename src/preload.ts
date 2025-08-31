@@ -17,4 +17,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.removeListener('click-through-enabled', handler)
     }
   },
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
 })

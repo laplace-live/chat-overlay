@@ -65,6 +65,11 @@ const createWindow = () => {
   ipcMain.on('set-ignore-mouse-events', (_event, ignore) => {
     mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
   })
+
+  // Handle get app version request
+  ipcMain.handle('get-app-version', () => {
+    return app.getVersion()
+  })
 }
 
 // This method will be called when Electron has finished

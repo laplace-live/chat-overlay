@@ -17,6 +17,10 @@
     "email": "150580554+laplace-anon@users.noreply.github.com"
   },
   "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laplace-live/chat-overlay.git"
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",

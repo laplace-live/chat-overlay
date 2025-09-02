@@ -49,8 +49,8 @@ jobs:
         run: pnpm lint
 
       - name: Import Apple Certificate
-        # if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
+        # if: matrix.os == 'macos-latest'
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -76,8 +76,8 @@ jobs:
           rm $RUNNER_TEMP/certificate.p12
 
       - name: Prepare Apple API Key
-        # if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
+        # if: matrix.os == 'macos-latest'
         env:
           APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
         run: |
@@ -94,7 +94,7 @@ jobs:
           APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
 
       - name: Build application (Release)
-        # if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v')
         run: pnpm make
         env:
           APPLE_IDENTITY: ${{ secrets.APPLE_IDENTITY }}
@@ -102,9 +102,9 @@ jobs:
           APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
           APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
 
-      # - name: Build application (Development)
-      #   if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
-      #   run: pnpm make
+      - name: Build application (Development)
+        if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+        run: pnpm make
 
       - name: Sign Windows binaries with Trusted Signing
         if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')

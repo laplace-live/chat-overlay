@@ -10,7 +10,13 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses'
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    icon: 'src/assets/icon',
+    // Environment-specific icon configuration
+    icon: (() => {
+      const isDev = process.env.NODE_ENV === 'development'
+      const environment = isDev ? 'dev' : 'prod'
+
+      return `src/assets/icons/${environment}/icon`
+    })(),
     executableName: 'chat-overlay',
     appBundleId: 'live.laplace.chat-overlay',
     osxSign: process.env.APPLE_IDENTITY
@@ -33,7 +39,7 @@ const config: ForgeConfig = {
       name: 'LAPLACEChatOverlay',
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',
-      setupIcon: 'src/assets/icon.ico',
+      setupIcon: 'src/assets/icons/prod/icon.ico',
     }),
     new MakerZIP(
       {

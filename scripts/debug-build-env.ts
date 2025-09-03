@@ -9,11 +9,15 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 
+const isDev = process.env.NODE_ENV === 'development'
+const environment = isDev ? 'dev' : 'prod'
+
 console.log('=== Build Environment Debug Information ===\n')
 
 // 1. System Information
 console.log('1. System Information:')
 console.log(`   Platform: ${os.platform()}`)
+console.log(`   Environment: ${environment}`)
 console.log(`   Architecture: ${os.arch()}`)
 console.log(`   Node Version: ${process.version}`)
 console.log(`   Current Directory: ${process.cwd()}`)
@@ -118,9 +122,9 @@ const importantFiles = [
   'package.json',
   'forge.config.ts',
   'entitlements.plist',
-  'src/assets/icon.icns',
-  'src/assets/icon.png',
-  'src/assets/icon.ico',
+  `src/assets/icons/${environment}icon.icns`,
+  `src/assets/icons/${environment}icon.png`,
+  `src/assets/icons/${environment}icon.ico`,
 ]
 
 importantFiles.forEach(file => {

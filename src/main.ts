@@ -10,7 +10,7 @@ if (started) {
 
 // Configure auto-updates
 updateElectronApp({
-  notifyUser: true,
+  notifyUser: false,
   logger: console,
 })
 

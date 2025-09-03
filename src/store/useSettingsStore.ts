@@ -10,6 +10,7 @@ interface SettingsState {
   showInteractionEvents: boolean
   showGiftFree: boolean
   showEntryEffect: boolean
+  customCSS: string
 
   // Server Settings
   serverHost: string
@@ -25,6 +26,7 @@ interface SettingsState {
   setShowInteractionEvents: (enabled: boolean) => void
   setShowGiftFree: (enabled: boolean) => void
   setShowEntryEffect: (enabled: boolean) => void
+  setCustomCSS: (css: string) => void
   setServerHost: (host: string) => void
   setServerPort: (port: string) => void
   setServerPassword: (password: string) => void
@@ -42,6 +44,7 @@ export const useSettingsStore = create<SettingsState>()(
       showInteractionEvents: true,
       showGiftFree: false,
       showEntryEffect: false,
+      customCSS: '',
       serverHost: 'localhost',
       serverPort: '9696',
       serverPassword: '',
@@ -49,16 +52,13 @@ export const useSettingsStore = create<SettingsState>()(
 
       // Actions
       setOpacity: opacity => set({ opacity }),
-      setBaseFontSize: baseFontSize => {
-        set({ baseFontSize })
-        // Inject CSS variable into DOM
-        document.documentElement.style.setProperty('--event-font-size', `${baseFontSize}px`)
-      },
+      setBaseFontSize: baseFontSize => set({ baseFontSize }),
       setAlwaysOnTop: alwaysOnTop => set({ alwaysOnTop }),
       setClickThrough: clickThrough => set({ clickThrough }),
       setShowInteractionEvents: showInteractionEvents => set({ showInteractionEvents }),
       setShowGiftFree: showGiftFree => set({ showGiftFree }),
       setShowEntryEffect: showEntryEffect => set({ showEntryEffect }),
+      setCustomCSS: customCSS => set({ customCSS }),
       setServerHost: serverHost => set({ serverHost }),
       setServerPort: serverPort => set({ serverPort }),
       setServerPassword: serverPassword => set({ serverPassword }),

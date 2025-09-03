@@ -33,7 +33,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough, baseFontSize } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS } = useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -53,6 +53,19 @@ const App: React.FC = () => {
   useEffect(() => {
     document.documentElement.style.setProperty('--event-font-size', `${baseFontSize}px`)
   }, [baseFontSize])
+
+  // Initialize custom CSS on mount and when it changes
+  useEffect(() => {
+    let styleElement = document.getElementById('dynamic-custom-css')
+
+    if (!styleElement) {
+      styleElement = document.createElement('style')
+      styleElement.id = 'dynamic-custom-css'
+      document.head.appendChild(styleElement)
+    }
+
+    styleElement.textContent = customCSS
+  }, [customCSS])
 
   // Update the background opacity
   useEffect(() => {

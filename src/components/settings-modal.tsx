@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Checkbox } from './ui/checkbox'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
+import { Textarea } from './ui/textarea'
 import { Slider } from './ui/slider'
 import { ScrollArea } from './ui/scroll-area'
 
@@ -24,6 +25,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     showInteractionEvents,
     showGiftFree,
     showEntryEffect,
+    customCSS,
     serverHost,
     serverPort,
     serverPassword,
@@ -35,6 +37,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setShowInteractionEvents,
     setShowGiftFree,
     setShowEntryEffect,
+    setCustomCSS,
     setServerHost,
     setServerPort,
     setServerPassword,
@@ -109,6 +112,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const handleAllowedOriginsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setAllowedOrigins(value)
+  }
+
+  const handleCustomCSSChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value
+    setCustomCSS(value)
   }
 
   return (
@@ -211,6 +219,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   onValueChange={handleEventFontSizeChange}
                 />
               </div>
+            </div>
+
+            <div className='space-y-1'>
+              <Label className='pb-1' htmlFor='custom-css'>
+                Custom CSS
+              </Label>
+              <Textarea
+                id='custom-css'
+                placeholder='/* Add your custom CSS here */&#10;.event.message {&#10;  background-color: rgba(0, 255, 0, 0.1);&#10;  border-left: 3px solid #00ff00;&#10;}&#10;&#10;.username {&#10;  color: #ff6b6b !important;&#10;  font-weight: bold;&#10;}'
+                value={customCSS}
+                onChange={handleCustomCSSChange}
+                className='font-mono text-sm min-h-[120px]'
+              />
+              <p className='text-fg/60 text-xs'>
+                Add custom CSS to style the chat overlay. Compatible with LAPLACE Chat templates
+              </p>
             </div>
 
             <h3 className='font-bold'>Server Settings</h3>

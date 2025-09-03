@@ -39,7 +39,7 @@ const config: ForgeConfig = {
       name: 'LAPLACEChatOverlay',
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',
-      setupIcon: 'src/assets/icons/prod/icon.ico',
+      setupIcon: 'src/assets/icons/installer/icon.ico',
     }),
     new MakerZIP(
       {

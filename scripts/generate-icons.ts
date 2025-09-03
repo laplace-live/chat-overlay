@@ -33,12 +33,12 @@ const iconConfigs = {
     outputDir: 'src/assets/icons/dev',
     description: 'Development',
   },
+  installer: {
+    source: 'src/assets/icon-installer.png',
+    outputDir: 'src/assets/icons/installer',
+    description: 'Installer',
+  },
   // Future extensibility examples:
-  // installer: {
-  //   source: 'src/assets/icon-installer.png',
-  //   outputDir: 'src/assets/icons/installer',
-  //   description: 'Installer'
-  // },
   // uninstaller: {
   //   source: 'src/assets/icon-uninstaller.png',
   //   outputDir: 'src/assets/icons/uninstaller',
@@ -61,27 +61,13 @@ function generateMacOSIcon(sourceIcon: string, outputDir: string, description: s
   const tempDir = path.join(outputDir, 'temp')
   ensureDirectoryExists(tempDir)
 
-  // Create rounded corner version for macOS (18% corner radius as per Apple guidelines)
-  const roundedIcon = path.join(tempDir, 'rounded_source.png')
-
-  try {
-    // Create rounded corners using ImageMagick
-    execSync(
-      `magick "${sourceIcon}" \\( +clone -alpha extract -draw 'fill black polygon 0,0 0,184 184,0 fill white circle 184,184 184,0' \\( +clone -flip \\) -compose Multiply -composite \\( +clone -flop \\) -compose Multiply -composite \\) -alpha off -compose CopyOpacity -composite "${roundedIcon}"`,
-      { stdio: 'inherit' }
-    )
-  } catch (error) {
-    console.warn('ImageMagick advanced features not available, using original icon without rounded corners')
-    execSync(`cp "${sourceIcon}" "${roundedIcon}"`)
-  }
-
   // Generate all required sizes
   for (const { size, scale, name } of macOSSizes) {
     const actualSize = size * scale
     const outputPath = path.join(tempDir, name)
 
     try {
-      execSync(`magick "${roundedIcon}" -resize ${actualSize}x${actualSize} "${outputPath}"`, { stdio: 'inherit' })
+      execSync(`magick "${sourceIcon}" -resize ${actualSize}x${actualSize} "${outputPath}"`, { stdio: 'inherit' })
     } catch (error) {
       console.error(`Failed to generate ${name}:`, error)
     }

@@ -142,7 +142,7 @@ function Slider({
               {/* NOTE: nested backdrop filter blur does not work */}
               <div
                 className={cn(
-                  'floating pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-sm px-2 py-1.5 opacity-0 transition-opacity',
+                  'floating bg-bg/90 pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-sm px-2 py-1.5 opacity-0 transition-opacity',
                   hoveredThumb === idx && 'opacity-100 duration-0'
                 )}
               >

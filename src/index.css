@@ -71,3 +71,18 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+@layer template {
+  :root {
+    /* laplace-chat event specific */
+    --1px: calc(var(--event-font-size, 20px) * 0.0625);
+    --event-line-height: calc(var(--event-font-size, 20px) * 1.5);
+    --event-line-height-base: 1.15;
+  }
+}
+
+@layer custom-css {
+  :root {
+    --event-font-size: 20px;
+  }
+}

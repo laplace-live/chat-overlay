@@ -18,6 +18,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   // Get settings from zustand store
   const {
     opacity,
+    baseFontSize,
     alwaysOnTop,
     clickThrough,
     showInteractionEvents,
@@ -28,6 +29,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     serverPassword,
     allowedOrigins,
     setOpacity,
+    setBaseFontSize,
     setAlwaysOnTop,
     setClickThrough,
     setShowInteractionEvents,
@@ -55,6 +57,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const handleOpacityChange = (values: number[]) => {
     const newOpacity = values[0]
     setOpacity(newOpacity)
+  }
+
+  const handleEventFontSizeChange = (values: number[]) => {
+    const newFontSize = values[0]
+    setBaseFontSize(newFontSize)
   }
 
   const handleAlwaysOnTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,8 +180,36 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             <div className='space-y-1'>
               <Label>Background Opacity</Label>
               <div>
-                <Slider min={10} max={100} value={[opacity]} onValueChange={handleOpacityChange} />
-                <div className='text-sm text-fg/60'>{opacity}%</div>
+                <Slider
+                  min={10}
+                  max={100}
+                  marks={[
+                    { value: 10, label: '10%' },
+                    { value: 20, label: '20%' },
+                    { value: 50, label: '50%' },
+                    { value: 90, label: '90%' },
+                    { value: 100, label: '100%' },
+                  ]}
+                  value={[opacity]}
+                  onValueChange={handleOpacityChange}
+                />
+              </div>
+            </div>
+
+            <div className='space-y-1'>
+              <Label>Event Font Size</Label>
+              <div>
+                <Slider
+                  min={12}
+                  max={64}
+                  marks={[
+                    { value: 20, label: 'Default' },
+                    { value: 12, label: 'Small' },
+                    { value: 32, label: 'Large' },
+                  ]}
+                  value={[baseFontSize]}
+                  onValueChange={handleEventFontSizeChange}
+                />
               </div>
             </div>
 

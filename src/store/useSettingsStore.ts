@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware'
 interface SettingsState {
   // UI Settings
   opacity: number
+  baseFontSize: number
   alwaysOnTop: boolean
   clickThrough: boolean
   showInteractionEvents: boolean
@@ -18,6 +19,7 @@ interface SettingsState {
 
   // Actions
   setOpacity: (opacity: number) => void
+  setBaseFontSize: (fontSize: number) => void
   setAlwaysOnTop: (enabled: boolean) => void
   setClickThrough: (enabled: boolean) => void
   setShowInteractionEvents: (enabled: boolean) => void
@@ -34,6 +36,7 @@ export const useSettingsStore = create<SettingsState>()(
     set => ({
       // Default values
       opacity: 80,
+      baseFontSize: 20,
       alwaysOnTop: false,
       clickThrough: false,
       showInteractionEvents: true,
@@ -46,6 +49,11 @@ export const useSettingsStore = create<SettingsState>()(
 
       // Actions
       setOpacity: opacity => set({ opacity }),
+      setBaseFontSize: baseFontSize => {
+        set({ baseFontSize })
+        // Inject CSS variable into DOM
+        document.documentElement.style.setProperty('--event-font-size', `${baseFontSize}px`)
+      },
       setAlwaysOnTop: alwaysOnTop => set({ alwaysOnTop }),
       setClickThrough: clickThrough => set({ clickThrough }),
       setShowInteractionEvents: showInteractionEvents => set({ showInteractionEvents }),

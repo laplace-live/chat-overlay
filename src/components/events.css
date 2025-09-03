@@ -9,7 +9,7 @@
   .username {
     font-weight: 600;
     color: #effee3;
-    margin-right: 5px;
+    margin-right: calc(var(--1px) * 5);
 
     .guard-type-1 & {
       color: #ff96aa;
@@ -31,50 +31,49 @@
   .price {
     color: #ffc107;
     font-weight: bold;
-    margin: 0 5px;
+    margin: 0 calc(var(--1px) * 5);
   }
 
   .event {
     /* background-color: rgba(255, 255, 255, 0.1); */
-    font-size: 20px;
-    border-radius: 6px;
+    font-size: var(--event-font-size);
+    border-radius: calc(var(--1px) * 6);
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+    text-shadow: 0 calc(var(--1px) * 1) calc(var(--1px) * 2) rgba(0, 0, 0, 1);
     word-break: break-word;
 
     &.system {
       background-color: rgba(33, 150, 243, 0.2);
-      border-left: 3px solid #2196f3;
+      border-left: calc(var(--1px) * 3) solid #2196f3;
     }
 
     &.message {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: calc(var(--1px) * 5);
     }
 
     &.interaction {
-      font-size: 18px;
       opacity: 0.6;
     }
 
     &.superchat {
       background-color: rgba(255, 152, 0, 0.2);
-      border-left: 3px solid #ff9800;
+      border-left: calc(var(--1px) * 3) solid #ff9800;
     }
 
     &.gift {
       background-color: rgba(233, 30, 99, 0.2);
-      border-left: 3px solid #e91e63;
+      border-left: calc(var(--1px) * 3) solid #e91e63;
     }
 
     &.entry-effect {
       background-color: rgba(0, 188, 212, 0.2);
-      border-left: 3px solid #00bcd4;
-      padding-left: 6px;
+      border-left: calc(var(--1px) * 3) solid #00bcd4;
+      padding-left: calc(var(--1px) * 6);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: calc(var(--1px) * 5);
 
       .avatar {
         width: 0.6lh;
@@ -83,17 +82,17 @@
 
       &.guard-type-1 {
         background-color: rgba(255, 0, 64, 0.2);
-        border-left: 3px solid #ff5f5f;
+        border-left: calc(var(--1px) * 3) solid #ff5f5f;
       }
 
       &.guard-type-2 {
         background-color: rgba(226, 30, 233, 0.2);
-        border-left: 3px solid #e59bfb;
+        border-left: calc(var(--1px) * 3) solid #e59bfb;
       }
 
       &.guard-type-3 {
         background-color: rgba(0, 188, 212, 0.2);
-        border-left: 3px solid #73efff;
+        border-left: calc(var(--1px) * 3) solid #73efff;
       }
     }
 

@@ -33,7 +33,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize } = useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -48,6 +48,11 @@ const App: React.FC = () => {
   useEffect(() => {
     window.electronAPI.setAlwaysOnTop(alwaysOnTop)
   }, [])
+
+  // Initialize CSS variable for event font size on mount
+  useEffect(() => {
+    document.documentElement.style.setProperty('--event-font-size', `${baseFontSize}px`)
+  }, [baseFontSize])
 
   // Update the background opacity
   useEffect(() => {

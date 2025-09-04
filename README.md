@@ -13,6 +13,32 @@ A modern, transparent chat overlay application for Bilibili live streaming built
 - **Online User Count**: Displays current viewer count with smooth animations
 - **Persistent Settings**: Saves your preferences locally
 
+## Download
+
+### Stable Releases
+
+Download the latest stable version from our GitHub releases:
+
+[📦 Download Latest Release](https://github.com/laplace-live/chat-overlay/releases/latest)
+
+Available for:
+
+- **macOS**: `.dmg` installer for Apple Silicon (M1/M2/M3) and Intel Macs
+- **Windows**: `.exe` installer for 64-bit systems
+- **Linux**: `.rpm` and `.deb` packages for most distributions
+
+### Nightly Builds
+
+Get the latest development builds with cutting-edge features:
+
+[🌙 Download Nightly Builds](https://github.com/laplace-live/chat-overlay/actions)
+
+1. Click on the latest workflow run with a ✅ status
+2. Scroll down to "Artifacts" section
+3. Download the build for your platform
+
+> **Note**: Nightly builds are automatically generated from the latest code and may contain experimental features or bugs. Use stable releases for production streaming.
+
 ## Usage
 
 ### Development

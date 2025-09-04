@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     }
   },
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  getPlatform: () => process.platform,
 
   // CSS Editor methods
   openCSSEditor: (currentCSS: string) => ipcRenderer.send('open-css-editor', currentCSS),

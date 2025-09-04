@@ -129,7 +129,7 @@ const createCSSEditorWindow = (currentCSS: string) => {
     parent: mainWindow,
     modal: false,
     show: false,
-    titleBarStyle: 'hidden',
+    titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -137,6 +137,9 @@ const createCSSEditorWindow = (currentCSS: string) => {
       devTools: process.env.NODE_ENV === 'development',
     },
   })
+
+  // Completely hide the menu bar
+  cssEditorWindow.setMenuBarVisibility(false)
 
   // Load the CSS editor HTML
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {

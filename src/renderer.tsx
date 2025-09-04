@@ -26,6 +26,7 @@ declare global {
       setIgnoreMouseEvents: (ignore: boolean) => void
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
+      getPlatform: () => string
       openCSSEditor: (currentCSS: string) => void
       onCustomCSSUpdated: (callback: (css: string) => void) => () => void
       updateCustomCSS: (css: string) => void

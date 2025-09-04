@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
 import { Textarea } from './ui/textarea'
+import { isMacOS } from '../utils/platform'
+import { cn } from '../lib/cn'
 
 const CSSEditor: React.FC = () => {
   const [css, setCss] = useState('')
@@ -44,7 +46,7 @@ const CSSEditor: React.FC = () => {
   return (
     <div className='h-screen bg-bg text-white flex flex-col'>
       {/* Header */}
-      <div className='flex items-center justify-between px-4 pt-8 drag'>
+      <div className={cn('flex items-center justify-between px-4 drag', isMacOS() && 'pt-8')}>
         <div>You can edit the CSS here</div>
       </div>
 

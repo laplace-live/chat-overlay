@@ -46,7 +46,7 @@ const CSSEditor: React.FC = () => {
   return (
     <div className='h-screen bg-bg text-white flex flex-col'>
       {/* Header */}
-      <div className={cn('flex items-center justify-between px-4 drag', isMacOS() && 'pt-8')}>
+      <div className={cn('flex items-center justify-between px-4 drag', isMacOS() ? 'pt-8' : 'pt-2')}>
         <div>You can edit the CSS here</div>
       </div>
 

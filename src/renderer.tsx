@@ -9,6 +9,7 @@ import { useRuntimeStore } from './store/useRuntimeStore'
 import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { ChatEvents } from './components/events'
 import { SettingsModal } from './components/settings-modal'
+import CSSEditor from './components/css-editor'
 
 import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
@@ -25,6 +26,11 @@ declare global {
       setIgnoreMouseEvents: (ignore: boolean) => void
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
+      openCSSEditor: (currentCSS: string) => void
+      onCustomCSSUpdated: (callback: (css: string) => void) => () => void
+      updateCustomCSS: (css: string) => void
+      closeCSSEditor: () => void
+      onLoadCSS: (callback: (css: string) => void) => () => void
     }
   }
 }
@@ -32,8 +38,16 @@ declare global {
 const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
+  // Check if this is the CSS editor window
+  const isCSSEditor = window.location.hash === '#css-editor'
+
+  // If this is the CSS editor window, render only the CSS editor
+  if (isCSSEditor) {
+    return <CSSEditor />
+  }
+
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setCustomCSS } = useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -66,6 +80,15 @@ const App: React.FC = () => {
 
     styleElement.textContent = customCSS
   }, [customCSS])
+
+  // Listen for CSS updates from the CSS editor window
+  useEffect(() => {
+    const unsubscribe = window.electronAPI.onCustomCSSUpdated((css: string) => {
+      setCustomCSS(css)
+    })
+
+    return unsubscribe
+  }, [setCustomCSS])
 
   // Update the background opacity
   useEffect(() => {
@@ -128,10 +151,7 @@ const App: React.FC = () => {
     <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden rounded-lg' ref={rootRef}>
       <div
         id={'title-bar'}
-        className={cn(
-          'sticky z-10 top-0 h-12 text-white flex items-start pt-1.5 pl-2 pr-1.5',
-          '[-webkit-app-region:drag]'
-        )}
+        className={cn('sticky z-10 top-0 h-12 text-white flex items-start pt-1.5 pl-2 pr-1.5 drag')}
         ref={titleBarRef}
       >
         <div className='flex items-center justify-between w-full'>
@@ -156,7 +176,7 @@ const App: React.FC = () => {
               ></span>
             </div>
           </div>
-          <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
+          <div className='flex items-center text-shadow-xs no-drag'>
             {clickThrough && (
               <Button variant='link' size='icon' tint='white' type='button' disabled>
                 <IconHandFingerOff size={14} />

@@ -19,6 +19,7 @@ nativeTheme.themeSource = 'dark'
 
 // Store reference to main window
 let mainWindow: BrowserWindow | null = null
+let cssEditorWindow: BrowserWindow | null = null
 
 // Register all IPC handlers once at startup
 const registerIpcHandlers = () => {
@@ -54,6 +55,26 @@ const registerIpcHandlers = () => {
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
   })
+
+  // Handle open CSS editor window
+  ipcMain.on('open-css-editor', (_event, currentCSS) => {
+    createCSSEditorWindow(currentCSS)
+  })
+
+  // Handle CSS updates from editor window
+  ipcMain.on('update-custom-css', (_event, css) => {
+    // Send the updated CSS to the main window
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('custom-css-updated', css)
+    }
+  })
+
+  // Handle close CSS editor window
+  ipcMain.on('close-css-editor', () => {
+    if (cssEditorWindow && !cssEditorWindow.isDestroyed()) {
+      cssEditorWindow.close()
+    }
+  })
 }
 
 const createWindow = () => {
@@ -88,6 +109,53 @@ const createWindow = () => {
   // Clean up reference when window is closed
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+}
+
+const createCSSEditorWindow = (currentCSS: string) => {
+  // Don't create multiple editor windows
+  if (cssEditorWindow && !cssEditorWindow.isDestroyed()) {
+    cssEditorWindow.focus()
+    return
+  }
+
+  // Create the CSS editor window
+  cssEditorWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    minWidth: 600,
+    minHeight: 400,
+    title: 'CSS Editor - LAPLACE Chat Overlay',
+    parent: mainWindow,
+    modal: false,
+    show: false,
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      devTools: process.env.NODE_ENV === 'development',
+    },
+  })
+
+  // Load the CSS editor HTML
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    cssEditorWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}#css-editor`)
+  } else {
+    cssEditorWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`), {
+      hash: 'css-editor',
+    })
+  }
+
+  // Send current CSS to the editor window when it's ready
+  cssEditorWindow.webContents.once('did-finish-load', () => {
+    cssEditorWindow.webContents.send('load-css', currentCSS)
+    cssEditorWindow.show()
+  })
+
+  // Clean up reference when window is closed
+  cssEditorWindow.on('closed', () => {
+    cssEditorWindow = null
   })
 }
 

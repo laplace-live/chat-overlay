@@ -72,6 +72,14 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+@utility drag {
+  -webkit-app-region: drag;
+}
+
+@utility no-drag {
+  -webkit-app-region: no-drag;
+}
+
 @layer template {
   :root {
     /* laplace-chat event specific */

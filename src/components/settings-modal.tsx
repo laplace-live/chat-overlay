@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Checkbox } from './ui/checkbox'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
-import { Textarea } from './ui/textarea'
+import { Button } from './ui/button'
 import { Slider } from './ui/slider'
 import { ScrollArea } from './ui/scroll-area'
 
@@ -37,7 +37,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setShowInteractionEvents,
     setShowGiftFree,
     setShowEntryEffect,
-    setCustomCSS,
+
     setServerHost,
     setServerPort,
     setServerPassword,
@@ -114,9 +114,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setAllowedOrigins(value)
   }
 
-  const handleCustomCSSChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value
-    setCustomCSS(value)
+  const handleEditCustomCSS = () => {
+    // This will open the CSS editor window
+    window.electronAPI.openCSSEditor(customCSS)
   }
 
   return (
@@ -222,18 +222,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             </div>
 
             <div className='space-y-1'>
-              <Label className='pb-1' htmlFor='custom-css'>
-                Custom CSS
-              </Label>
-              <Textarea
-                id='custom-css'
-                placeholder='/* Add your custom CSS here */&#10;.event.message {&#10;  background-color: rgba(0, 255, 0, 0.1);&#10;  border-left: 3px solid #00ff00;&#10;}&#10;&#10;.username {&#10;  color: #ff6b6b !important;&#10;  font-weight: bold;&#10;}'
-                value={customCSS}
-                onChange={handleCustomCSSChange}
-                className='font-mono text-sm min-h-[120px]'
-              />
+              <Label>Custom CSS</Label>
+              <div className='flex items-center gap-2'>
+                <Button variant='outline' onClick={handleEditCustomCSS} className='flex-1'>
+                  Edit Custom CSS
+                </Button>
+                {customCSS && (
+                  <span className='text-xs text-fg/60'>
+                    {customCSS.split('\n').filter(line => line.trim()).length} lines
+                  </span>
+                )}
+              </div>
               <p className='text-fg/60 text-xs'>
-                Add custom CSS to style the chat overlay. Compatible with LAPLACE Chat templates
+                Open a dedicated editor to customize the chat overlay appearance. Compatible with LAPLACE Chat
+                templates.
               </p>
             </div>
 

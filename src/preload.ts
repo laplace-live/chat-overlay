@@ -18,4 +18,29 @@ contextBridge.exposeInMainWorld('electronAPI', {
     }
   },
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+
+  // CSS Editor methods
+  openCSSEditor: (currentCSS: string) => ipcRenderer.send('open-css-editor', currentCSS),
+  onCustomCSSUpdated: (callback: (css: string) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, css: string) => callback(css)
+    ipcRenderer.on('custom-css-updated', handler)
+
+    // Return unsubscribe function
+    return () => {
+      ipcRenderer.removeListener('custom-css-updated', handler)
+    }
+  },
+
+  // CSS Editor window methods
+  updateCustomCSS: (css: string) => ipcRenderer.send('update-custom-css', css),
+  closeCSSEditor: () => ipcRenderer.send('close-css-editor'),
+  onLoadCSS: (callback: (css: string) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, css: string) => callback(css)
+    ipcRenderer.on('load-css', handler)
+
+    // Return unsubscribe function
+    return () => {
+      ipcRenderer.removeListener('load-css', handler)
+    }
+  },
 })

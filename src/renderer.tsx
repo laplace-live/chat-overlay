@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
 import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
@@ -8,8 +8,7 @@ import { useSettingsStore } from './store/useSettingsStore'
 import { useRuntimeStore } from './store/useRuntimeStore'
 import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { ChatEvents } from './components/events'
-import { SettingsModal } from './components/settings-modal'
-import CSSEditor from './components/css-editor'
+import PreferencesWindow from './components/preferences'
 
 import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
@@ -27,24 +26,30 @@ declare global {
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
       getPlatform: () => string
-      openCSSEditor: (currentCSS: string) => void
       onCustomCSSUpdated: (callback: (css: string) => void) => () => void
       updateCustomCSS: (css: string) => void
-      closeCSSEditor: () => void
-      onLoadCSS: (callback: (css: string) => void) => () => void
+      openPreferences: () => void
+      closePreferences: () => void
     }
   }
 }
 
 const App: React.FC = () => {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
   // Check if this is the CSS editor window
   const isCSSEditor = window.location.hash === '#css-editor'
+  // Check if this is the preferences window
+  const isPreferences = window.location.hash === '#preferences'
 
-  // If this is the CSS editor window, render only the CSS editor
+  // If this is the CSS editor window, redirect to preferences (legacy support)
   if (isCSSEditor) {
-    return <CSSEditor />
+    // Redirect legacy CSS editor to preferences with CSS tab
+    window.location.hash = '#preferences'
+    return <PreferencesWindow />
+  }
+
+  // If this is the preferences window, render only the preferences
+  if (isPreferences) {
+    return <PreferencesWindow />
   }
 
   // Get settings from zustand store
@@ -82,7 +87,7 @@ const App: React.FC = () => {
     styleElement.textContent = customCSS
   }, [customCSS])
 
-  // Listen for CSS updates from the CSS editor window
+  // Listen for CSS updates from the preferences window
   useEffect(() => {
     const unsubscribe = window.electronAPI.onCustomCSSUpdated((css: string) => {
       setCustomCSS(css)
@@ -104,8 +109,8 @@ const App: React.FC = () => {
   useEffect(() => {
     // Set up mouse tracking for click-through functionality
     const handleMouseMove = (e: MouseEvent) => {
-      // Only process if click-through is enabled and settings modal is not open
-      if (!clickThrough || isSettingsOpen) {
+      // Only process if click-through is enabled
+      if (!clickThrough) {
         window.electronAPI.setIgnoreMouseEvents(false)
         return
       }
@@ -135,14 +140,7 @@ const App: React.FC = () => {
       window.electronAPI.setIgnoreMouseEvents(false)
       unsubscribe() // Clean up the IPC listener
     }
-  }, [clickThrough, isSettingsOpen])
-
-  // Ensure click-through is disabled when settings modal is open
-  useEffect(() => {
-    if (isSettingsOpen && clickThrough) {
-      window.electronAPI.setIgnoreMouseEvents(false)
-    }
-  }, [isSettingsOpen, clickThrough])
+  }, [clickThrough])
 
   const handleClose = () => {
     window.close()
@@ -190,7 +188,7 @@ const App: React.FC = () => {
               type='button'
               id='settings-btn'
               title='Settings'
-              onClick={() => setIsSettingsOpen(true)}
+              onClick={() => window.electronAPI.openPreferences()}
             >
               <IconSettings size={14} />
             </Button>
@@ -210,9 +208,6 @@ const App: React.FC = () => {
       </div>
 
       <ChatEvents />
-
-      {/* Settings Modal */}
-      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   )
 }

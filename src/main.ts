@@ -19,7 +19,7 @@ nativeTheme.themeSource = 'dark'
 
 // Store reference to main window
 let mainWindow: BrowserWindow | null = null
-let cssEditorWindow: BrowserWindow | null = null
+let preferencesWindow: BrowserWindow | null = null
 
 // Register all IPC handlers once at startup
 const registerIpcHandlers = () => {
@@ -56,12 +56,7 @@ const registerIpcHandlers = () => {
     return app.getVersion()
   })
 
-  // Handle open CSS editor window
-  ipcMain.on('open-css-editor', (_event, currentCSS) => {
-    createCSSEditorWindow(currentCSS)
-  })
-
-  // Handle CSS updates from editor window
+  // Handle CSS updates from preferences window
   ipcMain.on('update-custom-css', (_event, css) => {
     // Send the updated CSS to the main window
     if (mainWindow && !mainWindow.isDestroyed()) {
@@ -69,10 +64,15 @@ const registerIpcHandlers = () => {
     }
   })
 
-  // Handle close CSS editor window
-  ipcMain.on('close-css-editor', () => {
-    if (cssEditorWindow && !cssEditorWindow.isDestroyed()) {
-      cssEditorWindow.close()
+  // Handle open preferences window
+  ipcMain.on('open-preferences', () => {
+    createPreferencesWindow()
+  })
+
+  // Handle close preferences window
+  ipcMain.on('close-preferences', () => {
+    if (preferencesWindow && !preferencesWindow.isDestroyed()) {
+      preferencesWindow.close()
     }
   })
 }
@@ -112,20 +112,20 @@ const createWindow = () => {
   })
 }
 
-const createCSSEditorWindow = (currentCSS: string) => {
-  // Don't create multiple editor windows
-  if (cssEditorWindow && !cssEditorWindow.isDestroyed()) {
-    cssEditorWindow.focus()
+const createPreferencesWindow = () => {
+  // Don't create multiple preferences windows
+  if (preferencesWindow && !preferencesWindow.isDestroyed()) {
+    preferencesWindow.focus()
     return
   }
 
-  // Create the CSS editor window
-  cssEditorWindow = new BrowserWindow({
+  // Create the preferences window
+  preferencesWindow = new BrowserWindow({
     width: 800,
-    height: 600,
-    minWidth: 600,
-    minHeight: 400,
-    title: 'CSS Editor - LAPLACE Chat Overlay',
+    height: 560,
+    minWidth: 480,
+    minHeight: 480,
+    title: 'Preferences - LAPLACE Chat Overlay',
     parent: mainWindow,
     modal: false,
     show: false,
@@ -139,26 +139,25 @@ const createCSSEditorWindow = (currentCSS: string) => {
   })
 
   // Completely hide the menu bar
-  cssEditorWindow.setMenuBarVisibility(false)
+  preferencesWindow.setMenuBarVisibility(false)
 
-  // Load the CSS editor HTML
+  // Load the preferences HTML
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    cssEditorWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}#css-editor`)
+    preferencesWindow.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}#preferences`)
   } else {
-    cssEditorWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`), {
-      hash: 'css-editor',
+    preferencesWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`), {
+      hash: 'preferences',
     })
   }
 
-  // Send current CSS to the editor window when it's ready
-  cssEditorWindow.webContents.once('did-finish-load', () => {
-    cssEditorWindow.webContents.send('load-css', currentCSS)
-    cssEditorWindow.show()
+  // Show window when ready
+  preferencesWindow.webContents.once('did-finish-load', () => {
+    preferencesWindow.show()
   })
 
   // Clean up reference when window is closed
-  cssEditorWindow.on('closed', () => {
-    cssEditorWindow = null
+  preferencesWindow.on('closed', () => {
+    preferencesWindow = null
   })
 }
 

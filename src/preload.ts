@@ -20,8 +20,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   getPlatform: () => process.platform,
 
-  // CSS Editor methods
-  openCSSEditor: (currentCSS: string) => ipcRenderer.send('open-css-editor', currentCSS),
+  // CSS updates from preferences window
   onCustomCSSUpdated: (callback: (css: string) => void) => {
     const handler = (_event: Electron.IpcRendererEvent, css: string) => callback(css)
     ipcRenderer.on('custom-css-updated', handler)
@@ -32,16 +31,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
     }
   },
 
-  // CSS Editor window methods
+  // CSS Editor window methods (for preferences window)
   updateCustomCSS: (css: string) => ipcRenderer.send('update-custom-css', css),
-  closeCSSEditor: () => ipcRenderer.send('close-css-editor'),
-  onLoadCSS: (callback: (css: string) => void) => {
-    const handler = (_event: Electron.IpcRendererEvent, css: string) => callback(css)
-    ipcRenderer.on('load-css', handler)
 
-    // Return unsubscribe function
-    return () => {
-      ipcRenderer.removeListener('load-css', handler)
-    }
-  },
+  // Preferences window methods
+  openPreferences: () => ipcRenderer.send('open-preferences'),
+  closePreferences: () => ipcRenderer.send('close-preferences'),
 })

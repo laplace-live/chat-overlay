@@ -64,10 +64,15 @@ const App: React.FC = () => {
   const rootRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
 
-  // Apply saved alwaysOnTop setting on mount
+  // Apply saved alwaysOnTop setting on mount and when it changes
   useEffect(() => {
     window.electronAPI.setAlwaysOnTop(alwaysOnTop)
-  }, [])
+  }, [alwaysOnTop])
+
+  // Apply saved clickThrough setting when it changes
+  useEffect(() => {
+    window.electronAPI.setClickThrough(clickThrough)
+  }, [clickThrough])
 
   // Initialize CSS variable for event font size on mount
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 interface SettingsState {
   // UI Settings
@@ -31,6 +31,9 @@ interface SettingsState {
   setServerPort: (port: string) => void
   setServerPassword: (password: string) => void
   setAllowedOrigins: (origins: string) => void
+
+  // Sync action
+  _hydrate: () => void
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -63,9 +66,33 @@ export const useSettingsStore = create<SettingsState>()(
       setServerPort: serverPort => set({ serverPort }),
       setServerPassword: serverPassword => set({ serverPassword }),
       setAllowedOrigins: allowedOrigins => set({ allowedOrigins }),
+
+      // Hydrate from storage
+      _hydrate: () => {
+        const storedData = localStorage.getItem('overlay-settings')
+        if (storedData) {
+          try {
+            const parsed = JSON.parse(storedData)
+            set(parsed.state)
+          } catch (e) {
+            console.error('Failed to parse stored settings:', e)
+          }
+        }
+      },
     }),
     {
       name: 'overlay-settings', // unique name for localStorage key
+      storage: createJSONStorage(() => localStorage),
     }
   )
 )
+
+// Set up cross-window sync via storage events
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', e => {
+    if (e.key === 'overlay-settings' && e.newValue) {
+      // Another window updated the settings, sync our store
+      useSettingsStore.getState()._hydrate()
+    }
+  })
+}

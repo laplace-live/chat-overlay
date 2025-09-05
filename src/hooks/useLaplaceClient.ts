@@ -66,6 +66,8 @@ export function useLaplaceClient() {
     const handleConnectionStateChange = (state: ConnectionState) => {
       console.log(`Connection state changed to: ${state}`)
       setConnectionState(state)
+      // Broadcast the state to all windows via IPC
+      window.electronAPI.broadcastConnectionState(state)
     }
 
     // Set up event listeners

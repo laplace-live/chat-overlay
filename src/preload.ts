@@ -37,4 +37,17 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Preferences window methods
   openPreferences: () => ipcRenderer.send('open-preferences'),
   closePreferences: () => ipcRenderer.send('close-preferences'),
+
+  // Connection state synchronization
+  broadcastConnectionState: (state: string) => ipcRenderer.send('broadcast-connection-state', state),
+  requestConnectionState: () => ipcRenderer.invoke('request-connection-state'),
+  onConnectionStateUpdate: (callback: (state: string) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, state: string) => callback(state)
+    ipcRenderer.on('connection-state-updated', handler)
+
+    // Return unsubscribe function
+    return () => {
+      ipcRenderer.removeListener('connection-state-updated', handler)
+    }
+  },
 })

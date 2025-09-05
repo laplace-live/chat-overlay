@@ -30,6 +30,9 @@ declare global {
       updateCustomCSS: (css: string) => void
       openPreferences: () => void
       closePreferences: () => void
+      broadcastConnectionState: (state: ConnectionState) => void
+      requestConnectionState: () => Promise<ConnectionState>
+      onConnectionStateUpdate: (callback: (state: ConnectionState) => void) => () => void
     }
   }
 }

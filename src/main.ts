@@ -2,6 +2,7 @@ import path from 'node:path'
 import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
+import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -20,6 +21,9 @@ nativeTheme.themeSource = 'dark'
 // Store reference to main window
 let mainWindow: BrowserWindow | null = null
 let preferencesWindow: BrowserWindow | null = null
+
+// Store current connection state
+let currentConnectionState: ConnectionState = ConnectionState.DISCONNECTED
 
 // Register all IPC handlers once at startup
 const registerIpcHandlers = () => {
@@ -74,6 +78,26 @@ const registerIpcHandlers = () => {
     if (preferencesWindow && !preferencesWindow.isDestroyed()) {
       preferencesWindow.close()
     }
+  })
+
+  // Handle connection state broadcasts
+  ipcMain.on('broadcast-connection-state', (_event, state) => {
+    // Store the current state
+    currentConnectionState = state
+
+    // Send the connection state to all windows
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('connection-state-updated', state)
+    }
+
+    if (preferencesWindow && !preferencesWindow.isDestroyed()) {
+      preferencesWindow.webContents.send('connection-state-updated', state)
+    }
+  })
+
+  // Handle connection state requests
+  ipcMain.handle('request-connection-state', () => {
+    return currentConnectionState
   })
 }
 

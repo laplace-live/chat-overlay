@@ -31,6 +31,14 @@ export const GeneralTab: React.FC = () => {
     })
   }, [])
 
+  // Sync connection state with main window
+  useEffect(() => {
+    const { setConnectionState } = useRuntimeStore.getState()
+
+    window.electronAPI.requestConnectionState().then(setConnectionState)
+    return window.electronAPI.onConnectionStateUpdate(setConnectionState)
+  }, [])
+
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setServerHost(value)

@@ -130,7 +130,6 @@ export const InterfaceTab: React.FC = () => {
                 { value: 20, label: '20%' },
                 { value: 50, label: '50%' },
                 { value: 90, label: '90%' },
-                { value: 100, label: '100%' },
               ]}
               value={[opacity]}
               onValueChange={handleOpacityChange}

@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, BrowserWindow, ipcMain, nativeTheme, Menu } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
@@ -98,6 +98,36 @@ const registerIpcHandlers = () => {
   // Handle connection state requests
   ipcMain.handle('request-connection-state', () => {
     return currentConnectionState
+  })
+
+  // Handle context menu for input/textarea elements
+  ipcMain.on('show-context-menu', (_event, { isEditable }) => {
+    const template: Electron.MenuItemConstructorOptions[] = []
+
+    // Add menu items based on context
+    // By only specifying 'role' without 'label', Electron automatically
+    // uses the system's localized labels (matching OS language)
+    // and manages the enabled/disabled state based on actual context
+
+    if (isEditable) {
+      // For editable elements, show full menu
+      template.push(
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { type: 'separator' },
+        { role: 'selectAll' }
+      )
+    } else {
+      // For non-editable contexts (selected text), only show copy
+      template.push({ role: 'copy' })
+    }
+
+    const menu = Menu.buildFromTemplate(template)
+    menu.popup()
   })
 }
 

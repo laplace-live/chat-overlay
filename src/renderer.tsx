@@ -9,6 +9,7 @@ import { useRuntimeStore } from './store/useRuntimeStore'
 import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { ChatEvents } from './components/events'
 import PreferencesWindow from './components/preferences'
+import { setupContextMenu } from './utils/context-menu'
 
 import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
@@ -33,6 +34,7 @@ declare global {
       broadcastConnectionState: (state: ConnectionState) => void
       requestConnectionState: () => Promise<ConnectionState>
       onConnectionStateUpdate: (callback: (state: ConnectionState) => void) => () => void
+      showContextMenu: (params: { selectionText: string; isEditable: boolean; inputType: string }) => void
     }
   }
 }
@@ -226,5 +228,8 @@ if (container) {
   const root = ReactDOM.createRoot(container)
   root.render(<App />)
 }
+
+// Setup context menu for input/textarea elements
+setupContextMenu()
 
 console.log('👋 Chat overlay is now running with LAPLACE Event Bridge integration!')

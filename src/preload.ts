@@ -50,4 +50,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.removeListener('connection-state-updated', handler)
     }
   },
+
+  // Context menu for input/textarea elements
+  showContextMenu: (params: { selectionText: string; isEditable: boolean; inputType: string }) => {
+    ipcRenderer.send('show-context-menu', params)
+  },
 })

@@ -17,6 +17,11 @@ A modern, transparent chat overlay application for Bilibili live streaming built
 
 ### Stable Releases
 
+> [!IMPORTANT]
+> All stable releases are signed and notarized. Do not download or run these from untrusted sources.
+>
+> 所有稳定版本均已签名和公证。请勿从不受信任的来源下载或安装
+
 Download the latest stable version from our GitHub releases:
 
 [📦 Download Latest Release](https://github.com/laplace-live/chat-overlay/releases/latest)
@@ -37,7 +42,10 @@ Get the latest development builds with cutting-edge features:
 2. Scroll down to "Artifacts" section
 3. Download the build for your platform
 
-> **Note**: Nightly builds are automatically generated from the latest code and may contain experimental features or bugs. Use stable releases for production streaming.
+> [!CAUTION]
+> Nightly builds are automatically generated from the latest code and may contain experimental features or bugs. Use stable releases for production streaming.
+>
+> All nightly builds are not signed or notarized.
 
 ## Usage
 

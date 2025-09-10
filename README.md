@@ -23,9 +23,9 @@ Download the latest stable version from our GitHub releases:
 
 Available for:
 
-- **macOS**: `.dmg` installer for Apple Silicon (M1/M2/M3) and Intel Macs
-- **Windows**: `.exe` installer for 64-bit systems
-- **Linux**: `.rpm` and `.deb` packages for most distributions
+- **macOS**: `*.darwin-arm64-*.zip` package for Apple Silicon Macs
+- **Windows**: `*.Setup.exe` installer for 64-bit systems
+- **Linux**: `*.rpm` and `*.deb` packages for most distributions
 
 ### Nightly Builds
 

@@ -18,9 +18,9 @@ A modern, transparent chat overlay application for Bilibili live streaming built
 ### Stable Releases
 
 > [!IMPORTANT]
-> All stable releases are signed and notarized. Do not download or run these from untrusted sources.
+> All stable releases are signed and notarized. Do not download or run these from untrusted sources. If your system prompts that the app is from unknown sources without a signature, remove it immediately and report in our Discord.
 >
-> 所有稳定版本均已签名和公证。请勿从不受信任的来源下载或安装
+> 所有稳定版本均已签名和公证。请勿从不受信任的来源下载或安装。如果系统提示该应用来自未知来源且未签名，请立即删除并在我们的 Discord 中报告。
 
 Download the latest stable version from our GitHub releases:
 

@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { app, BrowserWindow, ipcMain, nativeTheme, Menu } from 'electron'
+import { app, BrowserWindow, ipcMain, nativeTheme, Menu, clipboard } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
@@ -101,13 +101,18 @@ const registerIpcHandlers = () => {
   })
 
   // Handle context menu for input/textarea elements
-  ipcMain.on('show-context-menu', (_event, { isEditable }) => {
+  ipcMain.on('show-context-menu', (_event, { isEditable, selectionText }) => {
     const template: Electron.MenuItemConstructorOptions[] = []
+    const hasSelection = selectionText && selectionText.length > 0
+    const hasClipboardContent = clipboard.readText().length > 0
 
     // Add menu items based on context
     // By only specifying 'role' without 'label', Electron automatically
     // uses the system's localized labels (matching OS language)
-    // and manages the enabled/disabled state based on actual context
+    // For cut/copy/paste, we manually control enabled state based on selection and clipboard
+
+    // TODO: Check enable state does not work on macOS
+    // Ref: https://github.com/electron/electron/issues/13554
 
     if (isEditable) {
       // For editable elements, show full menu
@@ -115,15 +120,15 @@ const registerIpcHandlers = () => {
         { role: 'undo' },
         { role: 'redo' },
         { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
+        { role: 'cut', enabled: hasSelection },
+        { role: 'copy', enabled: hasSelection },
+        { role: 'paste', enabled: hasClipboardContent },
         { type: 'separator' },
         { role: 'selectAll' }
       )
     } else {
       // For non-editable contexts (selected text), only show copy
-      template.push({ role: 'copy' })
+      template.push({ role: 'copy', enabled: hasSelection })
     }
 
     const menu = Menu.buildFromTemplate(template)

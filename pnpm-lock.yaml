@@ -76,8 +76,8 @@ importers:
         specifier: ^7.9.0
         version: 7.9.0
       '@electron-forge/maker-squirrel':
-        specifier: ^7.9.0
-        version: 7.9.0
+        specifier: ^7.10.0
+        version: 7.10.0
       '@electron-forge/maker-zip':
         specifier: ^7.9.0
         version: 7.9.0
@@ -214,6 +214,10 @@ packages:
     resolution: {integrity: sha512-S5uFv9sFAVYSO80/K4HZsJL9L2Bs51IxCqR0a2Lk4NdKr9Fpzp6txwuALSJzM1bIpohtqbjmgut49o95wg30ZA==}
     engines: {node: '>= 16.4.0'}
 
+  '@electron-forge/maker-base@7.10.0':
+    resolution: {integrity: sha512-ydpwyCsNXS4xDknf5Aas7j2CyUmdGIBJRr760VemM11ts55zu3HOndvLCfsBSCBq4wpOIa6plQ4CaQQn15SrgQ==}
+    engines: {node: '>= 16.4.0'}
+
   '@electron-forge/maker-base@7.9.0':
     resolution: {integrity: sha512-u0jo2kaYRxh/Rai6DyFSGJcNLRVWxiKaGUjMhX1LrKolufUkCxxR4TEmv4Hvl03WTr9pQb06umlIrVMaNb+j9A==}
     engines: {node: '>= 16.4.0'}
@@ -226,8 +230,8 @@ packages:
     resolution: {integrity: sha512-if7Odo/LFn1MIGW6ftEnhP77+0pTeMd9e9YvM8+qiaztV/jVNB0RGuuzKOtQXzbrrjps/YWG15x+U4/XUIUylg==}
     engines: {node: '>= 16.4.0'}
 
-  '@electron-forge/maker-squirrel@7.9.0':
-    resolution: {integrity: sha512-Ea3MrieWC1KRct1QSZeOBY+GIqHZO5bXj6xCuj81f6nz8JMCsXdgvKosdbfcJMSKu4SYZ52PtoweA6uAACfLww==}
+  '@electron-forge/maker-squirrel@7.10.0':
+    resolution: {integrity: sha512-lChxafIApRQ2Bjw94sW/GZwnaB5fVYlDxmN54NLCqmUiYNyH9EnH4lZvMOYScA2QzizDHA0oWWYtUAIdtkzyhA==}
     engines: {node: '>= 16.4.0'}
 
   '@electron-forge/maker-zip@7.9.0':
@@ -256,6 +260,10 @@ packages:
     resolution: {integrity: sha512-z3eH4+C++LiDqlKmri04IbSNNWLRYLvc49uNiOgfvnejplLsos720TTbwgruyI3D2fbpmhrVmz9kp9H9YzXdVg==}
     engines: {node: '>= 16.4.0'}
 
+  '@electron-forge/shared-types@7.10.0':
+    resolution: {integrity: sha512-FpLBZ1kdIQjRmo09dD/zwDAARGLTzRB2Ja4eplUx5c8ctoblCnvC+KEOYA7R5DaRpKChaW0lqpDRF3ou2W+hHA==}
+    engines: {node: '>= 16.4.0'}
+
   '@electron-forge/shared-types@7.9.0':
     resolution: {integrity: sha512-6jZF+zq3SYMnweQpgr5fwlSgOd2yOZ5qlfz/CgXyVljiv0e0UThzpOjfTLuwuVgZX7a60xV+h0mg1h82Glu3wQ==}
     engines: {node: '>= 16.4.0'}
@@ -279,6 +287,10 @@ packages:
   '@electron-forge/template-webpack@7.9.0':
     resolution: {integrity: sha512-ser22QczYGor7N6bnMUwexdWbLMNApr6zpBoT+Xfn6P4Ks67ttzcfkAges7GXHNjXwox4ePYZ3+D7cWQem5C4g==}
     engines: {node: '>= 16.4.0'}
+
+  '@electron-forge/tracer@7.10.0':
+    resolution: {integrity: sha512-Qoj8bFBcwH3etG3YwJXHVeauKO3zyiZEelXMXgOp/du2QA23fc2+Ar7mzxcjY5fWDScd/8CN7M3+LxpovcKIDA==}
+    engines: {node: '>= 14.17.5'}
 
   '@electron-forge/tracer@7.9.0':
     resolution: {integrity: sha512-7itsjW1WJQADg7Ly61ggI5CCRt+QDVx3HOZC1w69jMUtnipKyPRCbvTBf1oplsNqbIzZxceXdfex6W53YNehvA==}
@@ -3703,6 +3715,15 @@ snapshots:
       - encoding
       - supports-color
 
+  '@electron-forge/maker-base@7.10.0':
+    dependencies:
+      '@electron-forge/shared-types': 7.10.0
+      fs-extra: 10.1.0
+      which: 2.0.2
+    transitivePeerDependencies:
+      - bluebird
+      - supports-color
+
   '@electron-forge/maker-base@7.9.0':
     dependencies:
       '@electron-forge/shared-types': 7.9.0
@@ -3732,10 +3753,10 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-squirrel@7.9.0':
+  '@electron-forge/maker-squirrel@7.10.0':
     dependencies:
-      '@electron-forge/maker-base': 7.9.0
-      '@electron-forge/shared-types': 7.9.0
+      '@electron-forge/maker-base': 7.10.0
+      '@electron-forge/shared-types': 7.10.0
       fs-extra: 10.1.0
     optionalDependencies:
       electron-winstaller: 5.4.0
@@ -3793,6 +3814,16 @@ snapshots:
   '@electron-forge/publisher-base@7.9.0':
     dependencies:
       '@electron-forge/shared-types': 7.9.0
+    transitivePeerDependencies:
+      - bluebird
+      - supports-color
+
+  '@electron-forge/shared-types@7.10.0':
+    dependencies:
+      '@electron-forge/tracer': 7.10.0
+      '@electron/packager': 18.4.4
+      '@electron/rebuild': 3.7.2
+      listr2: 7.0.2
     transitivePeerDependencies:
       - bluebird
       - supports-color
@@ -3855,6 +3886,10 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+
+  '@electron-forge/tracer@7.10.0':
+    dependencies:
+      chrome-trace-event: 1.0.4
 
   '@electron-forge/tracer@7.9.0':
     dependencies:

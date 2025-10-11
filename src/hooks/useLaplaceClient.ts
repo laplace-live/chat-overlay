@@ -24,8 +24,13 @@ export function useLaplaceClient() {
     }
 
     // Initialize the event bridge client
+    const websocketUrl =
+      serverHost.startsWith('ws://') || serverHost.startsWith('wss://')
+        ? `${serverHost}:${serverPort}`
+        : `ws://${serverHost}:${serverPort}`
+
     const client = new LaplaceEventBridgeClient({
-      url: `ws://${serverHost}:${serverPort}`,
+      url: websocketUrl,
       token: serverPassword,
       reconnect: true,
     })

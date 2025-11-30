@@ -73,8 +73,8 @@ importers:
         specifier: ^7.9.0
         version: 7.9.0
       '@electron-forge/maker-rpm':
-        specifier: ^7.9.0
-        version: 7.9.0
+        specifier: ^7.10.2
+        version: 7.10.2
       '@electron-forge/maker-squirrel':
         specifier: ^7.9.0
         version: 7.9.0
@@ -95,7 +95,7 @@ importers:
         version: 1.8.0
       '@tailwindcss/vite':
         specifier: ^4.1.14
-        version: 4.1.14(vite@5.4.20(@types/node@24.7.0)(lightningcss@1.30.1))
+        version: 4.1.14(vite@5.4.20(@types/node@24.7.2)(lightningcss@1.30.1))
       '@types/electron-squirrel-startup':
         specifier: ^1.0.2
         version: 1.0.2
@@ -128,7 +128,7 @@ importers:
         version: 4.1.14
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@24.7.0)(typescript@4.5.5)
+        version: 10.9.2(@types/node@24.7.2)(typescript@4.5.5)
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
@@ -137,7 +137,7 @@ importers:
         version: 4.5.5
       vite:
         specifier: ^5.4.20
-        version: 5.4.20(@types/node@24.7.0)(lightningcss@1.30.1)
+        version: 5.4.20(@types/node@24.7.2)(lightningcss@1.30.1)
 
 packages:
 
@@ -214,6 +214,10 @@ packages:
     resolution: {integrity: sha512-S5uFv9sFAVYSO80/K4HZsJL9L2Bs51IxCqR0a2Lk4NdKr9Fpzp6txwuALSJzM1bIpohtqbjmgut49o95wg30ZA==}
     engines: {node: '>= 16.4.0'}
 
+  '@electron-forge/maker-base@7.10.2':
+    resolution: {integrity: sha512-1QN4qnPVTjo+qWYG+s0kYv7XcuIowsPVvbl718FgJUcvkxyRjUA6kWHjFxRvdV6g7Sa2PzZBF+/Mrjpws1lehQ==}
+    engines: {node: '>= 16.4.0'}
+
   '@electron-forge/maker-base@7.9.0':
     resolution: {integrity: sha512-u0jo2kaYRxh/Rai6DyFSGJcNLRVWxiKaGUjMhX1LrKolufUkCxxR4TEmv4Hvl03WTr9pQb06umlIrVMaNb+j9A==}
     engines: {node: '>= 16.4.0'}
@@ -222,8 +226,8 @@ packages:
     resolution: {integrity: sha512-b1TRMKkeuZ2PTKVsTMWLY+82O6UQVPQ17x5hkWe0lyIxRyCfJr6hD+AqYbvEJ50ncDkvyCtENBT6GnhfbKOGxA==}
     engines: {node: '>= 16.4.0'}
 
-  '@electron-forge/maker-rpm@7.9.0':
-    resolution: {integrity: sha512-if7Odo/LFn1MIGW6ftEnhP77+0pTeMd9e9YvM8+qiaztV/jVNB0RGuuzKOtQXzbrrjps/YWG15x+U4/XUIUylg==}
+  '@electron-forge/maker-rpm@7.10.2':
+    resolution: {integrity: sha512-LQoeYzbY/z1yuBBA+bNutCJmhCA4NcXUbFO4OTqsIX8B6y1zNTYZT4JEuhoK7eBsP4/Rz6u/JnNp0XOyjftOUQ==}
     engines: {node: '>= 16.4.0'}
 
   '@electron-forge/maker-squirrel@7.9.0':
@@ -256,6 +260,10 @@ packages:
     resolution: {integrity: sha512-z3eH4+C++LiDqlKmri04IbSNNWLRYLvc49uNiOgfvnejplLsos720TTbwgruyI3D2fbpmhrVmz9kp9H9YzXdVg==}
     engines: {node: '>= 16.4.0'}
 
+  '@electron-forge/shared-types@7.10.2':
+    resolution: {integrity: sha512-e2pd9RsdbKwsNf6UtKoolmJGy92Nc0/XO4SI91doV8cM954hM2XSYz3VHoqXebMFAF1JDfXoEUt6UCRbEDgMgw==}
+    engines: {node: '>= 16.4.0'}
+
   '@electron-forge/shared-types@7.9.0':
     resolution: {integrity: sha512-6jZF+zq3SYMnweQpgr5fwlSgOd2yOZ5qlfz/CgXyVljiv0e0UThzpOjfTLuwuVgZX7a60xV+h0mg1h82Glu3wQ==}
     engines: {node: '>= 16.4.0'}
@@ -279,6 +287,10 @@ packages:
   '@electron-forge/template-webpack@7.9.0':
     resolution: {integrity: sha512-ser22QczYGor7N6bnMUwexdWbLMNApr6zpBoT+Xfn6P4Ks67ttzcfkAges7GXHNjXwox4ePYZ3+D7cWQem5C4g==}
     engines: {node: '>= 16.4.0'}
+
+  '@electron-forge/tracer@7.10.2':
+    resolution: {integrity: sha512-jhLLQbttfZViSOYn/3SJc8HML+jNZAytPVJwgGGd3coUiFysWJ2Xald99iqOiouPAhIigBfNPxQb/q/EbcDu4g==}
+    engines: {node: '>= 14.17.5'}
 
   '@electron-forge/tracer@7.9.0':
     resolution: {integrity: sha512-7itsjW1WJQADg7Ly61ggI5CCRt+QDVx3HOZC1w69jMUtnipKyPRCbvTBf1oplsNqbIzZxceXdfex6W53YNehvA==}
@@ -1261,6 +1273,9 @@ packages:
   '@types/node@24.7.0':
     resolution: {integrity: sha512-IbKooQVqUBrlzWTi79E8Fw78l8k1RNtlDDNWsFZs7XonuQSJ8oNYfEeclhprUldXISRMLzBpILuKgPlIxm+/Yw==}
 
+  '@types/node@24.7.2':
+    resolution: {integrity: sha512-/NbVmcGTP+lj5oa4yiYxxeBjRivKQ5Ns1eSZeB99ExsEQ6rX5XYU1Zy/gGxY/ilqtD4Etx9mKyrPxZRetiahhA==}
+
   '@types/react-dom@19.2.1':
     resolution: {integrity: sha512-/EEvYBdT3BflCWvTMO7YkYBHVE9Ci6XdqZciZANQgKpaiDRGOLIlRo91jbTNRQjgPFWVaRxcYc0luVNFitz57A==}
     peerDependencies:
@@ -1919,8 +1934,8 @@ packages:
     resolution: {integrity: sha512-adbxcyWV46qiHyvSp50TKt05tB4tK3HcmF7/nxfAdhnox83seTDbwnaqKO4sXRy7roHAIFqJP/Rw/AuEbX61LA==}
     engines: {node: '>=6'}
 
-  exponential-backoff@3.1.2:
-    resolution: {integrity: sha512-8QxYTVXUkuy7fIIoitQkPwGonB8F3Zj8eEO8Sqg9Zv/bkI7RJAzowee4gr81Hak/dUTpA2Z7VfQgoijjPNlUZA==}
+  exponential-backoff@3.1.3:
+    resolution: {integrity: sha512-ZgEeZXj30q+I0EN+CbSSpIyPaJ5HVQD18Z1m+u1FXbAeT94mr1zw50q4q6jiiC447Nl/YTcIYSAftiGqetwXCA==}
 
   external-editor@3.1.0:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}
@@ -3077,6 +3092,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   serialize-error@7.0.1:
     resolution: {integrity: sha512-8I8TjW5KMOKsZQTvoxjuSIa7foAwPWGOts+6o7sgjz41/qMD9VQHEDxi6PBvK2l0MXUmqZyNpUK+T2tQaaElvw==}
     engines: {node: '>=10'}
@@ -3703,6 +3723,15 @@ snapshots:
       - encoding
       - supports-color
 
+  '@electron-forge/maker-base@7.10.2':
+    dependencies:
+      '@electron-forge/shared-types': 7.10.2
+      fs-extra: 10.1.0
+      which: 2.0.2
+    transitivePeerDependencies:
+      - bluebird
+      - supports-color
+
   '@electron-forge/maker-base@7.9.0':
     dependencies:
       '@electron-forge/shared-types': 7.9.0
@@ -3722,10 +3751,10 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-rpm@7.9.0':
+  '@electron-forge/maker-rpm@7.10.2':
     dependencies:
-      '@electron-forge/maker-base': 7.9.0
-      '@electron-forge/shared-types': 7.9.0
+      '@electron-forge/maker-base': 7.10.2
+      '@electron-forge/shared-types': 7.10.2
     optionalDependencies:
       electron-installer-redhat: 3.4.0
     transitivePeerDependencies:
@@ -3797,6 +3826,16 @@ snapshots:
       - bluebird
       - supports-color
 
+  '@electron-forge/shared-types@7.10.2':
+    dependencies:
+      '@electron-forge/tracer': 7.10.2
+      '@electron/packager': 18.4.4
+      '@electron/rebuild': 3.7.2
+      listr2: 7.0.2
+    transitivePeerDependencies:
+      - bluebird
+      - supports-color
+
   '@electron-forge/shared-types@7.9.0':
     dependencies:
       '@electron-forge/tracer': 7.9.0
@@ -3856,6 +3895,10 @@ snapshots:
       - bluebird
       - supports-color
 
+  '@electron-forge/tracer@7.10.2':
+    dependencies:
+      chrome-trace-event: 1.0.4
+
   '@electron-forge/tracer@7.9.0':
     dependencies:
       chrome-trace-event: 1.0.4
@@ -3903,13 +3946,13 @@ snapshots:
   '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2':
     dependencies:
       env-paths: 2.2.1
-      exponential-backoff: 3.1.2
+      exponential-backoff: 3.1.3
       glob: 8.1.0
       graceful-fs: 4.2.11
       make-fetch-happen: 10.2.1
       nopt: 6.0.0
       proc-log: 2.0.1
-      semver: 7.7.2
+      semver: 7.7.3
       tar: 6.2.1
       which: 2.0.2
     transitivePeerDependencies:
@@ -3956,7 +3999,7 @@ snapshots:
       prettier: 3.6.2
       resedit: 2.0.3
       resolve: 1.22.10
-      semver: 7.7.2
+      semver: 7.7.3
       yargs-parser: 21.1.1
     transitivePeerDependencies:
       - supports-color
@@ -3974,7 +4017,7 @@ snapshots:
       node-api-version: 0.2.1
       ora: 5.4.1
       read-binary-file-arch: 1.0.6
-      semver: 7.7.2
+      semver: 7.7.3
       tar: 6.2.1
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -4310,7 +4353,7 @@ snapshots:
   '@npmcli/fs@2.1.2':
     dependencies:
       '@gar/promisify': 1.1.3
-      semver: 7.7.2
+      semver: 7.7.3
 
   '@npmcli/move-file@2.0.1':
     dependencies:
@@ -4775,12 +4818,12 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.14
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.14
 
-  '@tailwindcss/vite@4.1.14(vite@5.4.20(@types/node@24.7.0)(lightningcss@1.30.1))':
+  '@tailwindcss/vite@4.1.14(vite@5.4.20(@types/node@24.7.2)(lightningcss@1.30.1))':
     dependencies:
       '@tailwindcss/node': 4.1.14
       '@tailwindcss/oxide': 4.1.14
       tailwindcss: 4.1.14
-      vite: 5.4.20(@types/node@24.7.0)(lightningcss@1.30.1)
+      vite: 5.4.20(@types/node@24.7.2)(lightningcss@1.30.1)
 
   '@tootallnate/once@2.0.0': {}
 
@@ -4805,7 +4848,7 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 24.7.0
+      '@types/node': 24.7.2
     optional: true
 
   '@types/http-cache-semantics@4.0.4': {}
@@ -4827,6 +4870,10 @@ snapshots:
       undici-types: 6.21.0
 
   '@types/node@24.7.0':
+    dependencies:
+      undici-types: 7.14.0
+
+  '@types/node@24.7.2':
     dependencies:
       undici-types: 7.14.0
 
@@ -5350,7 +5397,7 @@ snapshots:
       glob: 7.2.3
       lodash: 4.17.21
       parse-author: 2.0.0
-      semver: 7.7.2
+      semver: 7.7.3
       tmp-promise: 3.0.3
     optionalDependencies:
       '@types/fs-extra': 9.0.13
@@ -5689,7 +5736,7 @@ snapshots:
       signal-exit: 3.0.7
       strip-eof: 1.0.0
 
-  exponential-backoff@3.1.2: {}
+  exponential-backoff@3.1.3: {}
 
   external-editor@3.1.0:
     dependencies:
@@ -6475,11 +6522,11 @@ snapshots:
 
   node-abi@3.78.0:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
 
   node-api-version@0.2.1:
     dependencies:
-      semver: 7.7.2
+      semver: 7.7.3
 
   node-fetch@2.7.0(encoding@0.1.13):
     dependencies:
@@ -6890,6 +6937,8 @@ snapshots:
 
   semver@7.7.2: {}
 
+  semver@7.7.3: {}
+
   serialize-error@7.0.1:
     dependencies:
       type-fest: 0.13.1
@@ -7145,14 +7194,14 @@ snapshots:
     dependencies:
       escape-string-regexp: 1.0.5
 
-  ts-node@10.9.2(@types/node@24.7.0)(typescript@4.5.5):
+  ts-node@10.9.2(@types/node@24.7.2)(typescript@4.5.5):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 24.7.0
+      '@types/node': 24.7.2
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -7290,13 +7339,13 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite@5.4.20(@types/node@24.7.0)(lightningcss@1.30.1):
+  vite@5.4.20(@types/node@24.7.2)(lightningcss@1.30.1):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.52.4
     optionalDependencies:
-      '@types/node': 24.7.0
+      '@types/node': 24.7.2
       fsevents: 2.3.3
       lightningcss: 1.30.1
 

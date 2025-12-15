@@ -164,7 +164,7 @@ jobs:
 
       - name: Upload artifacts for debugging (Windows)
         if: matrix.os == 'windows-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build-win-${{ github.sha }}
           path: |
@@ -175,7 +175,7 @@ jobs:
 
       - name: Upload artifacts for debugging (macOS)
         if: matrix.os == 'macos-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build-darwin-${{ github.sha }}
           path: out/make/zip/darwin/**/*.zip
@@ -183,7 +183,7 @@ jobs:
 
       - name: Upload artifacts for debugging (Linux)
         if: matrix.os == 'ubuntu-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build-linux-${{ github.sha }}
           path: |

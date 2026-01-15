@@ -111,7 +111,7 @@ jobs:
 
       - name: Sign Windows binaries with Trusted Signing
         if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-        uses: azure/trusted-signing-action@v0
+        uses: azure/trusted-signing-action@v1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}

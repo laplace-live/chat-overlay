@@ -1,8 +1,8 @@
 #!/usr/bin/env ts-node
 
-import { execSync } from 'child_process'
-import { existsSync, mkdirSync } from 'fs'
-import path from 'path'
+import { execSync } from 'node:child_process'
+import { existsSync, mkdirSync } from 'node:fs'
+import path from 'node:path'
 
 // macOS icon sizes for .icns (as per Apple's guidelines)
 const macOSSizes = [
@@ -93,7 +93,7 @@ function generateMacOSIcon(sourceIcon: string, outputDir: string, description: s
 
     // Clean up temp files
     execSync(`rm -rf "${tempDir}"`)
-  } catch (error) {
+  } catch {
     console.error(
       `Failed to create ${description} .icns file. Make sure you are running on macOS with iconutil available.`
     )
@@ -187,7 +187,7 @@ function main() {
     // Check if ImageMagick is available
     try {
       execSync('magick -version', { stdio: 'pipe' })
-    } catch (error) {
+    } catch {
       console.error('ImageMagick is required but not found. Please install ImageMagick:')
       console.error('  macOS: brew install imagemagick')
       console.error('  Ubuntu/Debian: sudo apt-get install imagemagick')
@@ -212,7 +212,7 @@ function main() {
     // Check if ImageMagick is available
     try {
       execSync('magick -version', { stdio: 'pipe' })
-    } catch (error) {
+    } catch {
       console.error('ImageMagick is required but not found. Please install ImageMagick:')
       console.error('  macOS: brew install imagemagick')
       console.error('  Ubuntu/Debian: sudo apt-get install imagemagick')

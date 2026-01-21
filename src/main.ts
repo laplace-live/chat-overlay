@@ -1,9 +1,10 @@
 import path from 'node:path'
-import { app, BrowserWindow, ipcMain, nativeTheme, Menu, clipboard } from 'electron'
+import { ConnectionState } from '@laplace.live/event-bridge-sdk'
+import { app, BrowserWindow, clipboard, ipcMain, Menu, nativeTheme } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
-import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { getAllSettings, getSetting, setSetting, type Settings } from './store/electronStore'
+
+import { getAllSettings, getSetting, type Settings, setSetting } from './store/electronStore'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {

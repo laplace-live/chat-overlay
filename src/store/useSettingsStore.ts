@@ -66,7 +66,7 @@ const createSetter = <K extends keyof Settings>(key: K) => {
   }
 }
 
-export const useSettingsStore = create<SettingsState>()((set) => ({
+export const useSettingsStore = create<SettingsState>()(set => ({
   // Default values (will be overwritten by hydration)
   ...defaults,
   _hydrated: false,

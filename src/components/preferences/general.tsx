@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { useSettingsStore } from '../../store/useSettingsStore'
+import React, { useEffect, useState } from 'react'
+
 import { useRuntimeStore } from '../../store/useRuntimeStore'
-import { Label } from '../ui/label'
+import { useSettingsStore } from '../../store/useSettingsStore'
 import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 
 export const GeneralTab: React.FC = () => {
   // Get settings from zustand store

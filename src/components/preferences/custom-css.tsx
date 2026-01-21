@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSettingsStore } from '../../store/useSettingsStore'
+
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
-import { MonacoEditor } from '../ui/monaco-editor'
-import { Label } from '../ui/label'
+import { useSettingsStore } from '../../store/useSettingsStore'
 import { nf } from '../../utils/numberFormat'
+import { Label } from '../ui/label'
+import { MonacoEditor } from '../ui/monaco-editor'
 
 export const CustomCssTab: React.FC = () => {
   const { customCSS, setCustomCSS } = useSettingsStore()

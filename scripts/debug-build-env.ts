@@ -6,8 +6,8 @@
 
 import { execSync } from 'child_process'
 import * as fs from 'fs'
-import * as path from 'path'
 import * as os from 'os'
+import * as path from 'path'
 
 const isDev = process.env.NODE_ENV === 'development'
 const environment = isDev ? 'dev' : 'prod'

@@ -1,6 +1,6 @@
-import { create } from 'zustand'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
+import { create } from 'zustand'
 
 interface RuntimeState {
   // Connection State

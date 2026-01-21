@@ -1,18 +1,17 @@
+import { ConnectionState } from '@laplace.live/event-bridge-sdk'
+import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
-import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
-import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 
-import AnimatedNumber from './utils/animated-numbers'
-import { useSettingsStore } from './store/useSettingsStore'
-import { useRuntimeStore } from './store/useRuntimeStore'
-import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { ChatEvents } from './components/events'
 import PreferencesWindow from './components/preferences'
-import { setupContextMenu } from './utils/context-menu'
-
-import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
+import { useLaplaceClient } from './hooks/useLaplaceClient'
+import { cn } from './lib/cn'
+import { useRuntimeStore } from './store/useRuntimeStore'
+import { useSettingsStore } from './store/useSettingsStore'
+import AnimatedNumber from './utils/animated-numbers'
+import { setupContextMenu } from './utils/context-menu'
 
 import './index.css'
 

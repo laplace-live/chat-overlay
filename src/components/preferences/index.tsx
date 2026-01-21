@@ -1,11 +1,12 @@
 import React from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+
+import { cn } from '../../lib/cn'
+import { isMacOS } from '../../utils/platform'
 import { ScrollArea } from '../ui/scroll-area'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+import { CustomCssTab } from './custom-css'
 import { GeneralTab } from './general'
 import { InterfaceTab } from './interface'
-import { CustomCssTab } from './custom-css'
-import { isMacOS } from '../../utils/platform'
-import { cn } from '../../lib/cn'
 
 const PreferencesWindow: React.FC = () => {
   return (

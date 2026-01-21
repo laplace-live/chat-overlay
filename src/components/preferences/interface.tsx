@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { useSettingsStore } from '../../store/useSettingsStore'
 import { Checkbox } from '../ui/checkbox'
 import { Label } from '../ui/label'

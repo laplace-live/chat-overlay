@@ -3,7 +3,7 @@
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true,
+    "useIgnoreFile": true
   },
   "files": {
     "ignoreUnknown": true,
@@ -17,14 +17,14 @@
       "!out",
       "!public",
       "!references",
-      "!storybook-static",
-    ],
+      "!storybook-static"
+    ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 120,
+    "lineWidth": 120
   },
   "linter": {
     "enabled": false,
@@ -34,19 +34,19 @@
         "noDuplicateProperties": "off",
         "noDuplicateCustomProperties": "off",
         // https://github.com/biomejs/biome/issues/7223
-        "noUnknownAtRules": "off",
+        "noUnknownAtRules": "off"
       },
       "complexity": {
-        "noImportantStyles": "off",
+        "noImportantStyles": "off"
       },
       "nursery": {
         // https://biomejs.dev/linter/rules/use-sorted-classes/
         // "useSortedClasses": "error"
-      },
+      }
     },
     "domains": {
-      "react": "recommended",
-    },
+      "react": "recommended"
+    }
   },
   "assist": {
     "actions": {
@@ -75,12 +75,12 @@
               "@/components/**",
               ":BLANK_LINE:",
               ["@/app/**", "@/pages/**"],
-              "@/**",
-            ],
-          },
-        },
-      },
-    },
+              "@/**"
+            ]
+          }
+        }
+      }
+    }
   },
   "javascript": {
     "formatter": {
@@ -88,12 +88,12 @@
       "jsxQuoteStyle": "single",
       "semicolons": "asNeeded",
       "trailingCommas": "es5",
-      "arrowParentheses": "asNeeded",
-    },
+      "arrowParentheses": "asNeeded"
+    }
   },
   "css": {
     "formatter": {
-      "quoteStyle": "single",
-    },
-  },
+      "quoteStyle": "single"
+    }
+  }
 }

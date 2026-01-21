@@ -1,5 +1,11 @@
-import path from 'node:path'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
+
+// https://github.com/electron/forge/issues/3439#issuecomment-3197027877
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 import { app, BrowserWindow, clipboard, ipcMain, Menu, nativeTheme } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
@@ -61,30 +67,38 @@ const registerIpcHandlers = () => {
 
   // Handle opacity changes
   ipcMain.on('set-window-opacity', (_event, opacity) => {
-    mainWindow.setOpacity(opacity)
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setOpacity(opacity)
+    }
   })
 
   // Handle always on top toggle
   ipcMain.on('set-always-on-top', (_event, enabled) => {
-    mainWindow.setAlwaysOnTop(enabled)
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setAlwaysOnTop(enabled)
+    }
   })
 
   // Handle click pass-through toggle
   ipcMain.on('set-click-through', (_event, enabled) => {
-    if (enabled) {
-      // Don't make the entire window click-through immediately
-      // Instead, let the renderer handle mouse tracking
-      mainWindow.webContents.send('click-through-enabled', true)
-    } else {
-      // Disable click pass-through
-      mainWindow.setIgnoreMouseEvents(false)
-      mainWindow.webContents.send('click-through-enabled', false)
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      if (enabled) {
+        // Don't make the entire window click-through immediately
+        // Instead, let the renderer handle mouse tracking
+        mainWindow.webContents.send('click-through-enabled', true)
+      } else {
+        // Disable click pass-through
+        mainWindow.setIgnoreMouseEvents(false)
+        mainWindow.webContents.send('click-through-enabled', false)
+      }
     }
   })
 
   // Handle mouse enter/leave events for click-through mode
   ipcMain.on('set-ignore-mouse-events', (_event, ignore) => {
-    mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setIgnoreMouseEvents(ignore, { forward: true })
+    }
   })
 
   // Handle get app version request
@@ -209,7 +223,7 @@ const createPreferencesWindow = () => {
     minWidth: 480,
     minHeight: 480,
     title: 'Preferences - LAPLACE Chat Overlay',
-    parent: mainWindow,
+    parent: mainWindow ?? undefined,
     modal: false,
     show: false,
     titleBarStyle: process.platform === 'darwin' ? 'hidden' : 'default',
@@ -235,7 +249,9 @@ const createPreferencesWindow = () => {
 
   // Show window when ready
   preferencesWindow.webContents.once('did-finish-load', () => {
-    preferencesWindow.show()
+    if (preferencesWindow && !preferencesWindow.isDestroyed()) {
+      preferencesWindow.show()
+    }
   })
 
   // Clean up reference when window is closed

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
 
-interface SettingsState {
+// Settings interface - must match the one in electronStore.ts
+export interface Settings {
   // UI Settings
   opacity: number
   baseFontSize: number
@@ -17,8 +17,29 @@ interface SettingsState {
   serverPort: string
   serverPassword: string
   allowedOrigins: string
+}
 
-  // Actions
+// Default values (fallback before hydration)
+const defaults: Settings = {
+  opacity: 80,
+  baseFontSize: 20,
+  alwaysOnTop: false,
+  clickThrough: false,
+  showInteractionEvents: true,
+  showGiftFree: false,
+  showEntryEffect: false,
+  customCSS: '',
+  serverHost: 'localhost',
+  serverPort: '9696',
+  serverPassword: '',
+  allowedOrigins: '',
+}
+
+interface SettingsState extends Settings {
+  // Hydration state
+  _hydrated: boolean
+
+  // Actions - each setter syncs to electron-store automatically
   setOpacity: (opacity: number) => void
   setBaseFontSize: (fontSize: number) => void
   setAlwaysOnTop: (enabled: boolean) => void
@@ -32,67 +53,53 @@ interface SettingsState {
   setServerPassword: (password: string) => void
   setAllowedOrigins: (origins: string) => void
 
-  // Sync action
-  _hydrate: () => void
+  // Internal: update a single setting from external source (e.g., another window)
+  _updateFromExternal: (key: keyof Settings, value: unknown) => void
 }
 
-export const useSettingsStore = create<SettingsState>()(
-  persist(
-    set => ({
-      // Default values
-      opacity: 80,
-      baseFontSize: 20,
-      alwaysOnTop: false,
-      clickThrough: false,
-      showInteractionEvents: true,
-      showGiftFree: false,
-      showEntryEffect: false,
-      customCSS: '',
-      serverHost: 'localhost',
-      serverPort: '9696',
-      serverPassword: '',
-      allowedOrigins: '',
+// Helper to create a setter that syncs to electron-store
+const createSetter = <K extends keyof Settings>(key: K) => {
+  return (set: (partial: Partial<SettingsState>) => void) => (value: Settings[K]) => {
+    set({ [key]: value } as Partial<SettingsState>)
+    // Sync to electron-store via IPC
+    window.electronAPI.settings.set(key, value)
+  }
+}
 
-      // Actions
-      setOpacity: opacity => set({ opacity }),
-      setBaseFontSize: baseFontSize => set({ baseFontSize }),
-      setAlwaysOnTop: alwaysOnTop => set({ alwaysOnTop }),
-      setClickThrough: clickThrough => set({ clickThrough }),
-      setShowInteractionEvents: showInteractionEvents => set({ showInteractionEvents }),
-      setShowGiftFree: showGiftFree => set({ showGiftFree }),
-      setShowEntryEffect: showEntryEffect => set({ showEntryEffect }),
-      setCustomCSS: customCSS => set({ customCSS }),
-      setServerHost: serverHost => set({ serverHost }),
-      setServerPort: serverPort => set({ serverPort }),
-      setServerPassword: serverPassword => set({ serverPassword }),
-      setAllowedOrigins: allowedOrigins => set({ allowedOrigins }),
+export const useSettingsStore = create<SettingsState>()((set) => ({
+  // Default values (will be overwritten by hydration)
+  ...defaults,
+  _hydrated: false,
 
-      // Hydrate from storage
-      _hydrate: () => {
-        const storedData = localStorage.getItem('overlay-settings')
-        if (storedData) {
-          try {
-            const parsed = JSON.parse(storedData)
-            set(parsed.state)
-          } catch (e) {
-            console.error('Failed to parse stored settings:', e)
-          }
-        }
-      },
-    }),
-    {
-      name: 'overlay-settings', // unique name for localStorage key
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-)
+  // Actions with automatic sync to electron-store
+  setOpacity: createSetter('opacity')(set),
+  setBaseFontSize: createSetter('baseFontSize')(set),
+  setAlwaysOnTop: createSetter('alwaysOnTop')(set),
+  setClickThrough: createSetter('clickThrough')(set),
+  setShowInteractionEvents: createSetter('showInteractionEvents')(set),
+  setShowGiftFree: createSetter('showGiftFree')(set),
+  setShowEntryEffect: createSetter('showEntryEffect')(set),
+  setCustomCSS: createSetter('customCSS')(set),
+  setServerHost: createSetter('serverHost')(set),
+  setServerPort: createSetter('serverPort')(set),
+  setServerPassword: createSetter('serverPassword')(set),
+  setAllowedOrigins: createSetter('allowedOrigins')(set),
 
-// Set up cross-window sync via storage events
+  // Update from external source (another window changed a setting)
+  _updateFromExternal: (key, value) => {
+    set({ [key]: value } as Partial<SettingsState>)
+  },
+}))
+
+// Hydrate settings from electron-store on startup
 if (typeof window !== 'undefined') {
-  window.addEventListener('storage', e => {
-    if (e.key === 'overlay-settings' && e.newValue) {
-      // Another window updated the settings, sync our store
-      useSettingsStore.getState()._hydrate()
-    }
+  // Load initial settings
+  window.electronAPI.settings.getAll().then((settings: Settings) => {
+    useSettingsStore.setState({ ...settings, _hydrated: true })
+  })
+
+  // Listen for settings changes from other windows
+  window.electronAPI.settings.onChange((key: string, value: unknown) => {
+    useSettingsStore.getState()._updateFromExternal(key as keyof Settings, value)
   })
 }

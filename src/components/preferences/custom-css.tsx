@@ -21,16 +21,14 @@ export const CustomCssTab: React.FC = () => {
   }, [customCSS])
 
   // Auto-update CSS when debounced value changes
+  // Settings sync is now handled automatically by electron-store
   useEffect(() => {
     // Only auto-update if we have changes and debounced value is different from what was initially loaded
     if (hasChanges && debouncedCSS === css) {
       setIsApplying(true)
 
-      // Update the store
+      // Update the store (this automatically syncs to all windows via electron-store)
       setCustomCSS(debouncedCSS)
-
-      // Also notify the main window via IPC so it updates its styles
-      window.electronAPI.updateCustomCSS(debouncedCSS)
 
       // Show applying state briefly
       setTimeout(() => {

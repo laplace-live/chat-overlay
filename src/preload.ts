@@ -4,6 +4,30 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
+  // === Settings API (electron-store) ===
+  settings: {
+    // Get all settings
+    getAll: () => ipcRenderer.invoke('settings:getAll'),
+
+    // Get a specific setting
+    get: (key: string) => ipcRenderer.invoke('settings:get', key),
+
+    // Set a specific setting (broadcasts to all windows automatically)
+    set: (key: string, value: unknown) => ipcRenderer.send('settings:set', key, value),
+
+    // Listen for settings changes from other windows
+    onChange: (callback: (key: string, value: unknown) => void) => {
+      const handler = (_event: Electron.IpcRendererEvent, key: string, value: unknown) => callback(key, value)
+      ipcRenderer.on('settings-changed', handler)
+
+      // Return unsubscribe function
+      return () => {
+        ipcRenderer.removeListener('settings-changed', handler)
+      }
+    },
+  },
+
+  // === Window control ===
   setWindowOpacity: (opacity: number) => ipcRenderer.send('set-window-opacity', opacity),
   setAlwaysOnTop: (enabled: boolean) => ipcRenderer.send('set-always-on-top', enabled),
   setClickThrough: (enabled: boolean) => ipcRenderer.send('set-click-through', enabled),
@@ -19,20 +43,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
   getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   getPlatform: () => process.platform,
-
-  // CSS updates from preferences window
-  onCustomCSSUpdated: (callback: (css: string) => void) => {
-    const handler = (_event: Electron.IpcRendererEvent, css: string) => callback(css)
-    ipcRenderer.on('custom-css-updated', handler)
-
-    // Return unsubscribe function
-    return () => {
-      ipcRenderer.removeListener('custom-css-updated', handler)
-    }
-  },
-
-  // CSS Editor window methods (for preferences window)
-  updateCustomCSS: (css: string) => ipcRenderer.send('update-custom-css', css),
 
   // Preferences window methods
   openPreferences: () => ipcRenderer.send('open-preferences'),

@@ -3,6 +3,7 @@ import { app, BrowserWindow, ipcMain, nativeTheme, Menu, clipboard } from 'elect
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
+import { getAllSettings, getSetting, setSetting, type Settings } from './store/electronStore'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -25,8 +26,38 @@ let preferencesWindow: BrowserWindow | null = null
 // Store current connection state
 let currentConnectionState: ConnectionState = ConnectionState.DISCONNECTED
 
+// Broadcast settings change to all windows
+const broadcastSettingsChange = <K extends keyof Settings>(key: K, value: Settings[K]) => {
+  const windows = [mainWindow, preferencesWindow]
+  for (const win of windows) {
+    if (win && !win.isDestroyed()) {
+      win.webContents.send('settings-changed', key, value)
+    }
+  }
+}
+
 // Register all IPC handlers once at startup
 const registerIpcHandlers = () => {
+  // === Settings IPC handlers ===
+
+  // Get all settings
+  ipcMain.handle('settings:getAll', () => {
+    return getAllSettings()
+  })
+
+  // Get a specific setting
+  ipcMain.handle('settings:get', (_event, key: keyof Settings) => {
+    return getSetting(key)
+  })
+
+  // Set a specific setting
+  ipcMain.on('settings:set', (_event, key: keyof Settings, value: unknown) => {
+    setSetting(key, value as Settings[typeof key])
+    broadcastSettingsChange(key, value as Settings[typeof key])
+  })
+
+  // === Window control IPC handlers ===
+
   // Handle opacity changes
   ipcMain.on('set-window-opacity', (_event, opacity) => {
     mainWindow.setOpacity(opacity)
@@ -58,14 +89,6 @@ const registerIpcHandlers = () => {
   // Handle get app version request
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
-  })
-
-  // Handle CSS updates from preferences window
-  ipcMain.on('update-custom-css', (_event, css) => {
-    // Send the updated CSS to the main window
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('custom-css-updated', css)
-    }
   })
 
   // Handle open preferences window

@@ -16,10 +16,21 @@ import { Button } from './components/ui/button'
 
 import './index.css'
 
+import type { Settings } from './store/useSettingsStore'
+
 // TypeScript declaration for the electronAPI
 declare global {
   interface Window {
     electronAPI: {
+      // Settings API (electron-store)
+      settings: {
+        getAll: () => Promise<Settings>
+        get: <K extends keyof Settings>(key: K) => Promise<Settings[K]>
+        set: <K extends keyof Settings>(key: K, value: Settings[K]) => void
+        onChange: (callback: (key: string, value: unknown) => void) => () => void
+      }
+
+      // Window control
       setWindowOpacity: (opacity: number) => void
       setAlwaysOnTop: (enabled: boolean) => void
       setClickThrough: (enabled: boolean) => void
@@ -27,8 +38,6 @@ declare global {
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
       getPlatform: () => string
-      onCustomCSSUpdated: (callback: (css: string) => void) => () => void
-      updateCustomCSS: (css: string) => void
       openPreferences: () => void
       closePreferences: () => void
       broadcastConnectionState: (state: ConnectionState) => void
@@ -58,7 +67,7 @@ const App: React.FC = () => {
   }
 
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setCustomCSS } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS } = useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -85,6 +94,7 @@ const App: React.FC = () => {
   }, [baseFontSize])
 
   // Initialize custom CSS on mount and when it changes
+  // Settings sync is now handled automatically by electron-store
   useEffect(() => {
     let styleElement = document.getElementById('dynamic-custom-css')
 
@@ -96,15 +106,6 @@ const App: React.FC = () => {
 
     styleElement.textContent = customCSS
   }, [customCSS])
-
-  // Listen for CSS updates from the preferences window
-  useEffect(() => {
-    const unsubscribe = window.electronAPI.onCustomCSSUpdated((css: string) => {
-      setCustomCSS(css)
-    })
-
-    return unsubscribe
-  }, [setCustomCSS])
 
   // Update the background opacity
   useEffect(() => {

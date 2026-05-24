@@ -1,5 +1,5 @@
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
+import { IconHandFingerOff, IconPin, IconPinFilled, IconSettings, IconX } from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -32,7 +32,7 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setAlwaysOnTop } = useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -161,6 +161,21 @@ const App: React.FC = () => {
                 <IconHandFingerOff size={14} />
               </Button>
             )}
+            <Button
+              variant='ghost'
+              size='icon-sm'
+              tint='white'
+              type='button'
+              id='always-on-top-btn'
+              title={alwaysOnTop ? 'Disable Always on Top' : 'Enable Always on Top'}
+              onClick={() => {
+                const next = !alwaysOnTop
+                setAlwaysOnTop(next)
+                window.electronAPI.setAlwaysOnTop(next)
+              }}
+            >
+              {alwaysOnTop ? <IconPinFilled size={14} /> : <IconPin size={14} />}
+            </Button>
             <Button
               variant='ghost'
               size='icon-sm'

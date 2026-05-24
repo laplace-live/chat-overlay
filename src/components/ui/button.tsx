@@ -1,25 +1,30 @@
 'use client'
 
-import { Slot, Slottable } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { forwardRef } from 'react'
+import { Slot } from 'radix-ui'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
-import { Loading } from './loading'
+import { Spinner } from './spinner'
 
 const buttonVariantsConfig = {
+  // Should match Input, Toggle
   size: {
-    sm: 'text-xs px-2 py-[calc(0.25rem-1px)] rounded-sm',
-    default: 'text-base px-2.5 py-[calc(0.25rem-1px)]',
-    lg: 'text-lg px-3 py-[calc(0.25rem-1px)]',
-    icon: 'text-base p-[calc(0.25rem-1px)]',
+    sm: 'text-xs rounded-sm h-6 px-1.5 [&>svg]:size-3',
+    default: 'text-sm rounded-md h-8 px-2.5 [&>svg]:size-4 [&>svg]:-mx-0.5',
+    lg: 'text-base rounded-md gap-2 h-10 px-3.5 [&>svg]:size-5 [&>svg]:-mx-1',
+    'icon-sm': 'rounded-sm size-6 [&>svg]:size-4',
+    icon: 'rounded-md size-8 [&>svg]:size-5',
+    'icon-lg': 'rounded-md size-10 [&>svg]:size-6',
   },
   variant: {
-    default: 'border focus-visible:border-current',
-    solid: 'border focus-visible:border-current',
-    outline: 'border bg-transparent focus-visible:border-current',
-    link: 'border border-transparent focus-visible:border-transparent text-fg not-disabled:hover:text-ac bg-transparent',
+    // map to "secondary" in shadcn
+    default: 'border-current/5',
+    // map to "primary" in shadcn
+    solid: 'shadow-md ',
+    outline: 'bg-transparent shadow-xs not-disabled:hover:bg-current/10',
+    ghost: 'border-transparent text-fg bg-transparent not-disabled:hover:bg-current/10',
+    link: 'border-transparent underline-offset-2 hover:underline',
   },
   tint: {
     default: 'text-fg focus-visible:ring-fg/30',
@@ -48,461 +53,70 @@ const buttonVariantsConfig = {
 }
 
 const buttonVariants = cva(
-  'appearance-none inline-flex items-center gap-1 cursor-pointer justify-center whitespace-nowrap rounded-md font-medium focus-ring disabled:cursor-not-allowed disabled:opacity-50',
+  'focus-ring inline-flex appearance-none items-center justify-center gap-1 whitespace-nowrap border font-medium focus-visible:border-current disabled:cursor-not-allowed disabled:opacity-50',
   {
     variants: buttonVariantsConfig,
     // prettier-ignore
+    // biome-ignore format: keep long lines for readability
     compoundVariants: [
-      {
-        variant: 'default',
-        tint: 'default',
-        className: 'border-fg/10 bg-fg/10 not-disabled:hover:bg-fg/20',
-      },
-      {
-        variant: 'default',
-        tint: 'accent',
-        className: 'border-ac/10 bg-ac/10 not-disabled:hover:bg-ac/20',
-      },
-      {
-        variant: 'default',
-        tint: 'gray',
-        className: 'border-gray-500/10 bg-gray-500/10 not-disabled:hover:bg-gray-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'red',
-        className: 'border-red-500/10 bg-red-500/10 not-disabled:hover:bg-red-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'orange',
-        className: 'border-orange-500/10 bg-orange-500/10 not-disabled:hover:bg-orange-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'amber',
-        className: 'border-amber-500/10 bg-amber-500/10 not-disabled:hover:bg-amber-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'yellow',
-        className: 'border-yellow-500/10 bg-yellow-500/10 not-disabled:hover:bg-yellow-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'lime',
-        className: 'border-lime-500/10 bg-lime-500/10 not-disabled:hover:bg-lime-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'green',
-        className: 'border-green-500/10 bg-green-500/10 not-disabled:hover:bg-green-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'emerald',
-        className: 'border-emerald-500/10 bg-emerald-500/10 not-disabled:hover:bg-emerald-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'teal',
-        className: 'border-teal-500/10 bg-teal-500/10 not-disabled:hover:bg-teal-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'cyan',
-        className: 'border-cyan-500/10 bg-cyan-500/10 not-disabled:hover:bg-cyan-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'sky',
-        className: 'border-sky-500/10 bg-sky-500/10 not-disabled:hover:bg-sky-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'blue',
-        className: 'border-blue-500/10 bg-blue-500/10 not-disabled:hover:bg-blue-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'indigo',
-        className: 'border-indigo-500/10 bg-indigo-500/10 not-disabled:hover:bg-indigo-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'violet',
-        className: 'border-violet-500/10 bg-violet-500/10 not-disabled:hover:bg-violet-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'purple',
-        className: 'border-purple-500/10 bg-purple-500/10 not-disabled:hover:bg-purple-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'fuchsia',
-        className: 'border-fuchsia-500/10 bg-fuchsia-500/10 not-disabled:hover:bg-fuchsia-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'pink',
-        className: 'border-pink-500/10 bg-pink-500/10 not-disabled:hover:bg-pink-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'rose',
-        className: 'border-rose-500/10 bg-rose-500/10 not-disabled:hover:bg-rose-500/20',
-      },
-      {
-        variant: 'default',
-        tint: 'white',
-        className: 'border-white/10 bg-white/10 not-disabled:hover:bg-white/20',
-      },
-      {
-        variant: 'default',
-        tint: 'black',
-        className: 'border-black/10 bg-black/10 not-disabled:hover:bg-black/20',
-      },
+      { variant: 'default', tint: 'default', className: 'bg-fg/5 not-disabled:hover:bg-fg/10 focus-visible:border-ac focus-visible:ring-ac/30' },
+      { variant: 'default', tint: 'accent', className: 'bg-ac/10 not-disabled:hover:bg-ac/20' },
+      { variant: 'default', tint: 'gray', className: 'bg-gray-500/10 not-disabled:hover:bg-gray-500/20', },
+      { variant: 'default', tint: 'red', className: 'bg-red-500/10 not-disabled:hover:bg-red-500/20', },
+      { variant: 'default', tint: 'orange', className: 'bg-orange-500/10 not-disabled:hover:bg-orange-500/20', },
+      { variant: 'default', tint: 'amber', className: 'bg-amber-500/10 not-disabled:hover:bg-amber-500/20', },
+      { variant: 'default', tint: 'yellow', className: 'bg-yellow-500/10 not-disabled:hover:bg-yellow-500/20', },
+      { variant: 'default', tint: 'lime', className: 'bg-lime-500/10 not-disabled:hover:bg-lime-500/20', },
+      { variant: 'default', tint: 'green', className: 'bg-green-500/10 not-disabled:hover:bg-green-500/20', },
+      { variant: 'default', tint: 'emerald', className: 'bg-emerald-500/10 not-disabled:hover:bg-emerald-500/20', },
+      { variant: 'default', tint: 'teal', className: 'bg-teal-500/10 not-disabled:hover:bg-teal-500/20', },
+      { variant: 'default', tint: 'cyan', className: 'bg-cyan-500/10 not-disabled:hover:bg-cyan-500/20', },
+      { variant: 'default', tint: 'sky', className: 'bg-sky-500/10 not-disabled:hover:bg-sky-500/20', },
+      { variant: 'default', tint: 'blue', className: 'bg-blue-500/10 not-disabled:hover:bg-blue-500/20', },
+      { variant: 'default', tint: 'indigo', className: 'bg-indigo-500/10 not-disabled:hover:bg-indigo-500/20', },
+      { variant: 'default', tint: 'violet', className: 'bg-violet-500/10 not-disabled:hover:bg-violet-500/20', },
+      { variant: 'default', tint: 'purple', className: 'bg-purple-500/10 not-disabled:hover:bg-purple-500/20', },
+      { variant: 'default', tint: 'fuchsia', className: 'bg-fuchsia-500/10 not-disabled:hover:bg-fuchsia-500/20', },
+      { variant: 'default', tint: 'pink', className: 'bg-pink-500/10 not-disabled:hover:bg-pink-500/20', },
+      { variant: 'default', tint: 'rose', className: 'bg-rose-500/10 not-disabled:hover:bg-rose-500/20', },
+      { variant: 'default', tint: 'white', className: 'bg-white/10 not-disabled:hover:bg-white/20' },
+      { variant: 'default', tint: 'black', className: 'bg-black/10 not-disabled:hover:bg-black/20' },
 
       // Solid
-      {
-        variant: 'solid',
-        tint: 'default',
-        className: 'bg-fg border-fg text-bg not-disabled:hover:bg-fg/80',
-      },
-      {
-        variant: 'solid',
-        tint: 'accent',
-        className: 'bg-ac border-ac text-bg not-disabled:hover:bg-ac/80',
-      },
-      {
-        variant: 'solid',
-        tint: 'gray',
-        className: 'bg-gray-500 border-gray-500 text-bg not-disabled:hover:bg-gray-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'red',
-        className: 'bg-red-500 border-red-500 text-bg not-disabled:hover:bg-red-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'orange',
-        className: 'bg-orange-500 border-orange-500 text-bg not-disabled:hover:bg-orange-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'amber',
-        className: 'bg-amber-500 border-amber-500 text-bg not-disabled:hover:bg-amber-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'yellow',
-        className: 'bg-yellow-500 border-yellow-500 text-bg not-disabled:hover:bg-yellow-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'lime',
-        className: 'bg-lime-500 border-lime-500 text-bg not-disabled:hover:bg-lime-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'green',
-        className: 'bg-green-500 border-green-500 text-bg not-disabled:hover:bg-green-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'emerald',
-        className: 'bg-emerald-500 border-emerald-500 text-bg not-disabled:hover:bg-emerald-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'teal',
-        className: 'bg-teal-500 border-teal-500 text-bg not-disabled:hover:bg-teal-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'cyan',
-        className: 'bg-cyan-500 border-cyan-500 text-bg not-disabled:hover:bg-cyan-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'sky',
-        className: 'bg-sky-500 border-sky-500 text-bg not-disabled:hover:bg-sky-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'blue',
-        className: 'bg-blue-500 border-blue-500 text-bg not-disabled:hover:bg-blue-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'indigo',
-        className: 'bg-indigo-500 border-indigo-500 text-bg not-disabled:hover:bg-indigo-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'violet',
-        className: 'bg-violet-500 border-violet-500 text-bg not-disabled:hover:bg-violet-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'purple',
-        className: 'bg-purple-500 border-purple-500 text-bg not-disabled:hover:bg-purple-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'fuchsia',
-        className: 'bg-fuchsia-500 border-fuchsia-500 text-bg not-disabled:hover:bg-fuchsia-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'pink',
-        className: 'bg-pink-500 border-pink-500 text-bg not-disabled:hover:bg-pink-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'rose',
-        className: 'bg-rose-500 border-rose-500 text-bg not-disabled:hover:bg-rose-400',
-      },
-      {
-        variant: 'solid',
-        tint: 'white',
-        className: 'bg-white border-white text-black not-disabled:hover:bg-white/80',
-      },
-      {
-        variant: 'solid',
-        tint: 'black',
-        className: 'bg-black border-black text-white not-disabled:hover:bg-black/80',
-      },
+      { variant: 'solid', tint: 'default', className: 'border-fg bg-fg/95 text-bg shadow-fg/20 not-disabled:hover:bg-fg/80' },
+      { variant: 'solid', tint: 'accent', className: 'border-ac bg-ac/95 text-bg shadow-ac/25 not-disabled:hover:bg-ac/80' },
+      { variant: 'solid', tint: 'gray', className: 'border-gray-500 bg-gray-500/95 text-bg shadow-gray-500/25 not-disabled:hover:bg-gray-400', },
+      { variant: 'solid', tint: 'red', className: 'border-red-500 bg-red-500/95 text-bg shadow-red-500/25 not-disabled:hover:bg-red-400' },
+      { variant: 'solid', tint: 'orange', className: 'border-orange-500 bg-orange-500/95 text-bg shadow-orange-500/25 not-disabled:hover:bg-orange-400', },
+      { variant: 'solid', tint: 'amber', className: 'border-amber-500 bg-amber-500/95 text-bg shadow-amber-500/25 not-disabled:hover:bg-amber-400', },
+      { variant: 'solid', tint: 'yellow', className: 'border-yellow-500 bg-yellow-500/95 text-bg shadow-yellow-500/25 not-disabled:hover:bg-yellow-400', },
+      { variant: 'solid', tint: 'lime', className: 'border-lime-500 bg-lime-500/95 text-bg shadow-lime-500/25 not-disabled:hover:bg-lime-400', },
+      { variant: 'solid', tint: 'green', className: 'border-green-500 bg-green-500/95 text-bg shadow-green-500/25 not-disabled:hover:bg-green-400', },
+      { variant: 'solid', tint: 'emerald', className: 'border-emerald-500 bg-emerald-500/95 text-bg shadow-emerald-500/25 not-disabled:hover:bg-emerald-400', },
+      { variant: 'solid', tint: 'teal', className: 'border-teal-500 bg-teal-500/95 text-bg shadow-teal-500/25 not-disabled:hover:bg-teal-400', },
+      { variant: 'solid', tint: 'cyan', className: 'border-cyan-500 bg-cyan-500/95 text-bg shadow-cyan-500/25 not-disabled:hover:bg-cyan-400', },
+      { variant: 'solid', tint: 'sky', className: 'border-sky-500 bg-sky-500/95 text-bg shadow-sky-500/25 not-disabled:hover:bg-sky-400' },
+      { variant: 'solid', tint: 'blue', className: 'border-blue-500 bg-blue-500/95 text-bg shadow-blue-500/25 not-disabled:hover:bg-blue-400', },
+      { variant: 'solid', tint: 'indigo', className: 'border-indigo-500 bg-indigo-500/95 text-bg shadow-indigo-500/25 not-disabled:hover:bg-indigo-400', },
+      { variant: 'solid', tint: 'violet', className: 'border-violet-500 bg-violet-500/95 text-bg shadow-violet-500/25 not-disabled:hover:bg-violet-400', },
+      { variant: 'solid', tint: 'purple', className: 'border-purple-500 bg-purple-500/95 text-bg shadow-purple-500/25 not-disabled:hover:bg-purple-400', },
+      { variant: 'solid', tint: 'fuchsia', className: 'border-fuchsia-500 bg-fuchsia-500/95 text-bg shadow-fuchsia-500/25 not-disabled:hover:bg-fuchsia-400', },
+      { variant: 'solid', tint: 'pink', className: 'border-pink-500 bg-pink-500/95 text-bg shadow-pink-500/25 not-disabled:hover:bg-pink-400', },
+      { variant: 'solid', tint: 'rose', className: 'border-rose-500 bg-rose-500/95 text-bg shadow-rose-500/25 not-disabled:hover:bg-rose-400', },
+      { variant: 'solid', tint: 'white', className: 'border-white bg-white/95 text-black shadow-white/25 not-disabled:hover:bg-white/80' },
+      { variant: 'solid', tint: 'black', className: 'border-black bg-black/95 text-white shadow-black/25 not-disabled:hover:bg-black/80' },
 
       // Outline
-      {
-        variant: 'outline',
-        tint: 'default',
-        className:
-          'border-fg/30 not-disabled:hover:text-fg/80 not-disabled:hover:border-fg/80 data-[state=open]:border-ac data-[state=open]:text-ac',
-      },
-      {
-        variant: 'outline',
-        tint: 'accent',
-        className: 'border-ac not-disabled:hover:text-ac/80 not-disabled:hover:border-ac/80',
-      },
-      {
-        variant: 'outline',
-        tint: 'gray',
-        className: 'border-gray-500 not-disabled:hover:text-gray-400 not-disabled:hover:border-gray-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'red',
-        className: 'border-red-500 not-disabled:hover:text-red-400 not-disabled:hover:border-red-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'orange',
-        className: 'border-orange-500 not-disabled:hover:text-orange-400 not-disabled:hover:border-orange-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'amber',
-        className: 'border-amber-500 not-disabled:hover:text-amber-400 not-disabled:hover:border-amber-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'yellow',
-        className: 'border-yellow-500 not-disabled:hover:text-yellow-400 not-disabled:hover:border-yellow-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'lime',
-        className: 'border-lime-500 not-disabled:hover:text-lime-400 not-disabled:hover:border-lime-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'green',
-        className: 'border-green-500 not-disabled:hover:text-green-400 not-disabled:hover:border-green-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'emerald',
-        className: 'border-emerald-500 not-disabled:hover:text-emerald-400 not-disabled:hover:border-emerald-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'teal',
-        className: 'border-teal-500 not-disabled:hover:text-teal-400 not-disabled:hover:border-teal-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'cyan',
-        className: 'border-cyan-500 not-disabled:hover:text-cyan-400 not-disabled:hover:border-cyan-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'sky',
-        className: 'border-sky-500 not-disabled:hover:text-sky-400 not-disabled:hover:border-sky-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'blue',
-        className: 'border-blue-500 not-disabled:hover:text-blue-400 not-disabled:hover:border-blue-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'indigo',
-        className: 'border-indigo-500 not-disabled:hover:text-indigo-400 not-disabled:hover:border-indigo-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'violet',
-        className: 'border-violet-500 not-disabled:hover:text-violet-400 not-disabled:hover:border-violet-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'purple',
-        className: 'border-purple-500 not-disabled:hover:text-purple-400 not-disabled:hover:border-purple-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'fuchsia',
-        className: 'border-fuchsia-500 not-disabled:hover:text-fuchsia-400 not-disabled:hover:border-fuchsia-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'pink',
-        className: 'border-pink-500 not-disabled:hover:text-pink-400 not-disabled:hover:border-pink-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'rose',
-        className: 'border-rose-500 not-disabled:hover:text-rose-400 not-disabled:hover:border-rose-400',
-      },
-      {
-        variant: 'outline',
-        tint: 'white',
-        className: 'border-white not-disabled:hover:text-white/80 not-disabled:hover:border-white/80',
-      },
-      {
-        variant: 'outline',
-        tint: 'black',
-        className: 'border-black not-disabled:hover:text-black/80 not-disabled:hover:border-black/80',
-      },
+      { variant: 'outline', tint: 'default', className: 'border-fg/30 not-disabled:hover:bg-fg/5 focus-visible:border-ac focus-visible:ring-ac/30 data-open:bg-fg/5', },
+
+      // Ghost
+      { variant: 'ghost', tint: 'default', className: 'not-disabled:hover:bg-ac/10 not-disabled:hover:text-ac focus-visible:border-ac focus-visible:ring-ac/30 data-open:bg-ac/10 data-open:text-ac' },
 
       // Link
-      {
-        variant: 'link',
-        tint: 'default',
-        className: 'not-disabled:hover:text-ac data-[state=open]:text-ac',
-      },
-      {
-        variant: 'link',
-        tint: 'accent',
-        className: 'not-disabled:hover:text-ac/80',
-      },
-      {
-        variant: 'link',
-        tint: 'gray',
-        className: 'not-disabled:hover:text-gray-500',
-      },
-      {
-        variant: 'link',
-        tint: 'red',
-        className: 'not-disabled:hover:text-red-500',
-      },
-      {
-        variant: 'link',
-        tint: 'orange',
-        className: 'not-disabled:hover:text-orange-500',
-      },
-      {
-        variant: 'link',
-        tint: 'amber',
-        className: 'not-disabled:hover:text-amber-500',
-      },
-      {
-        variant: 'link',
-        tint: 'yellow',
-        className: 'not-disabled:hover:text-yellow-500',
-      },
-      {
-        variant: 'link',
-        tint: 'lime',
-        className: 'not-disabled:hover:text-lime-500',
-      },
-      {
-        variant: 'link',
-        tint: 'green',
-        className: 'not-disabled:hover:text-green-500',
-      },
-      {
-        variant: 'link',
-        tint: 'emerald',
-        className: 'not-disabled:hover:text-emerald-500',
-      },
-      {
-        variant: 'link',
-        tint: 'teal',
-        className: 'not-disabled:hover:text-teal-500',
-      },
-      {
-        variant: 'link',
-        tint: 'cyan',
-        className: 'not-disabled:hover:text-cyan-500',
-      },
-      {
-        variant: 'link',
-        tint: 'sky',
-        className: 'not-disabled:hover:text-sky-500',
-      },
-      {
-        variant: 'link',
-        tint: 'blue',
-        className: 'not-disabled:hover:text-blue-500',
-      },
-      {
-        variant: 'link',
-        tint: 'indigo',
-        className: 'not-disabled:hover:text-indigo-500',
-      },
-      {
-        variant: 'link',
-        tint: 'violet',
-        className: 'not-disabled:hover:text-violet-500',
-      },
-      {
-        variant: 'link',
-        tint: 'purple',
-        className: 'not-disabled:hover:text-purple-500',
-      },
-      {
-        variant: 'link',
-        tint: 'fuchsia',
-        className: 'not-disabled:hover:text-fuchsia-500',
-      },
-      {
-        variant: 'link',
-        tint: 'pink',
-        className: 'not-disabled:hover:text-pink-500',
-      },
-      {
-        variant: 'link',
-        tint: 'rose',
-        className: 'not-disabled:hover:text-rose-500',
-      },
-      {
-        variant: 'link',
-        tint: 'white',
-        className: 'not-disabled:hover:text-white/80',
-      },
-      {
-        variant: 'link',
-        tint: 'black',
-        className: 'not-disabled:hover:text-black/80',
-      },
+      { variant: 'link', tint: 'default', className: 'not-disabled:hover:text-ac focus-visible:border-ac focus-visible:ring-ac/30 data-open:text-ac' },
 
       // Dot variant padding adjustments
-      // { variant: 'dot', size: 'default', className: 'pl-[1.125rem]' },
+      // { variant: 'dot', size: 'default', className: 'pl-4.5' },
       // { variant: 'dot', size: 'sm', className: 'pl-[0.85rem]' },
       // { variant: 'dot', size: 'lg', className: 'pl-5' },
     ],
@@ -520,52 +134,49 @@ export interface ButtonProps extends React.ComponentProps<'button'>, VariantProp
    */
   asChild?: boolean
   loading?: boolean
+  /** @deprecated use children directly instead */
   leftSection?: React.ReactNode
+  /** @deprecated use children directly instead */
   leftSectionClassName?: string
+  /** @deprecated use children directly instead */
   rightSection?: React.ReactNode
+  /** @deprecated use children directly instead */
   rightSectionClassName?: string
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      tint,
-      asChild = false,
-      loading = false,
-      leftSection,
-      leftSectionClassName,
-      rightSection,
-      rightSectionClassName,
-      children,
-      ...props
-    },
-    ref
-  ) => {
-    const Comp = asChild ? Slot : 'button'
-    return (
-      <Comp
-        data-slot='button'
-        className={cn(buttonVariants({ variant, size, tint, className }), loading && 'cursor-wait')}
-        ref={ref}
-        {...props}
-      >
-        {leftSection ? (
-          <div className={cn('flex items-center justify-center', leftSectionClassName)}>{leftSection}</div>
-        ) : null}
+function Button({
+  className,
+  variant,
+  size,
+  tint,
+  asChild = false,
+  loading = false,
+  leftSection,
+  leftSectionClassName,
+  rightSection,
+  rightSectionClassName,
+  children,
+  ...props
+}: ButtonProps) {
+  const Comp = asChild ? Slot.Root : 'button'
+  return (
+    <Comp
+      data-slot='button'
+      className={cn(buttonVariants({ variant, size, tint, className }), loading && 'cursor-wait')}
+      {...props}
+    >
+      {leftSection ? (
+        <div className={cn('flex items-center justify-center', leftSectionClassName)}>{leftSection}</div>
+      ) : null}
 
-        <Slottable>{children}</Slottable>
+      <Slot.Slottable>{children}</Slot.Slottable>
 
-        {loading && <Loading />}
-        {rightSection ? (
-          <div className={cn('flex items-center justify-center', rightSectionClassName)}>{rightSection}</div>
-        ) : null}
-      </Comp>
-    )
-  }
-)
-Button.displayName = 'Button'
+      {loading && <Spinner />}
+      {rightSection ? (
+        <div className={cn('flex items-center justify-center', rightSectionClassName)}>{rightSection}</div>
+      ) : null}
+    </Comp>
+  )
+}
 
 export { Button, buttonVariants, buttonVariantsConfig }

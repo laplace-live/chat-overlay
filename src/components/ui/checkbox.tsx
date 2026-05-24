@@ -1,29 +1,28 @@
 'use client'
 
 import { IconCheck } from '@tabler/icons-react'
+import { Checkbox as CheckboxPrimitive } from 'radix-ui'
 import type * as React from 'react'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
-function Checkbox({ className, ...props }: React.ComponentProps<'input'>) {
+function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
   return (
-    <div className='relative inline-flex [&+label]:pb-0'>
-      <input
-        type='checkbox'
-        data-slot='checkbox'
-        className={cn(
-          'peer bg-bg/10 size-4 cursor-pointer appearance-none rounded-sm border',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          'checked:border-ac checked:bg-ac',
-          'focus-ring',
-          className
-        )}
-        {...props}
-      />
-      <div className='text-bg pointer-events-none absolute flex size-4 items-center justify-center opacity-0 peer-checked:opacity-100'>
+    <CheckboxPrimitive.Root
+      data-slot='checkbox'
+      className={cn(
+        'peer focus-ring size-4 shrink-0 rounded-[4px] border border-fg/30 shadow-xs outline-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-rose-500 aria-invalid:ring-rose-500/30 data-checked:border-ac data-checked:bg-ac data-checked:text-bg',
+        className
+      )}
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator
+        data-slot='checkbox-indicator'
+        className='grid place-content-center text-current transition-none'
+      >
         <IconCheck className='size-3.5' />
-      </div>
-    </div>
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
   )
 }
 

@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
 import { IconArrowDownDashed } from '@tabler/icons-react'
-import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { Button } from './ui/button'
+import { useEffect, useRef, useState } from 'react'
+
 import { cn } from '../lib/cn'
-import { useSettingsStore } from '../store/useSettingsStore'
 import { useRuntimeStore } from '../store/useRuntimeStore'
+import { useSettingsStore } from '../store/useSettingsStore'
+import { Button } from './ui/button'
 
 export function ChatEvents() {
   const { showInteractionEvents, showGiftFree, showEntryEffect } = useSettingsStore()

@@ -124,7 +124,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className='h-[100vh] bg-[rgba(20,20,20,0.9)] overflow-hidden rounded-lg' ref={rootRef}>
+    <div className='h-screen bg-[rgba(20,20,20,0.9)] overflow-hidden rounded-lg' ref={rootRef}>
       <div
         id={'title-bar'}
         className={cn(
@@ -157,7 +157,7 @@ const App: React.FC = () => {
           </div>
           <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
             {clickThrough && (
-              <Button variant='link' size='icon' tint='white' type='button' disabled>
+              <Button variant='ghost' size='icon-sm' tint='white' type='button' disabled>
                 <IconHandFingerOff size={14} />
               </Button>
             )}

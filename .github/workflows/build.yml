@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, master]
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
     branches: [main, master]
   workflow_dispatch:
@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -111,7 +111,7 @@ jobs:
 
       - name: Sign Windows binaries with Trusted Signing
         if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-        uses: azure/trusted-signing-action@v0
+        uses: azure/trusted-signing-action@v2
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -164,7 +164,7 @@ jobs:
 
       - name: Upload artifacts for debugging (Windows)
         if: matrix.os == 'windows-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-win-${{ github.sha }}
           path: |
@@ -175,7 +175,7 @@ jobs:
 
       - name: Upload artifacts for debugging (macOS)
         if: matrix.os == 'macos-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-darwin-${{ github.sha }}
           path: out/make/zip/darwin/**/*.zip
@@ -183,7 +183,7 @@ jobs:
 
       - name: Upload artifacts for debugging (Linux)
         if: matrix.os == 'ubuntu-latest' && !startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-linux-${{ github.sha }}
           path: |

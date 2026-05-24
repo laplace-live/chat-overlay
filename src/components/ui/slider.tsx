@@ -1,10 +1,10 @@
 'use client'
 
-import * as SliderPrimitive from '@radix-ui/react-slider'
 import { IconRestore } from '@tabler/icons-react'
+import { Portal, Slider as SliderPrimitive } from 'radix-ui'
 import * as React from 'react'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
 interface Mark {
   value: number
@@ -32,6 +32,12 @@ function Slider({
   ...props
 }: SliderProps) {
   const [hoveredThumb, setHoveredThumb] = React.useState<number | null>(null)
+  const [activeTooltipIdx, setActiveTooltipIdx] = React.useState<number | null>(null)
+  const [sliderRect, setSliderRect] = React.useState<{
+    left: number
+    width: number
+    thumbTop: number
+  } | null>(null)
 
   const { className: trackClassName, ...restTrackProps } = trackProps || {}
   const { className: rangeClassName, ...restRangeProps } = rangeProps || {}
@@ -76,6 +82,8 @@ function Slider({
     }
   }
 
+  const activeThumbValue = activeTooltipIdx !== null && Array.isArray(value) ? value[activeTooltipIdx] : undefined
+
   return (
     <div className={cn('relative flex w-full flex-col', (marks || defaultValues) && 'pb-4')}>
       <SliderPrimitive.Root
@@ -85,24 +93,24 @@ function Slider({
         value={value}
         onValueChange={onValueChange}
         className={cn(
-          'relative my-2 flex w-full touch-none items-center select-none',
+          'relative my-2 flex w-full touch-none select-none items-center',
           props.disabled && 'pointer-events-none opacity-60',
           className
         )}
         {...props}
       >
         <SliderPrimitive.Track
-          className={cn('bg-fg/10 relative h-2 w-full grow overflow-hidden rounded-full', trackClassName)}
+          className={cn('relative h-2 w-full grow overflow-hidden rounded-full bg-fg/10', trackClassName)}
           {...restTrackProps}
         >
-          <SliderPrimitive.Range className={cn('bg-ac absolute h-full', rangeClassName)} {...restRangeProps} />
+          <SliderPrimitive.Range className={cn('absolute h-full bg-ac', rangeClassName)} {...restRangeProps} />
 
           {/* Render marks */}
           {marks ? (
             <div className='pointer-events-none absolute top-1/2 right-2 left-2 -translate-y-1/2'>
-              {marks.map(({ value: mark }, idx) => (
+              {marks.map(({ value: mark }) => (
                 <div
-                  key={idx}
+                  key={mark}
                   className={cn(
                     'absolute top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full',
                     isMarkInRange(mark) ? 'bg-bg' : 'bg-fg/40'
@@ -116,9 +124,9 @@ function Slider({
           {/* Render default values */}
           {defaultValues ? (
             <div className='pointer-events-none absolute top-1/2 right-2 left-2 -translate-y-1/2'>
-              {defaultValues.map(({ value: mark }, idx) => (
+              {defaultValues.map(({ value: mark }) => (
                 <div
-                  key={idx}
+                  key={mark}
                   className={cn(
                     'absolute top-1/2 h-1.5 w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-[1px]',
                     isMarkInRange(mark) ? 'bg-bg' : 'bg-fg/40'
@@ -132,23 +140,29 @@ function Slider({
 
         {/* Render thumbs with tooltips */}
         {Array.isArray(value) &&
-          value.map((thumbValue, idx) => (
+          value.map((_thumbValue, idx) => (
             <SliderPrimitive.Thumb
+              // biome-ignore lint/suspicious/noArrayIndexKey: only `idx` works
               key={idx}
-              onMouseEnter={() => setHoveredThumb(idx)}
-              onMouseLeave={() => setHoveredThumb(null)}
-              className='border-ac bg-bg ring-offset-bg focus-ring block size-4 cursor-pointer rounded-full border-[.325rem] transition-colors disabled:pointer-events-none disabled:opacity-50'
-            >
-              {/* NOTE: nested backdrop filter blur does not work */}
-              <div
-                className={cn(
-                  'floating bg-bg/90 pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 rounded-sm px-2 py-1.5 opacity-0 transition-opacity',
-                  hoveredThumb === idx && 'opacity-100 duration-0'
-                )}
-              >
-                {thumbValue}
-              </div>
-            </SliderPrimitive.Thumb>
+              onMouseEnter={e => {
+                const root = e.currentTarget.closest<HTMLElement>('[data-slot="slider"]')
+                if (root) {
+                  const rootRect = root.getBoundingClientRect()
+                  const thumbRect = e.currentTarget.getBoundingClientRect()
+                  setSliderRect({
+                    left: rootRect.left,
+                    width: rootRect.width,
+                    thumbTop: thumbRect.top,
+                  })
+                }
+                setHoveredThumb(idx)
+                setActiveTooltipIdx(idx)
+              }}
+              onMouseLeave={() => {
+                setHoveredThumb(null)
+              }}
+              className='focus-ring block size-4 rounded-full border-[.325rem] border-ac bg-bg ring-offset-bg transition-colors disabled:pointer-events-none disabled:opacity-50'
+            />
           ))}
       </SliderPrimitive.Root>
 
@@ -160,12 +174,12 @@ function Slider({
             props.disabled && 'pointer-events-none opacity-60'
           )}
         >
-          {marks.map(({ value: mark, label }, idx) => (
+          {marks.map(({ value: mark, label }) => (
             <button
-              key={idx}
+              key={mark}
               type='button'
               className={cn(
-                'hover:text-fg absolute flex cursor-pointer text-xs text-nowrap select-none',
+                'absolute flex cursor-pointer select-none text-nowrap text-xs hover:text-fg',
                 isMarkInRange(mark) ? 'text-fg' : 'text-fg/40'
               )}
               style={{
@@ -188,12 +202,12 @@ function Slider({
             props.disabled && 'pointer-events-none opacity-60'
           )}
         >
-          {defaultValues.map(({ value: mark }, idx) => (
+          {defaultValues.map(({ value: mark }) => (
             <button
-              key={idx}
+              key={mark}
               type='button'
               className={cn(
-                'hover:text-fg absolute flex cursor-pointer text-xs text-nowrap select-none',
+                'absolute flex cursor-pointer select-none text-nowrap text-xs hover:text-fg',
                 value && mark !== value[0] ? 'text-fg' : 'text-fg/40'
               )}
               style={{
@@ -207,9 +221,35 @@ function Slider({
           ))}
         </div>
       )}
+
+      {activeTooltipIdx !== null &&
+        activeThumbValue !== undefined &&
+        sliderRect &&
+        typeof min === 'number' &&
+        typeof max === 'number' && (
+          <Portal.Root asChild>
+            <div
+              className={cn(
+                'floating pointer-events-none fixed z-50 rounded-sm px-2 py-1.5 opacity-0 transition-opacity',
+                hoveredThumb === activeTooltipIdx && 'opacity-100 duration-0'
+              )}
+              onTransitionEnd={() => {
+                if (hoveredThumb === null) setActiveTooltipIdx(null)
+              }}
+              style={{
+                top: sliderRect.thumbTop,
+                left: sliderRect.left + ((activeThumbValue - min) / (max - min)) * sliderRect.width,
+                translate: '-50% calc(-100% - 8px)',
+              }}
+            >
+              {activeThumbValue}
+            </div>
+          </Portal.Root>
+        )}
     </div>
   )
 }
 
-export { Slider }
 export type { Mark }
+
+export { Slider }

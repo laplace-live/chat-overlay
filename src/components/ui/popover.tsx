@@ -2,16 +2,18 @@
 
 'use client'
 
-import * as PopoverPrimitive from '@radix-ui/react-popover'
+import { Popover as PopoverPrimitive } from 'radix-ui'
 import type * as React from 'react'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
-const Popover = PopoverPrimitive.Root
+function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+  return <PopoverPrimitive.Root data-slot='popover' {...props} />
+}
 
-const PopoverTrigger = PopoverPrimitive.Trigger
-
-const PopoverPortal = PopoverPrimitive.Portal
+function PopoverTrigger({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+  return <PopoverPrimitive.Trigger data-slot='popover-trigger' {...props} />
+}
 
 function PopoverContent({
   children,
@@ -21,16 +23,17 @@ function PopoverContent({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
-    <PopoverPortal>
+    <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         data-slot='popover-content'
         align={align}
         sideOffset={sideOffset}
         collisionPadding={5}
         className={cn(
-          'floating text-fg w-fit rounded-md p-3 text-base outline-hidden',
-          'max-h-[var(--radix-popover-content-available-height)] overflow-y-auto',
-          'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+          'floating w-fit rounded-md p-3 text-base text-fg outline-hidden',
+          'max-h-(--radix-popover-content-available-height) overflow-y-auto',
+          'max-w-(--radix-popover-content-available-width)',
+          'data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-closed:animate-out',
           '[&>hr]:-mx-3 [&>hr]:my-2',
           // pointer-events-auto is necessary to make the popover content clickable due to a Radix UI bug.
           // See: https://github.com/radix-ui/primitives/issues/3142
@@ -48,8 +51,12 @@ function PopoverContent({
         {/* does not work with translucent background */}
         {/* <PopoverPrimitive.Arrow className='fill-bg' /> */}
       </PopoverPrimitive.Content>
-    </PopoverPortal>
+    </PopoverPrimitive.Portal>
   )
 }
 
-export { Popover, PopoverTrigger, PopoverContent }
+function PopoverAnchor({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
+  return <PopoverPrimitive.Anchor data-slot='popover-anchor' {...props} />
+}
+
+export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger }

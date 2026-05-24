@@ -1,12 +1,12 @@
 'use client'
 
-import * as RadixScrollArea from '@radix-ui/react-scroll-area'
+import { ScrollArea as RadixScrollArea } from 'radix-ui'
 // Migrated and modifed from Mantine v6 and shadcn ScrollArea component
 // https://github.com/mantinedev/mantine/tree/v6/src/mantine-core/src/ScrollArea
 // https://ui.shadcn.com/docs/components/scroll-area
 import type React from 'react'
 
-import { cn } from '../../lib/cn'
+import { cn } from '@/lib/cn'
 
 export interface ScrollAreaProps extends React.ComponentProps<typeof RadixScrollArea.Root> {
   /** Scrollbar size in pixels */
@@ -52,7 +52,7 @@ function ScrollArea({
       <RadixScrollArea.Viewport
         ref={viewportRef}
         className={cn(
-          'scroll-area focus-visible:outline-ac/20 size-full',
+          'scroll-area size-full focus-visible:outline-ac/20',
           // https://github.com/radix-ui/primitives/issues/926
           '[&>div]:block!',
           offsetScrollbars && {
@@ -93,9 +93,9 @@ function ScrollBar({
       data-slot='scroll-area-scrollbar'
       orientation={orientation}
       className={cn(
-        'bg-fg/0 hover:bg-fg/5 flex touch-none p-[1px] transition-colors select-none',
-        orientation === 'vertical' && 'h-full w-[var(--scrollbar-size,_8px)] border-l border-l-transparent',
-        orientation === 'horizontal' && 'h-[var(--scrollbar-size,_8px)] flex-col border-t border-t-transparent',
+        'flex touch-none select-none bg-fg/0 p-px transition-colors hover:bg-fg/5',
+        orientation === 'vertical' && 'h-full w-(--scrollbar-size,8px) border-l border-l-transparent',
+        orientation === 'horizontal' && 'h-(--scrollbar-size,8px) flex-col border-t border-t-transparent',
         className
       )}
       {...props}
@@ -103,7 +103,7 @@ function ScrollBar({
       <RadixScrollArea.ScrollAreaThumb
         data-slot='scroll-area-thumb'
         className={cn(
-          'bg-fg/40 hover:bg-fg/80 relative flex-1 rounded-full',
+          'relative flex-1 rounded-full bg-fg/40 hover:bg-fg/80',
           'before:absolute before:top-1/2 before:left-1/2 before:size-full before:min-h-6 before:min-w-6 before:-translate-x-1/2 before:-translate-y-1/2'
         )}
       />

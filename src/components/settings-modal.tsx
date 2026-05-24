@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { useSettingsStore } from '../store/useSettingsStore'
+import React, { useEffect, useState } from 'react'
+
 import { useRuntimeStore } from '../store/useRuntimeStore'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
+import { useSettingsStore } from '../store/useSettingsStore'
 import { Checkbox } from './ui/checkbox'
-import { Label } from './ui/label'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Input } from './ui/input'
-import { Textarea } from './ui/textarea'
-import { Slider } from './ui/slider'
+import { Label } from './ui/label'
 import { ScrollArea } from './ui/scroll-area'
+import { Slider } from './ui/slider'
+import { Textarea } from './ui/textarea'
 
 interface SettingsModalProps {
   isOpen: boolean

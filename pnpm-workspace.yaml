@@ -3,7 +3,9 @@ blockExoticSubdeps: false
 allowBuilds:
   electron-winstaller: true
   esbuild: true
+  unrs-resolver: true
 onlyBuiltDependencies:
   - electron
   - electron-winstaller
   - esbuild
+  - unrs-resolver

@@ -1,15 +1,34 @@
 {
   "editor.formatOnSave": true,
+  // https://biomejs.dev/reference/vscode/
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  // "files.associations": {
+  //   "*.css": "tailwindcss"
+  // },
+  "tailwindCSS.classFunctions": [
+    // https://cva.style/docs/getting-started/installation
+    "cva",
+    "cx",
+
+    // https://www.tailwind-variants.org/docs/getting-started#intellisense-setup-optional
+    "tv"
+  ]
 }

@@ -1,3 +1,4 @@
+import { FuseV1Options, FuseVersion } from '@electron/fuses'
 import { MakerDeb } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
 import { MakerSquirrel } from '@electron-forge/maker-squirrel'
@@ -5,7 +6,6 @@ import { MakerZIP } from '@electron-forge/maker-zip'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { VitePlugin } from '@electron-forge/plugin-vite'
 import type { ForgeConfig } from '@electron-forge/shared-types'
-import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -24,13 +24,14 @@ const config: ForgeConfig = {
           identity: process.env.APPLE_IDENTITY,
         }
       : undefined,
-    osxNotarize: process.env.APPLE_API_KEY_ID
-      ? {
-          appleApiKey: `~/private_keys/AuthKey_${process.env.APPLE_API_KEY_ID}.p8`,
-          appleApiKeyId: process.env.APPLE_API_KEY_ID,
-          appleApiIssuer: process.env.APPLE_API_ISSUER,
-        }
-      : undefined,
+    osxNotarize:
+      process.env.APPLE_API_KEY_ID && process.env.APPLE_API_ISSUER
+        ? {
+            appleApiKey: `~/private_keys/AuthKey_${process.env.APPLE_API_KEY_ID}.p8`,
+            appleApiKeyId: process.env.APPLE_API_KEY_ID,
+            appleApiIssuer: process.env.APPLE_API_ISSUER,
+          }
+        : undefined,
   },
   rebuildConfig: {},
   makers: [

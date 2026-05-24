@@ -1,17 +1,16 @@
+import { ConnectionState } from '@laplace.live/event-bridge-sdk'
+import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import { IconHandFingerOff, IconSettings, IconX } from '@tabler/icons-react'
-import { ConnectionState } from '@laplace.live/event-bridge-sdk'
 
-import AnimatedNumber from './utils/animated-numbers'
-import { useSettingsStore } from './store/useSettingsStore'
-import { useRuntimeStore } from './store/useRuntimeStore'
-import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { ChatEvents } from './components/events'
 import { SettingsModal } from './components/settings-modal'
-
-import { cn } from './lib/cn'
 import { Button } from './components/ui/button'
+import { useLaplaceClient } from './hooks/useLaplaceClient'
+import { cn } from './lib/cn'
+import { useRuntimeStore } from './store/useRuntimeStore'
+import { useSettingsStore } from './store/useSettingsStore'
+import AnimatedNumber from './utils/animated-numbers'
 
 import './index.css'
 
@@ -163,8 +162,8 @@ const App: React.FC = () => {
               </Button>
             )}
             <Button
-              variant='link'
-              size='icon'
+              variant='ghost'
+              size='icon-sm'
               tint='white'
               type='button'
               id='settings-btn'
@@ -174,8 +173,8 @@ const App: React.FC = () => {
               <IconSettings size={14} />
             </Button>
             <Button
-              variant='link'
-              size='icon'
+              variant='ghost'
+              size='icon-sm'
               tint='white'
               type='button'
               id='close-btn'

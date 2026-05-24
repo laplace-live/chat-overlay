@@ -6,6 +6,7 @@ import { useSettingsStore } from '../store/useSettingsStore'
 import { Checkbox } from './ui/checkbox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Input } from './ui/input'
+import { InputNumber } from './ui/input-number'
 import { Label } from './ui/label'
 import { ScrollArea } from './ui/scroll-area'
 import { Slider } from './ui/slider'
@@ -68,31 +69,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setBaseFontSize(newFontSize)
   }
 
-  const handleAlwaysOnTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enabled = e.target.checked
-    setAlwaysOnTop(enabled)
-    window.electronAPI.setAlwaysOnTop(enabled)
+  const handleAlwaysOnTopChange = (checked: boolean) => {
+    setAlwaysOnTop(checked)
+    window.electronAPI.setAlwaysOnTop(checked)
   }
 
-  const handleClickThroughChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enabled = e.target.checked
-    setClickThrough(enabled)
-    window.electronAPI.setClickThrough(enabled)
+  const handleClickThroughChange = (checked: boolean) => {
+    setClickThrough(checked)
+    window.electronAPI.setClickThrough(checked)
   }
 
-  const handleShowInteractionEventsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enabled = e.target.checked
-    setShowInteractionEvents(enabled)
+  const handleShowInteractionEventsChange = (checked: boolean) => {
+    setShowInteractionEvents(checked)
   }
 
-  const handleShowGiftFreeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enabled = e.target.checked
-    setShowGiftFree(enabled)
+  const handleShowGiftFreeChange = (checked: boolean) => {
+    setShowGiftFree(checked)
   }
 
-  const handleShowEntryEffectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const enabled = e.target.checked
-    setShowEntryEffect(enabled)
+  const handleShowEntryEffectChange = (checked: boolean) => {
+    setShowEntryEffect(checked)
   }
 
   const handleServerHostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +126,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
           <div className='space-y-4 p-4'>
             <div className='space-y-1'>
               <div className='flex'>
-                <Checkbox id='always-on-top' checked={alwaysOnTop} onChange={handleAlwaysOnTopChange} />
+                <Checkbox id='always-on-top' checked={alwaysOnTop} onCheckedChange={handleAlwaysOnTopChange} />
                 <Label className='pl-1' htmlFor='always-on-top'>
                   Always on Top
                 </Label>
@@ -140,7 +136,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
             <div className='space-y-1'>
               <div className='flex'>
-                <Checkbox id='click-through' checked={clickThrough} onChange={handleClickThroughChange} />
+                <Checkbox id='click-through' checked={clickThrough} onCheckedChange={handleClickThroughChange} />
                 <Label className='pl-1' htmlFor='click-through'>
                   Click Pass-Through
                 </Label>
@@ -152,7 +148,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
             <div className='space-y-1'>
               <div className='flex'>
-                <Checkbox id='show-gift-free' checked={showGiftFree} onChange={handleShowGiftFreeChange} />
+                <Checkbox id='show-gift-free' checked={showGiftFree} onCheckedChange={handleShowGiftFreeChange} />
                 <Label className='pl-1' htmlFor='show-gift-free'>
                   Show Free Gifts
                 </Label>
@@ -162,7 +158,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
             <div className='space-y-1'>
               <div className='flex'>
-                <Checkbox id='show-entry-effect' checked={showEntryEffect} onChange={handleShowEntryEffectChange} />
+                <Checkbox
+                  id='show-entry-effect'
+                  checked={showEntryEffect}
+                  onCheckedChange={handleShowEntryEffectChange}
+                />
                 <Label className='pl-1' htmlFor='show-entry-effect'>
                   Show Entry Effects
                 </Label>
@@ -175,7 +175,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 <Checkbox
                   id='show-interaction-events'
                   checked={showInteractionEvents}
-                  onChange={handleShowInteractionEventsChange}
+                  onCheckedChange={handleShowInteractionEventsChange}
                 />
                 <Label className='pl-1' htmlFor='show-interaction-events'>
                   Show Interaction Events
@@ -257,8 +257,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <Label className='pb-1' htmlFor='server-port'>
                 Server Port
               </Label>
-              <Input
-                type='number'
+              <InputNumber
                 min={1}
                 max={65535}
                 id='server-port'

@@ -58,7 +58,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "electron": "42.2.0",
+    "electron": "42.3.0",
     "electron-winstaller": "^5.4.0",
     "eslint": "^8.57.1",
     "eslint-import-resolver-typescript": "^4.4.4",

@@ -1,5 +1,5 @@
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { IconHandFingerOff, IconPin, IconPinFilled, IconSettings, IconX } from '@tabler/icons-react'
+import { IconHandFinger, IconHandFingerOff, IconPin, IconPinFilled, IconSettings, IconX } from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -32,7 +32,8 @@ const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   // Get settings from zustand store
-  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setAlwaysOnTop } = useSettingsStore()
+  const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setAlwaysOnTop, setClickThrough } =
+    useSettingsStore()
 
   // Get runtime state from runtime store
   const { connectionState, onlineUserCount } = useRuntimeStore()
@@ -156,11 +157,21 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
-            {clickThrough && (
-              <Button variant='ghost' size='icon-sm' tint='white' type='button' disabled>
-                <IconHandFingerOff size={14} />
-              </Button>
-            )}
+            <Button
+              variant='ghost'
+              size='icon-sm'
+              tint='white'
+              type='button'
+              id='click-through-btn'
+              title={clickThrough ? 'Disable Click Pass-Through' : 'Enable Click Pass-Through'}
+              onClick={() => {
+                const next = !clickThrough
+                setClickThrough(next)
+                window.electronAPI.setClickThrough(next)
+              }}
+            >
+              {clickThrough ? <IconHandFingerOff size={14} /> : <IconHandFinger size={14} />}
+            </Button>
             <Button
               variant='ghost'
               size='icon-sm'

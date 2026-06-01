@@ -72,19 +72,19 @@ popover content).
 The dropdown lists the 8 types the overlay actually renders. Others render
 nothing and are excluded.
 
-| type          | default | rough weight |
-| ------------- | ------- | ------------ |
-| message (chat)| ON      | 70           |
-| interaction   | ON      | 14           |
-| gift          | ON      | 7            |
-| superchat     | ON      | 2.5          |
-| toast (guard) | ON      | 1            |
-| like-click    | OFF     | 4            |
-| entry-effect  | OFF     | 1.5          |
-| system        | OFF     | 1            |
+| type           | default | rough weight |
+| -------------- | ------- | ------------ |
+| message (chat) | ON      | 70           |
+| interaction    | ON      | 14           |
+| gift           | ON      | 7            |
+| superchat      | ON      | 2.5          |
+| toast (guard)  | ON      | 1            |
+| like-click     | OFF     | 4            |
+| entry-effect   | OFF     | 1.5          |
+| system         | OFF     | 1            |
 
 Weights renormalize over whatever is enabled, so disabling chat does not stop
-the stream. Cadence: a self-rescheduling timer fires every ~350–1400 ms
+the stream. Cadence: a self-rescheduling timer fires every ~100–1400 ms
 (randomized jitter).
 
 ## Random data

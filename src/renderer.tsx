@@ -1,11 +1,21 @@
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import { IconHandFinger, IconHandFingerOff, IconPin, IconPinFilled, IconSettings, IconX } from '@tabler/icons-react'
+import {
+  IconHandFinger,
+  IconHandFingerOff,
+  IconInfoCircle,
+  IconPin,
+  IconPinFilled,
+  IconSettings,
+  IconX,
+} from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 
+import { AboutModal } from './components/about-modal'
 import { ChatEvents } from './components/events'
 import { SettingsModal } from './components/settings-modal'
 import { Button } from './components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './components/ui/dropdown'
 import { DebugMenu } from './dev/debug-menu'
 import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { cn } from './lib/cn'
@@ -25,12 +35,19 @@ declare global {
       setIgnoreMouseEvents: (ignore: boolean) => void
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
+      openExternal: (url: string) => void
     }
   }
 }
 
 const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isAboutOpen, setIsAboutOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  // Any title-bar overlay (settings/about dialog or the settings menu) that needs
+  // to capture mouse events even when click pass-through is enabled.
+  const overlayInteractive = isSettingsOpen || isAboutOpen || isMenuOpen
 
   // Get settings from zustand store
   const { opacity, alwaysOnTop, clickThrough, baseFontSize, customCSS, setAlwaysOnTop, setClickThrough } =
@@ -81,8 +98,8 @@ const App: React.FC = () => {
   useEffect(() => {
     // Set up mouse tracking for click-through functionality
     const handleMouseMove = (e: MouseEvent) => {
-      // Only process if click-through is enabled and settings modal is not open
-      if (!clickThrough || isSettingsOpen) {
+      // Only process if click-through is enabled and no title-bar overlay is open
+      if (!clickThrough || overlayInteractive) {
         window.electronAPI.setIgnoreMouseEvents(false)
         return
       }
@@ -112,14 +129,14 @@ const App: React.FC = () => {
       window.electronAPI.setIgnoreMouseEvents(false)
       unsubscribe() // Clean up the IPC listener
     }
-  }, [clickThrough, isSettingsOpen])
+  }, [clickThrough, overlayInteractive])
 
-  // Ensure click-through is disabled when settings modal is open
+  // Ensure click-through is disabled while a title-bar overlay is open
   useEffect(() => {
-    if (isSettingsOpen && clickThrough) {
+    if (overlayInteractive && clickThrough) {
       window.electronAPI.setIgnoreMouseEvents(false)
     }
-  }, [isSettingsOpen, clickThrough])
+  }, [overlayInteractive, clickThrough])
 
   const handleClose = () => {
     window.close()
@@ -190,17 +207,23 @@ const App: React.FC = () => {
             >
               {alwaysOnTop ? <IconPinFilled size={14} /> : <IconPin size={14} />}
             </Button>
-            <Button
-              variant='ghost'
-              size='icon-sm'
-              tint='white'
-              type='button'
-              id='settings-btn'
-              title='Settings'
-              onClick={() => setIsSettingsOpen(true)}
-            >
-              <IconSettings size={14} />
-            </Button>
+            <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button variant='ghost' size='icon-sm' tint='white' type='button' id='settings-btn' title='Menu'>
+                  <IconSettings size={14} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end' className='bg-bg/90'>
+                <DropdownMenuItem onSelect={() => setIsSettingsOpen(true)}>
+                  <IconSettings />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setIsAboutOpen(true)}>
+                  <IconInfoCircle />
+                  About
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button
               variant='ghost'
               size='icon-sm'
@@ -220,6 +243,9 @@ const App: React.FC = () => {
 
       {/* Settings Modal */}
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* About Modal */}
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   )
 }

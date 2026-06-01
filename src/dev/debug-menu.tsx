@@ -33,7 +33,7 @@ export function DebugMenu() {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align='end' className='w-60'>
+      <PopoverContent align='end' className='w-60 bg-bg/90'>
         <Button
           variant='solid'
           tint={isRunning ? 'red' : 'accent'}

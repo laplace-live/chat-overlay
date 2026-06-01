@@ -51,7 +51,7 @@ export const MOCK_EVENT_TYPES: MockEventTypeMeta[] = [
 ]
 
 /** Cadence bounds (ms) for the self-rescheduling simulator timer. */
-export const MIN_EVENT_DELAY_MS = 350
+export const MIN_EVENT_DELAY_MS = 100
 export const MAX_EVENT_DELAY_MS = 1400
 
 const MOCK_ROOM = 12345
@@ -226,7 +226,11 @@ function randomMedal() {
 /** Inline SVG avatar so `message`/`entry-effect` render something with no network. */
 function randomAvatar(seed: number, label: string): string {
   const hue = seed % 360
-  const first = label.trim().charAt(0).replace(/[<>&"']/g, '') || '?'
+  const first =
+    label
+      .trim()
+      .charAt(0)
+      .replace(/[<>&"']/g, '') || '?'
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">` +
     `<rect width="64" height="64" fill="hsl(${hue}, 60%, 55%)"/>` +

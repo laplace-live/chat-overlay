@@ -118,7 +118,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
-      <DialogContent className='bg-black/90'>
+      <DialogContent className='bg-bg/90'>
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>

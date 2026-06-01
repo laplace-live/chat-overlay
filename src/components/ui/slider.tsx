@@ -37,6 +37,7 @@ function Slider({
     left: number
     width: number
     thumbTop: number
+    thumbWidth: number
   } | null>(null)
 
   const { className: trackClassName, ...restTrackProps } = trackProps || {}
@@ -153,6 +154,7 @@ function Slider({
                     left: rootRect.left,
                     width: rootRect.width,
                     thumbTop: thumbRect.top,
+                    thumbWidth: thumbRect.width,
                   })
                 }
                 setHoveredThumb(idx)
@@ -238,7 +240,10 @@ function Slider({
               }}
               style={{
                 top: sliderRect.thumbTop,
-                left: sliderRect.left + ((activeThumbValue - min) / (max - min)) * sliderRect.width,
+                left:
+                  sliderRect.left +
+                  sliderRect.thumbWidth / 2 +
+                  ((activeThumbValue - min) / (max - min)) * (sliderRect.width - sliderRect.thumbWidth),
                 translate: '-50% calc(-100% - 8px)',
               }}
             >

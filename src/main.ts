@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { app, BrowserWindow, ipcMain, nativeTheme, shell } from 'electron'
 import started from 'electron-squirrel-startup'
 import { updateElectronApp } from 'update-electron-app'
 
@@ -54,6 +54,14 @@ const registerIpcHandlers = () => {
   // Handle get app version request
   ipcMain.handle('get-app-version', () => {
     return app.getVersion()
+  })
+
+  // Open external links in the system's default browser
+  ipcMain.on('open-external', (_event, url) => {
+    // Only allow well-formed http(s) URLs to avoid opening arbitrary protocols
+    if (typeof url === 'string' && /^https?:\/\//i.test(url)) {
+      shell.openExternal(url)
+    }
   })
 }
 

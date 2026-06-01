@@ -1,5 +1,5 @@
 import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { useRuntimeStore } from '../store/useRuntimeStore'
 import { useSettingsStore } from '../store/useSettingsStore'
@@ -48,16 +48,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
   // Get connection state from runtime store
   const { connectionState } = useRuntimeStore()
-
-  // State for app version
-  const [appVersion, setAppVersion] = useState<string>('')
-
-  // Fetch app version when component mounts
-  useEffect(() => {
-    window.electronAPI.getAppVersion().then(version => {
-      setAppVersion(version)
-    })
-  }, [])
 
   const handleOpacityChange = (values: number[]) => {
     const newOpacity = values[0]
@@ -231,7 +221,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 placeholder='/* Add your custom CSS here */&#10;.event.message {&#10;  background-color: rgba(0, 255, 0, 0.1);&#10;  border-left: 3px solid #00ff00;&#10;}&#10;&#10;.username {&#10;  color: #ff6b6b !important;&#10;  font-weight: bold;&#10;}'
                 value={customCSS}
                 onChange={handleCustomCSSChange}
-                className='font-mono text-sm min-h-[120px]'
+                className='font-mono text-sm min-h-30'
               />
               <p className='text-fg/60 text-xs'>
                 Add custom CSS to style the chat overlay. Compatible with LAPLACE Chat templates
@@ -308,10 +298,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   </span>
                 )}
               </p>
-            </div>
-
-            <div className='border-t border-fg/10 pt-4 mt-4'>
-              <p className='text-sm text-fg/60'>Version {appVersion}</p>
             </div>
           </div>
         </ScrollArea>

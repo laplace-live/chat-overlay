@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client'
 import { ChatEvents } from './components/events'
 import { SettingsModal } from './components/settings-modal'
 import { Button } from './components/ui/button'
+import { DebugMenu } from './dev/debug-menu'
 import { useLaplaceClient } from './hooks/useLaplaceClient'
 import { cn } from './lib/cn'
 import { useRuntimeStore } from './store/useRuntimeStore'
@@ -156,6 +157,8 @@ const App: React.FC = () => {
             </div>
           </div>
           <div className='flex items-center text-shadow-xs [-webkit-app-region:no-drag]'>
+            {/* Dev-only event simulator; tree-shaken out of production builds */}
+            {import.meta.env.DEV && <DebugMenu />}
             {clickThrough && (
               <Button variant='ghost' size='icon-sm' tint='white' type='button' disabled>
                 <IconHandFingerOff size={14} />

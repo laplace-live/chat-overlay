@@ -25,7 +25,7 @@ production.
 
 - A dev-only **"Preview all events"** button inside the existing debug popover.
 - One click clears the current message list and injects a fixed, curated set
-  covering the **per-tier matrix** (~25 events) — every renderable type, sampled
+  covering the **per-tier matrix** (~26 events) — every renderable type, sampled
   across guard tiers (normal / 舰长 / 提督 / 总督), user levels, price tiers, and
   medal present/absent.
 - **Deterministic:** identical output on every click — stable IDs, content,
@@ -107,7 +107,7 @@ fields are introduced.
 ## Preview coverage (the fixed matrix)
 
 Fixtures are grouped by type (so a designer working on one component scans a
-contiguous block), led by a system "preview" marker. ~25 events:
+contiguous block), led by a system "preview" marker. ~26 events:
 
 | type           | variants                                                                                              | count |
 | -------------- | ----------------------------------------------------------------------------------------------------- | ----- |
@@ -116,7 +116,7 @@ contiguous block), led by a system "preview" marker. ~25 events:
 | superchat      | ¥30 normal; ¥100 舰长; ¥1000 总督                                                                      | 3     |
 | gift           | gold cheap (辣条); gold expensive (小电视飞船 ¥1245); silver free (小花花)¹                              | 3     |
 | toast (guard)  | 舰长 ¥138; 提督 ¥1998; 总督 ¥19998                                                                     | 3     |
-| interaction    | enter (normal); follow; special-follow; mutual-follow; enter as 舰长 (color)²                          | 5     |
+| interaction    | enter (normal); follow; share; special-follow; mutual-follow; enter as 舰长 (color)²                   | 6     |
 | like-click     | one normal²                                                                                            | 1     |
 | entry-effect   | 舰长; 提督; 总督³                                                                                       | 3     |
 
@@ -137,7 +137,7 @@ the rendered list.
   not mutating settings.
 - Re-clicking clears first, then re-injects the same fixed set, so the stable IDs
   never collide as React keys.
-- The preview shares the 100-message cap; ~25 fixtures are well under it.
+- The preview shares the 100-message cap; ~26 fixtures are well under it.
 - Injecting triggers the overlay's auto-scroll to bottom; the designer can scroll
   up to inspect earlier blocks.
 

@@ -4,7 +4,7 @@
 
 **Goal:** Add a dev-only "Preview all events" button to the debug popover that injects a fixed, deterministic set of every renderable event variant so theme designers can style all cases at once.
 
-**Architecture:** A new pure module `src/dev/preview-events.ts` builds ~25 fully-typed `LaplaceEvent` fixtures (no randomness). The existing `useMockSimulator` hook gains a `loadPreview()` action (stop stream → `clearMessages()` → inject fixtures via the real `addMessage` path). The debug menu gets one new button. All code lives under `src/dev/` and is tree-shaken from production exactly like the existing simulator.
+**Architecture:** A new pure module `src/dev/preview-events.ts` builds ~26 fully-typed `LaplaceEvent` fixtures (no randomness). The existing `useMockSimulator` hook gains a `loadPreview()` action (stop stream → `clearMessages()` → inject fixtures via the real `addMessage` path). The debug menu gets one new button. All code lives under `src/dev/` and is tree-shaken from production exactly like the existing simulator.
 
 **Tech Stack:** TypeScript, React 19, Zustand, Vite, `@laplace.live/event-types`, `@tabler/icons-react`.
 
@@ -390,7 +390,7 @@ function buildEntryEffect(opts: {
 /**
  * Build the full, fixed set of preview events (deterministic order & content).
  * Grouped by type so a designer working on one component scans a contiguous
- * block. ~25 events covering every renderable type across guard tiers, levels,
+ * block. 26 events covering every renderable type across guard tiers, levels,
  * price tiers, and medal states.
  */
 export function buildPreviewEvents(): LaplaceEvent[] {
@@ -423,6 +423,7 @@ export function buildPreviewEvents(): LaplaceEvent[] {
     // interaction × actions + tier
     buildInteraction({ slug: 'enter', uid: 5001, username: '路人甲', action: 1, guardType: 0, medal: NO_MEDAL }),
     buildInteraction({ slug: 'follow', uid: 5002, username: '新粉丝', action: 2, guardType: 0, medal: NO_MEDAL }),
+    buildInteraction({ slug: 'share', uid: 5006, username: '分享达人', action: 3, guardType: 0, medal: NO_MEDAL }),
     buildInteraction({ slug: 'special-follow', uid: 5003, username: '真爱粉', action: 4, guardType: 0, medal: medal(15, '柠檬') }),
     buildInteraction({ slug: 'mutual-follow', uid: 5004, username: '老朋友', action: 5, guardType: 0, medal: medal(18, '星星') }),
     buildInteraction({ slug: 'enter-captain', uid: 5005, username: '甲板上的舰长', action: 1, guardType: 3, medal: medal(25, '团子') }),
@@ -709,12 +710,12 @@ git commit -m "feat(dev): add Preview all events button to debug menu"
 
 Run: `pnpm start`
 Then in the overlay title bar, click the flask icon → click **Preview all events**.
-Expected: the chat list is replaced by the fixed showcase. With **default settings** you see **21 of 25** events — grouped by type: a system marker, 6 chat messages (normal/long/emoji/舰长/提督/总督), 3 super chats (¥30/¥100/¥1000), 2 gold gifts (辣条/小电视飞船), 3 toasts (舰长/提督/总督), 5 interactions (enter/follow/special/mutual/舰长 enter), 1 like. The silver gift (小花花) and the 3 entry-effects are hidden by the default display settings.
+Expected: the chat list is replaced by the fixed showcase. With **default settings** you see **22 of 26** events — grouped by type: a system marker, 6 chat messages (normal/long/emoji/舰长/提督/总督), 3 super chats (¥30/¥100/¥1000), 2 gold gifts (辣条/小电视飞船), 3 toasts (舰长/提督/总督), 6 interactions (enter/follow/share/special/mutual/舰长 enter), 1 like. The silver gift (小花花) and the 3 entry-effects are hidden by the default display settings.
 
 - [ ] **Step 2: Enable the gated display settings and reload preview**
 
 In the overlay, open the menu → **Settings**, turn on **Show Free Gifts** (`showGiftFree`) and **Show Entry Effects** (`showEntryEffect`), close Settings, then click **Preview all events** again.
-Expected: all **25** events now render, including the silver 小花花 gift and the 3 entry-effect banners (舰长/提督/总督).
+Expected: all **26** events now render, including the silver 小花花 gift and the 3 entry-effect banners (舰长/提督/总督).
 
 - [ ] **Step 3: Verify determinism + no key warnings**
 

@@ -313,7 +313,7 @@ function buildEntryEffect(opts: {
 /**
  * Build the full, fixed set of preview events (deterministic order & content).
  * Grouped by type so a designer working on one component scans a contiguous
- * block. ~25 events covering every renderable type across guard tiers, levels,
+ * block. 26 events covering every renderable type across guard tiers, levels,
  * price tiers, and medal states.
  */
 export function buildPreviewEvents(): LaplaceEvent[] {

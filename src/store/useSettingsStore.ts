@@ -15,7 +15,7 @@ interface SettingsState {
   // Server Settings
   serverHost: string
   serverPort: string
-  serverPassword: string
+  serverBridgeAuthToken: string
   allowedOrigins: string
 
   // Actions
@@ -29,7 +29,7 @@ interface SettingsState {
   setCustomCSS: (css: string) => void
   setServerHost: (host: string) => void
   setServerPort: (port: string) => void
-  setServerPassword: (password: string) => void
+  setServerBridgeAuthToken: (password: string) => void
   setAllowedOrigins: (origins: string) => void
 }
 
@@ -47,7 +47,7 @@ export const useSettingsStore = create<SettingsState>()(
       customCSS: '',
       serverHost: 'localhost',
       serverPort: '9696',
-      serverPassword: '',
+      serverBridgeAuthToken: '',
       allowedOrigins: '',
 
       // Actions
@@ -61,7 +61,7 @@ export const useSettingsStore = create<SettingsState>()(
       setCustomCSS: customCSS => set({ customCSS }),
       setServerHost: serverHost => set({ serverHost }),
       setServerPort: serverPort => set({ serverPort }),
-      setServerPassword: serverPassword => set({ serverPassword }),
+      setServerBridgeAuthToken: serverBridgeAuthToken => set({ serverBridgeAuthToken }),
       setAllowedOrigins: allowedOrigins => set({ allowedOrigins }),
     }),
     {

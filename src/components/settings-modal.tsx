@@ -1,8 +1,9 @@
-import { ConnectionState } from '@laplace.live/event-bridge-sdk'
-import React from 'react'
+import { ConnectionState, type FetcherRoom, fetchInfo } from '@laplace.live/event-bridge-sdk'
+import React, { useEffect, useState } from 'react'
 
 import { useRuntimeStore } from '../store/useRuntimeStore'
 import { useSettingsStore } from '../store/useSettingsStore'
+import { Button } from './ui/button'
 import { Checkbox } from './ui/checkbox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
 import { Input } from './ui/input'
@@ -30,7 +31,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     customCSS,
     serverHost,
     serverPort,
-    serverPassword,
+    serverBridgeAuthToken,
     allowedOrigins,
     setOpacity,
     setBaseFontSize,
@@ -42,12 +43,49 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setCustomCSS,
     setServerHost,
     setServerPort,
-    setServerPassword,
+    setServerBridgeAuthToken,
     setAllowedOrigins,
   } = useSettingsStore()
 
   // Get connection state from runtime store
   const { connectionState } = useRuntimeStore()
+
+  // Rooms available on the connected event fetcher (null = not supported, e.g.
+  // an old fetcher without /info or a local Event Bridge server).
+  const [availableRooms, setAvailableRooms] = useState<FetcherRoom[] | null>(null)
+
+  // Discover available rooms whenever the modal opens or the server settings
+  // change. Failures fall back silently to manual room entry.
+  useEffect(() => {
+    if (!isOpen) return
+
+    const controller = new AbortController()
+    // Mirror the connection settings as a `host:port` url; the SDK derives the
+    // matching http(s) /info endpoint (and infers https for port 443).
+    fetchInfo({
+      url: `${serverHost}:${serverPort}`,
+      token: serverBridgeAuthToken,
+      signal: controller.signal,
+    }).then(info => {
+      if (!controller.signal.aborted) {
+        setAvailableRooms(info?.rooms ?? null)
+      }
+    })
+
+    return () => controller.abort()
+  }, [isOpen, serverHost, serverPort, serverBridgeAuthToken])
+
+  // Parse the comma-separated allowed rooms into a list of trimmed ids.
+  const allowedRoomIds = allowedOrigins
+    .split(',')
+    .map(o => o.trim())
+    .filter(Boolean)
+
+  const toggleRoom = (roomId: number) => {
+    const id = String(roomId)
+    const next = allowedRoomIds.includes(id) ? allowedRoomIds.filter(o => o !== id) : [...allowedRoomIds, id]
+    setAllowedOrigins(next.join(', '))
+  }
 
   const handleOpacityChange = (values: number[]) => {
     const newOpacity = values[0]
@@ -91,9 +129,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setServerPort(value)
   }
 
-  const handleServerPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleServerBridgeAuthTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
-    setServerPassword(value)
+    setServerBridgeAuthToken(value)
   }
 
   const handleAllowedOriginsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -259,14 +297,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             </div>
 
             <div className='space-y-1'>
-              <Label className='pb-1' htmlFor='server-password'>
-                Server Password
+              <Label className='pb-1' htmlFor='server-bridge-auth-token'>
+                Server Bridge Auth Token
               </Label>
               <Input
                 type='password'
-                id='server-password'
-                value={serverPassword}
-                onChange={handleServerPasswordChange}
+                id='server-bridge-auth-token'
+                value={serverBridgeAuthToken}
+                onChange={handleServerBridgeAuthTokenChange}
                 placeholder='Optional'
               />
               <p className='text-fg/60 text-sm'>Authentication token for the server (if required)</p>
@@ -286,6 +324,30 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               <p className='text-fg/60 text-sm'>
                 Filter events by room numbers (comma-separated). Leave empty to receive events from all rooms.
               </p>
+
+              {availableRooms && availableRooms.length > 0 && (
+                <div className='space-y-1 pt-1'>
+                  <p className='text-fg/60 text-sm'>Available rooms on the server. Click to add or remove.</p>
+                  <div className='flex flex-wrap gap-1'>
+                    {availableRooms.map(room => {
+                      const selected = allowedRoomIds.includes(String(room.roomId))
+                      return (
+                        <Button
+                          key={room.roomId}
+                          type='button'
+                          size='sm'
+                          variant={selected ? 'solid' : 'outline'}
+                          tint={selected ? 'accent' : 'default'}
+                          onClick={() => toggleRoom(room.roomId)}
+                        >
+                          {room.username || `Room ${room.roomId}`}
+                          <span className='opacity-60'>{room.roomId}</span>
+                        </Button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>

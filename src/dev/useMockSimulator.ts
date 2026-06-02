@@ -50,14 +50,19 @@ export function useMockSimulator() {
     clearMessagesRef.current = clearMessages
   }, [clearMessages])
 
+  // Synchronously gates the running timer so a pending tick can't append a stray
+  // event after loadPreview() has cleared the list and injected the preview set.
+  const streamActiveRef = useRef(false)
+
   useEffect(() => {
     if (!isRunning) return
 
+    streamActiveRef.current = true
     let cancelled = false
     let timer: ReturnType<typeof setTimeout> | null = null
 
     const tick = () => {
-      if (cancelled) return
+      if (cancelled || !streamActiveRef.current) return
       const enabled = (Object.keys(enabledRef.current) as MockEventType[]).filter(t => enabledRef.current[t])
       const type = pickWeightedType(enabled)
       if (type) {
@@ -71,6 +76,7 @@ export function useMockSimulator() {
 
     return () => {
       cancelled = true
+      streamActiveRef.current = false
       if (timer) clearTimeout(timer)
     }
   }, [isRunning])
@@ -84,6 +90,9 @@ export function useMockSimulator() {
   // deterministic preview set. Clearing first means the stable fixture ids never
   // collide as React keys across repeated clicks.
   const loadPreview = useCallback(() => {
+    // Neutralize any in-flight stream tick before we replace the list, so the
+    // preview set is exactly the fixed fixtures with no stray random event.
+    streamActiveRef.current = false
     setIsRunning(false)
     clearMessagesRef.current()
     for (const event of buildPreviewEvents()) {

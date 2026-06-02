@@ -1,13 +1,14 @@
-import { useEffect, useRef } from 'react'
 import { ConnectionState, LaplaceEventBridgeClient } from '@laplace.live/event-bridge-sdk'
 import type { LaplaceEvent } from '@laplace.live/event-types'
+import { useEffect, useRef } from 'react'
+
 import { useRuntimeStore } from '../store/useRuntimeStore'
 import { useSettingsStore } from '../store/useSettingsStore'
 
 export function useLaplaceClient() {
   const clientRef = useRef<LaplaceEventBridgeClient | null>(null)
 
-  const { serverHost, serverPort, serverPassword, allowedOrigins } = useSettingsStore()
+  const { serverHost, serverPort, serverBridgeAuthToken, allowedOrigins } = useSettingsStore()
   const { setConnectionState, setOnlineUserCount, addMessage, clearMessages } = useRuntimeStore()
 
   // Use ref for allowedOrigins to avoid stale closures
@@ -31,7 +32,7 @@ export function useLaplaceClient() {
 
     const client = new LaplaceEventBridgeClient({
       url: websocketUrl,
-      token: serverPassword,
+      token: serverBridgeAuthToken,
       reconnect: true,
     })
 
@@ -92,7 +93,7 @@ export function useLaplaceClient() {
       clientRef.current = null
       clearMessages()
     }
-  }, [serverHost, serverPort, serverPassword, setConnectionState, setOnlineUserCount, addMessage, clearMessages])
+  }, [serverHost, serverPort, serverBridgeAuthToken, setConnectionState, setOnlineUserCount, addMessage, clearMessages])
 
   // Return the client instance if needed for direct access
   return clientRef.current

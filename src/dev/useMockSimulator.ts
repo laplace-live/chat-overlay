@@ -3,8 +3,9 @@
  *
  * Owns the running state and the per-type enabled flags, and runs a
  * self-rescheduling timer that pushes generated events through the same
- * `addMessage` path real events use. Tree-shaken out of production (only
- * imported behind `import.meta.env.DEV`).
+ * `addMessage` path real events use. Also exposes `loadPreview`, a one-shot that
+ * clears the list and injects the fixed preview fixtures. Tree-shaken out of
+ * production (only imported behind `import.meta.env.DEV`).
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -16,6 +17,7 @@ import {
   pickWeightedType,
   randomEventDelay,
 } from './mock-events'
+import { buildPreviewEvents } from './preview-events'
 
 type EnabledMap = Record<MockEventType, boolean>
 
@@ -28,6 +30,7 @@ function defaultEnabledTypes(): EnabledMap {
 
 export function useMockSimulator() {
   const addMessage = useRuntimeStore(state => state.addMessage)
+  const clearMessages = useRuntimeStore(state => state.clearMessages)
   const [isRunning, setIsRunning] = useState(false)
   const [enabledTypes, setEnabledTypes] = useState<EnabledMap>(defaultEnabledTypes)
 
@@ -41,6 +44,11 @@ export function useMockSimulator() {
   useEffect(() => {
     addMessageRef.current = addMessage
   }, [addMessage])
+
+  const clearMessagesRef = useRef(clearMessages)
+  useEffect(() => {
+    clearMessagesRef.current = clearMessages
+  }, [clearMessages])
 
   useEffect(() => {
     if (!isRunning) return
@@ -72,5 +80,16 @@ export function useMockSimulator() {
     setEnabledTypes(prev => ({ ...prev, [type]: !prev[type] }))
   }, [])
 
-  return { isRunning, toggleRunning, enabledTypes, toggleType }
+  // One-shot: stop any running stream, clear the list, then inject the fixed
+  // deterministic preview set. Clearing first means the stable fixture ids never
+  // collide as React keys across repeated clicks.
+  const loadPreview = useCallback(() => {
+    setIsRunning(false)
+    clearMessagesRef.current()
+    for (const event of buildPreviewEvents()) {
+      addMessageRef.current(event)
+    }
+  }, [])
+
+  return { isRunning, toggleRunning, enabledTypes, toggleType, loadPreview }
 }

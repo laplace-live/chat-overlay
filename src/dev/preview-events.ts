@@ -23,6 +23,8 @@ import type {
 
 import { randomAvatar } from './mock-events'
 
+// These mirror the values in mock-events.ts. They are not rendered (origin /
+// receiver fields), so keeping them as local copies is fine.
 const ROOM = 12345
 const STREAMER_UID = 99999999
 const STREAMER_NAME = '主播'
@@ -344,6 +346,7 @@ export function buildPreviewEvents(): LaplaceEvent[] {
     // interaction × actions + tier
     buildInteraction({ slug: 'enter', uid: 5001, username: '路人甲', action: 1, guardType: 0, medal: NO_MEDAL }),
     buildInteraction({ slug: 'follow', uid: 5002, username: '新粉丝', action: 2, guardType: 0, medal: NO_MEDAL }),
+    buildInteraction({ slug: 'share', uid: 5006, username: '分享达人', action: 3, guardType: 0, medal: NO_MEDAL }),
     buildInteraction({ slug: 'special-follow', uid: 5003, username: '真爱粉', action: 4, guardType: 0, medal: medal(15, '柠檬') }),
     buildInteraction({ slug: 'mutual-follow', uid: 5004, username: '老朋友', action: 5, guardType: 0, medal: medal(18, '星星') }),
     buildInteraction({ slug: 'enter-captain', uid: 5005, username: '甲板上的舰长', action: 1, guardType: 3, medal: medal(25, '团子') }),

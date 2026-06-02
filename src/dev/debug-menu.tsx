@@ -33,11 +33,10 @@ export function DebugMenu() {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align='end' className='w-60 bg-bg/90'>
+      <PopoverContent align='end' className='w-64 bg-bg/90'>
         <Button
           variant='solid'
           tint={isRunning ? 'red' : 'accent'}
-          size='sm'
           type='button'
           className='w-full'
           onClick={toggleRunning}
@@ -48,7 +47,7 @@ export function DebugMenu() {
 
         <hr className='border-fg/15' />
 
-        <div className='mb-1.5 text-xs text-fg/50'>Event types</div>
+        <div className='mb-1.5 text-xs text-fg/50'>Event Types</div>
         <div className='grid grid-cols-2 gap-x-3 gap-y-1.5'>
           {MOCK_EVENT_TYPES.map(meta => (
             <div key={meta.type} className='flex items-center'>

@@ -224,7 +224,7 @@ function randomMedal() {
 }
 
 /** Inline SVG avatar so `message`/`entry-effect` render something with no network. */
-function randomAvatar(seed: number, label: string): string {
+export function randomAvatar(seed: number, label: string): string {
   const hue = seed % 360
   const first =
     label

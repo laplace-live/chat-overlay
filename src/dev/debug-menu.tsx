@@ -2,11 +2,18 @@
  * Dev-only debug dropdown for simulating chat events.
  *
  * Rendered only behind `import.meta.env.DEV` in `renderer.tsx`, so this whole
- * module (and its `mock-events` dependency graph) is tree-shaken out of
- * production builds. A title-bar flask button opens a popover with a start/stop
- * control and per-type toggles.
+ * module (and its `mock-events` / `preview-events` dependency graph) is
+ * tree-shaken out of production builds. A title-bar flask button opens a popover
+ * with a start/stop control, a fixed "preview all events" showcase, and per-type
+ * toggles.
  */
-import { IconFlask, IconFlaskFilled, IconPlayerPlayFilled, IconPlayerStopFilled } from '@tabler/icons-react'
+import {
+  IconFlask,
+  IconFlaskFilled,
+  IconLayoutGrid,
+  IconPlayerPlayFilled,
+  IconPlayerStopFilled,
+} from '@tabler/icons-react'
 
 import { Button } from '../components/ui/button'
 import { Checkbox } from '../components/ui/checkbox'
@@ -16,7 +23,7 @@ import { MOCK_EVENT_TYPES } from './mock-events'
 import { useMockSimulator } from './useMockSimulator'
 
 export function DebugMenu() {
-  const { isRunning, toggleRunning, enabledTypes, toggleType } = useMockSimulator()
+  const { isRunning, toggleRunning, enabledTypes, toggleType, loadPreview } = useMockSimulator()
 
   return (
     <Popover>
@@ -43,6 +50,18 @@ export function DebugMenu() {
         >
           {isRunning ? <IconPlayerStopFilled size={14} /> : <IconPlayerPlayFilled size={14} />}
           {isRunning ? 'Stop simulation' : 'Start simulation'}
+        </Button>
+
+        <Button
+          variant='outline'
+          tint='white'
+          type='button'
+          className='mt-1.5 w-full'
+          onClick={loadPreview}
+          title='Inject one fixed example of every event type/tier (ignores the checkboxes below)'
+        >
+          <IconLayoutGrid size={14} />
+          Preview all events
         </Button>
 
         <hr className='border-fg/15' />

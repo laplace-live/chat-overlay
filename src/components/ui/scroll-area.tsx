@@ -5,10 +5,11 @@ import { ScrollArea as RadixScrollArea } from 'radix-ui'
 // https://github.com/mantinedev/mantine/tree/v6/src/mantine-core/src/ScrollArea
 // https://ui.shadcn.com/docs/components/scroll-area
 import type React from 'react'
+import type { ComponentProps } from 'react'
 
 import { cn } from '@/lib/cn'
 
-export interface ScrollAreaProps extends React.ComponentProps<typeof RadixScrollArea.Root> {
+export interface ScrollAreaProps extends ComponentProps<typeof RadixScrollArea.Root> {
   /** Scrollbar size in pixels */
   scrollbarSize?: number
 

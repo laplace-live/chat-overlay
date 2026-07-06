@@ -9,7 +9,7 @@ import {
   IconX,
 } from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
 import { AboutModal } from './components/about-modal'
 import { ChatEvents } from './components/events'
@@ -253,7 +253,7 @@ const App: React.FC = () => {
 // Initialize React
 const container = document.getElementById('root')
 if (container) {
-  const root = ReactDOM.createRoot(container)
+  const root = createRoot(container)
   root.render(<App />)
 }
 

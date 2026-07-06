@@ -9,3 +9,5 @@ onlyBuiltDependencies:
   - electron-winstaller
   - esbuild
   - unrs-resolver
+minimumReleaseAgeExclude:
+  - "@laplace.live/event-bridge-sdk"

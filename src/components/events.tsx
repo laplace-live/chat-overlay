@@ -3,9 +3,12 @@ import type { LaplaceEvent } from '@laplace.live/event-types'
 import { IconArrowDownDashed } from '@tabler/icons-react'
 import { useEffect, useRef, useState } from 'react'
 
+import { nf } from '@/utils/number-format'
+
 import { cn } from '../lib/cn'
 import { useRuntimeStore } from '../store/useRuntimeStore'
 import { useSettingsStore } from '../store/useSettingsStore'
+import { EventLite } from './event-lite'
 import { Button } from './ui/button'
 
 export function ChatEvents() {
@@ -66,6 +69,17 @@ export function ChatEvents() {
       chatEvents.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  /**
+   * Right-aligned amount/value badge for paid events. Returns null for events
+   * that don't have a meaningful price.
+   */
+  function eventValue(event: LaplaceEvent): string | null {
+    if ('priceNormalized' in event && event.priceNormalized > 0) {
+      return `¥${nf.format(event.priceNormalized)}`
+    }
+    return null
+  }
 
   // Function to render a message based on its type
   const renderMessage = (event: LaplaceEvent) => {
@@ -200,7 +214,7 @@ export function ChatEvents() {
       <div
         id='content'
         className={cn(
-          'h-[100vh] flex flex-col',
+          'h-screen flex flex-col',
           '[mask-image:linear-gradient(to_bottom,transparent,rgba(0,0,0,0.1)_24px,black_48px,black_100%,transparent)]'
         )}
       >
@@ -212,7 +226,55 @@ export function ChatEvents() {
                 : 'Connecting to LAPLACE Event Bridge…'}
             </div>
           ) : (
-            messages.map(message => renderMessage(message))
+            messages.map(event => {
+              const value = eventValue(event)
+
+              // Extra layer to filter unwanted event types
+              if (
+                event.type === 'online-rank-update' ||
+                event.type === 'online-update' ||
+                event.type === 'watched-update' ||
+                event.type === 'likes-update'
+              ) {
+                return
+              }
+
+              return (
+                <div
+                  key={event.id}
+                  data-slot='event'
+                  data-event-type={event.type}
+                  className={cn(
+                    'event gap-x-1.5 gap-y-1',
+                    'guardType' in event && `guard-type-${event.guardType}`,
+                    event.type === 'superchat' || event.type === 'toast' || event.type === 'gift' ? 'grid' : 'block'
+                  )}
+                >
+                  <span>
+                    {/* Avatar */}
+                    {'avatar' in event && event.avatar ? (
+                      <img
+                        src={event.avatar}
+                        alt='avatar'
+                        className='avatar inline-block mr-1'
+                        referrerPolicy='no-referrer'
+                      />
+                    ) : null}
+
+                    {/* Username */}
+                    {'username' in event && event.username ? (
+                      <span className='username truncate min-w-10'>{event.username}</span>
+                    ) : null}
+
+                    {/* Price */}
+                    {value && <span className='price font-medium  tabular-nums'>{value}</span>}
+                  </span>
+
+                  {/* Content */}
+                  <EventLite data={event} />
+                </div>
+              )
+            })
           )}
           <div ref={messagesEndRef} />
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { nf } from './numberFormat'
 import { cn } from '../lib/cn'
+import { nf } from './number-format'
 
 const AnimatedNumber = ({ value, className = '' }: { value: number; className?: string }) => {
   const [isAnimating, setIsAnimating] = useState(false)

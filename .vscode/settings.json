@@ -30,5 +30,6 @@
 
     // https://www.tailwind-variants.org/docs/getting-started#intellisense-setup-optional
     "tv"
-  ]
+  ],
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

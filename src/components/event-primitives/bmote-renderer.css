@@ -1,0 +1,11 @@
+@layer components {
+  .bmote-wrap {
+    vertical-align: top;
+
+    .bmote {
+      max-width: var(--event-line-height);
+      max-height: var(--event-line-height);
+      text-indent: -9999px;
+    }
+  }
+}

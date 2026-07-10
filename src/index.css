@@ -10,17 +10,18 @@
 @import './schemes.css';
 
 /* Components */
+@import './components/event-primitives/base.css';
 @import './components/events.css';
 
 /* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /* Extends tailwind css layers */
 /* https://tailwindcss.com/docs/preflight */
 @layer kladenets, kladewind, template, remote-css, custom-css;
 
 /* Force Chinese font to avoid fallback to random system font with lang tag in html specified */
-@theme inline static {
+@theme static {
   --font-sans:
     ui-sans-serif, system-ui, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
     'WenQuanYi Micro Hei', Arial, sans-serif;

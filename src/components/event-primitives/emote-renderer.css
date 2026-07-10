@@ -1,0 +1,12 @@
+@layer components {
+  .emote-wrap {
+    display: inline-flex;
+    vertical-align: top;
+  }
+
+  .emote {
+    max-width: calc(var(--event-line-height) * 4);
+    max-height: calc(var(--event-line-height) * 1);
+    text-indent: -9999px;
+  }
+}

@@ -1,9 +1,11 @@
 /* Chat components */
 @layer components {
   .avatar {
-    width: 1lh;
-    height: 1lh;
+    --size: calc(var(--event-font-size) * 1.25);
+    width: var(--size);
+    height: var(--size);
     border-radius: 50%;
+    margin-top: -0.125lh;
   }
 
   .username {
@@ -24,10 +26,6 @@
     }
   }
 
-  .text {
-    color: #fff;
-  }
-
   .price {
     color: #ffc107;
     font-weight: bold;
@@ -35,71 +33,10 @@
   }
 
   .event {
-    /* background-color: rgba(255, 255, 255, 0.1); */
     font-size: var(--event-font-size);
-    border-radius: calc(var(--1px) * 6);
-    color: white;
-    text-shadow: 0 calc(var(--1px) * 1) calc(var(--1px) * 2) rgba(0, 0, 0, 1);
+    font-weight: 600;
+    color: #fff;
     word-break: break-word;
-
-    &.system {
-      background-color: rgba(33, 150, 243, 0.2);
-      border-left: calc(var(--1px) * 3) solid #2196f3;
-    }
-
-    &.message {
-      display: flex;
-      align-items: center;
-      gap: calc(var(--1px) * 5);
-    }
-
-    &.interaction {
-      opacity: 0.6;
-    }
-
-    &.superchat {
-      background-color: rgba(255, 152, 0, 0.2);
-      border-left: calc(var(--1px) * 3) solid #ff9800;
-    }
-
-    &.gift {
-      background-color: rgba(233, 30, 99, 0.2);
-      border-left: calc(var(--1px) * 3) solid #e91e63;
-    }
-
-    &.entry-effect {
-      background-color: rgba(0, 188, 212, 0.2);
-      border-left: calc(var(--1px) * 3) solid #00bcd4;
-      padding-left: calc(var(--1px) * 6);
-      display: flex;
-      align-items: center;
-      gap: calc(var(--1px) * 5);
-
-      .avatar {
-        width: 0.6lh;
-        height: 0.6lh;
-      }
-
-      &.guard-type-1 {
-        background-color: rgba(255, 0, 64, 0.2);
-        border-left: calc(var(--1px) * 3) solid #ff5f5f;
-      }
-
-      &.guard-type-2 {
-        background-color: rgba(226, 30, 233, 0.2);
-        border-left: calc(var(--1px) * 3) solid #e59bfb;
-      }
-
-      &.guard-type-3 {
-        background-color: rgba(0, 188, 212, 0.2);
-        border-left: calc(var(--1px) * 3) solid #73efff;
-      }
-    }
-
-    &.like-click {
-      .text {
-        color: #ffd455;
-      }
-    }
+    text-shadow: 0 calc(var(--1px) * 1) calc(var(--1px) * 2) rgba(0, 0, 0, 1);
   }
 }

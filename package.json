@@ -30,7 +30,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
     "electron-squirrel-startup": "^1.0.1",
-    "radix-ui": "^1.6.1",
+    "radix-ui": "^1.6.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwind-merge": "^3.6.0",

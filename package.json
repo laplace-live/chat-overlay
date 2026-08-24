@@ -11,6 +11,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
+    "test": "node --test --experimental-strip-types tests/settings-persistence.test.mjs",
     "generate-icons": "ts-node scripts/generate-icons.ts"
   },
   "keywords": [],

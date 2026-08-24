@@ -1,11 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { mergePersistedSettings, omitTransientSettings } from './settingsPersistence'
+
 interface SettingsState {
   // UI Settings
   opacity: number
   baseFontSize: number
   alwaysOnTop: boolean
+  // 窗口运行时状态：不随设置持久化，避免重启后锁死窗口。
   clickThrough: boolean
   showInteractionEvents: boolean
   showGiftFree: boolean
@@ -66,6 +69,8 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'overlay-settings', // unique name for localStorage key
+      partialize: state => omitTransientSettings(state),
+      merge: (persistedState, currentState) => mergePersistedSettings(persistedState, currentState),
     }
   )
 )

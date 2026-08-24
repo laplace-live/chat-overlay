@@ -9,6 +9,7 @@ A modern, transparent chat overlay application for Bilibili live streaming built
 - **Transparent Overlay**: Seamlessly integrates with your streaming setup
 - **Always-on-Top Mode**: Keeps the overlay visible above other windows
 - **Click-Through Mode**: Interact with applications beneath the overlay
+  - 点击穿透仅在当前运行周期生效，重启后默认关闭，避免窗口因保存的点击穿透状态而无法交互
 - **Real-time Chat Display**: Shows messages, interactions, and special events
 - **Online User Count**: Displays current viewer count with smooth animations
 - **Persistent Settings**: Saves your preferences locally

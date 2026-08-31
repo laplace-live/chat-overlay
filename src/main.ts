@@ -182,9 +182,12 @@ const syncClickThrough = () => {
     return
   }
 
-  // Suspended is temporary — a dialog is open — so the sensor is only parked,
-  // not torn down: rebuilding it would spin up a whole renderer process again.
-  if (clickThroughSuspended) {
+  // Being its own window, the sensor does not follow the overlay off-screen: left
+  // alone it survives a minimize as an invisible strip that still swallows every
+  // click in the title bar's old position. Both this and a suspending dialog are
+  // temporary, so the sensor is only parked — rebuilding it would spin up a whole
+  // renderer process again.
+  if (clickThroughSuspended || !mainWindow.isVisible() || mainWindow.isMinimized()) {
     applyIgnoreMouseEvents(false)
     titleBarSensor?.hide()
     return
@@ -320,6 +323,12 @@ const createWindow = () => {
 
   mainWindow.on('move', syncSensorBounds)
   mainWindow.on('resize', syncSensorBounds)
+
+  // Keep the sensor's visibility tied to the overlay's
+  mainWindow.on('hide', syncClickThrough)
+  mainWindow.on('show', syncClickThrough)
+  mainWindow.on('minimize', syncClickThrough)
+  mainWindow.on('restore', syncClickThrough)
 
   // Clean up reference when window is closed
   mainWindow.on('closed', () => {

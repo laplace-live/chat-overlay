@@ -7,7 +7,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setWindowOpacity: (opacity: number) => ipcRenderer.send('set-window-opacity', opacity),
   setAlwaysOnTop: (enabled: boolean) => ipcRenderer.send('set-always-on-top', enabled),
   setClickThrough: (enabled: boolean) => ipcRenderer.send('set-click-through', enabled),
+  setClickThroughSuspended: (suspended: boolean) => ipcRenderer.send('set-click-through-suspended', suspended),
   setIgnoreMouseEvents: (ignore: boolean) => ipcRenderer.send('set-ignore-mouse-events', ignore),
+  setTitleBarHeight: (height: number) => ipcRenderer.send('set-title-bar-height', height),
+  notifyTitleBarHovered: () => ipcRenderer.send('title-bar-hovered'),
   onClickThroughEnabled: (callback: (enabled: boolean) => void) => {
     const handler = (_event: Electron.IpcRendererEvent, enabled: boolean) => callback(enabled)
     ipcRenderer.on('click-through-enabled', handler)

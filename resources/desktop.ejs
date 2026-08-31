@@ -1,0 +1,23 @@
+<%
+/*
+  Copy of electron-installer-debian's default resources/desktop.ejs, with
+  `execArguments` appended to Exec. The upstream Debian template ignores that
+  option (only electron-installer-redhat's template honors it), and we need it
+  to launch under XWayland instead of native Wayland — see the ozone platform
+  notes in src/main.ts. Wired up via MakerDeb's `desktopTemplate` option.
+
+  Despite the .ejs extension, electron-installer-common renders these with
+  lodash templates, not EJS: no EJS comment tags, no whitespace-trim closers,
+  and nothing in this comment may contain a closing evaluate delimiter.
+*/
+%>[Desktop Entry]
+<% if (productName) { %>Name=<%= productName %>
+<% } %><% if (description) { %>Comment=<%= description %>
+<% } %><% if (genericName) { %>GenericName=<%= genericName %>
+<% } %><% if (name) { %>Exec=<%= name %> %U<% if (execArguments && execArguments.length) { %> <%= execArguments.join(' ') %><% } %>
+Icon=<%= name %>
+<% } %>Type=Application
+StartupNotify=true
+<% if (categories && categories.length) { %>Categories=<%= categories.join(';') %>;
+<% } %><% if (mimeType && mimeType.length) { %>MimeType=<%= mimeType.join(';') %>;
+<% } %>

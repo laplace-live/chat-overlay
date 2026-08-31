@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# Local debug VM connection details (host/user); never commit to this repo
+.claude/vm.env

@@ -48,7 +48,8 @@ Never sync `.env` — it holds Apple signing credentials.
 
 ```bash
 rsync -az --delete \
-  --exclude node_modules --exclude .git --exclude out --exclude .vite --exclude .env \
+  --exclude node_modules --exclude .git --exclude out --exclude .vite \
+  --exclude .env --exclude '.claude/vm.env' \
   ./ "$VM_HOST:/home/$VM_USER/Git/chat-overlay/"
 ```
 
@@ -80,7 +81,10 @@ main-process state.
 ## Drive the renderer
 
 ```js
-// cdp-eval.mjs — usage: node cdp-eval.mjs "<expression>"
+// cdp-eval.mjs — usage: node cdp-eval.mjs <probe.js | "<expression>">
+import { readFileSync } from 'node:fs'
+const arg = process.argv[2]
+const expression = arg.endsWith('.js') ? readFileSync(arg, 'utf8') : arg
 const targets = await (await fetch('http://127.0.0.1:9229/json')).json()
 // MUST exclude the sensor: it is a second page with no buttons and no handlers
 const page = targets.find(t => t.type === 'page' && !t.url.includes('sensor=1'))
@@ -104,7 +108,7 @@ await new Promise(r => {
   ws.onopen = r
 })
 await send('Runtime.enable')
-const r = await send('Runtime.evaluate', { expression: process.argv[2], returnByValue: true, awaitPromise: true })
+const r = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true })
 console.log(JSON.stringify(r.result?.result?.value ?? r.result?.exceptionDetails))
 ws.close()
 ```

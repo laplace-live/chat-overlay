@@ -32,13 +32,21 @@ declare global {
       setWindowOpacity: (opacity: number) => void
       setAlwaysOnTop: (enabled: boolean) => void
       setClickThrough: (enabled: boolean) => void
+      setClickThroughSuspended: (suspended: boolean) => void
       setIgnoreMouseEvents: (ignore: boolean) => void
+      setTitleBarHeight: (height: number) => void
+      notifyTitleBarHovered: () => void
       onClickThroughEnabled: (callback: (enabled: boolean) => void) => () => void
       getAppVersion: () => Promise<string>
       openExternal: (url: string) => void
     }
   }
 }
+
+// The main process opens a second copy of this bundle in `?sensor=1` mode: a
+// transparent strip parked over the title bar, whose only job is to notice the
+// cursor arriving while the overlay is passing clicks through. See src/main.ts.
+const isTitleBarSensor = new URLSearchParams(window.location.search).has('sensor')
 
 const App: React.FC = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -62,9 +70,12 @@ const App: React.FC = () => {
   const rootRef = useRef<HTMLDivElement>(null)
   const titleBarRef = useRef<HTMLDivElement>(null)
 
-  // Apply saved alwaysOnTop setting on mount
+  // The main process starts each launch at its defaults and has no way to read
+  // the persisted store, so every window setting that lives here has to be
+  // pushed back on mount — otherwise the toggle reads on while nothing is.
   useEffect(() => {
     window.electronAPI.setAlwaysOnTop(alwaysOnTop)
+    window.electronAPI.setClickThrough(clickThrough)
   }, [])
 
   // Initialize CSS variable for event font size on mount
@@ -95,6 +106,35 @@ const App: React.FC = () => {
     }
   }, [opacity])
 
+  // Title-bar overlays have to capture input, so pause pass-through while one is
+  // open. The main process owns the reset, which keeps every platform in sync.
+  useEffect(() => {
+    window.electronAPI.setClickThroughSuspended(overlayInteractive)
+  }, [overlayInteractive])
+
+  // The sensor strip has to cover exactly the interactive part of the title bar,
+  // and only the renderer knows how tall that is.
+  useEffect(() => {
+    const titleBar = titleBarRef.current
+    if (!titleBar) return
+
+    const report = () => window.electronAPI.setTitleBarHeight(titleBar.getBoundingClientRect().height)
+    report()
+
+    const observer = new ResizeObserver(report)
+    observer.observe(titleBar)
+
+    return () => observer.disconnect()
+  }, [])
+
+  // The main process can turn pass-through off on its own (Escape on Linux), so
+  // mirror its state back into the store to keep the toggle honest.
+  useEffect(() => {
+    return window.electronAPI.onClickThroughEnabled(enabled => {
+      if (!enabled) setClickThrough(false)
+    })
+  }, [setClickThrough])
+
   useEffect(() => {
     // Set up mouse tracking for click-through functionality
     const handleMouseMove = (e: MouseEvent) => {
@@ -117,26 +157,11 @@ const App: React.FC = () => {
     // Add mouse move listener
     document.addEventListener('mousemove', handleMouseMove)
 
-    // Listen for click-through state changes from main process
-    const unsubscribe = window.electronAPI.onClickThroughEnabled(enabled => {
-      if (!enabled) {
-        window.electronAPI.setIgnoreMouseEvents(false)
-      }
-    })
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-      window.electronAPI.setIgnoreMouseEvents(false)
-      unsubscribe() // Clean up the IPC listener
-    }
+    // No reset on teardown: this effect re-runs the moment `clickThrough` flips,
+    // and a reset here would immediately undo the pass-through the main process
+    // has just engaged. Main owns that reset, and does it when pass-through ends.
+    return () => document.removeEventListener('mousemove', handleMouseMove)
   }, [clickThrough, overlayInteractive])
-
-  // Ensure click-through is disabled while a title-bar overlay is open
-  useEffect(() => {
-    if (overlayInteractive && clickThrough) {
-      window.electronAPI.setIgnoreMouseEvents(false)
-    }
-  }, [overlayInteractive, clickThrough])
 
   const handleClose = () => {
     window.close()
@@ -250,11 +275,30 @@ const App: React.FC = () => {
   )
 }
 
+// Nothing visible: a bare hit area that reports the cursor reaching the title
+// bar, so the main process can hand the pointer back to the real window.
+const TitleBarSensor: React.FC = () => {
+  useEffect(() => {
+    document.documentElement.style.background = 'transparent'
+    document.body.style.background = 'transparent'
+  }, [])
+
+  return (
+    <div
+      className='fixed inset-0'
+      onMouseEnter={() => window.electronAPI.notifyTitleBarHovered()}
+      onMouseMove={() => window.electronAPI.notifyTitleBarHovered()}
+    />
+  )
+}
+
 // Initialize React
 const container = document.getElementById('root')
 if (container) {
   const root = createRoot(container)
-  root.render(<App />)
+  root.render(isTitleBarSensor ? <TitleBarSensor /> : <App />)
 }
 
-console.log('👋 Chat overlay is now running with LAPLACE Event Bridge integration!')
+if (!isTitleBarSensor) {
+  console.log('👋 Chat overlay is now running with LAPLACE Event Bridge integration!')
+}

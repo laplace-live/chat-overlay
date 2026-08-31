@@ -1,11 +1,14 @@
+import path from 'node:path'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
-import { MakerDeb } from '@electron-forge/maker-deb'
+import { MakerDeb, type MakerDebConfig } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
 import { MakerSquirrel } from '@electron-forge/maker-squirrel'
 import { MakerZIP } from '@electron-forge/maker-zip'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { VitePlugin } from '@electron-forge/plugin-vite'
 import type { ForgeConfig } from '@electron-forge/shared-types'
+
+const LINUX_OZONE_PLATFORM_ARG = '--ozone-platform=x11'
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -48,8 +51,23 @@ const config: ForgeConfig = {
       },
       ['darwin']
     ),
-    new MakerRpm({}),
-    new MakerDeb({}),
+    // Launch under XWayland rather than native Wayland, where always on top and
+    // click pass-through are both inert. src/main.ts relaunches itself with the
+    // same flag for launches that don't go through the desktop entry.
+    new MakerRpm({
+      options: {
+        execArguments: [LINUX_OZONE_PLATFORM_ARG],
+      },
+    }),
+    new MakerDeb({
+      // `execArguments` is untyped for Debian because upstream's desktop
+      // template ignores it, but the value still reaches the template context —
+      // and ours reads it, the same way electron-installer-redhat's does.
+      options: {
+        execArguments: [LINUX_OZONE_PLATFORM_ARG],
+        desktopTemplate: path.resolve('resources/desktop.ejs'),
+      } as NonNullable<MakerDebConfig['options']>,
+    }),
   ],
   plugins: [
     new VitePlugin({

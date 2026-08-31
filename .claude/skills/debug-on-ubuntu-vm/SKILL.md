@@ -84,6 +84,10 @@ main-process state.
 // cdp-eval.mjs — usage: node cdp-eval.mjs <probe.js | "<expression>">
 import { readFileSync } from 'node:fs'
 const arg = process.argv[2]
+if (!arg) {
+  console.error('usage: node cdp-eval.mjs <probe.js | "<expression>">')
+  process.exit(1)
+}
 const expression = arg.endsWith('.js') ? readFileSync(arg, 'utf8') : arg
 const targets = await (await fetch('http://127.0.0.1:9229/json')).json()
 // MUST exclude the sensor: it is a second page with no buttons and no handlers

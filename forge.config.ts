@@ -10,16 +10,14 @@ import type { ForgeConfig } from '@electron-forge/shared-types'
 
 const LINUX_OZONE_PLATFORM_ARG = '--ozone-platform=x11'
 
+// Environment-specific app icon without extension: Packager picks the format per platform, and
+// the Windows installer reuses the .ico
+const APP_ICON = `src/assets/icons/${process.env.NODE_ENV === 'development' ? 'dev' : 'prod'}/icon`
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    // Environment-specific icon configuration
-    icon: (() => {
-      const isDev = process.env.NODE_ENV === 'development'
-      const environment = isDev ? 'dev' : 'prod'
-
-      return `src/assets/icons/${environment}/icon`
-    })(),
+    icon: APP_ICON,
     executableName: 'chat-overlay',
     appBundleId: 'live.laplace.chat-overlay',
     osxSign: process.env.APPLE_IDENTITY
@@ -43,7 +41,7 @@ const config: ForgeConfig = {
       name: 'LAPLACEChatOverlay',
       authors: 'LAPLACE Live!',
       description: 'A modern, transparent chat overlay application for Bilibili live streaming',
-      setupIcon: 'src/assets/icons/installer/icon.ico',
+      setupIcon: `${APP_ICON}.ico`,
     }),
     new MakerZIP(
       {

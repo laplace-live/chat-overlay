@@ -17,7 +17,9 @@
       "!out",
       "!public",
       "!references",
-      "!storybook-static"
+      "!storybook-static",
+      // Icon Composer document: Xcode-owned JSON, replaced wholesale on re-export.
+      "!src/assets/icons/prod/icon.icon"
     ]
   },
   "formatter": {

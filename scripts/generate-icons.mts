@@ -25,6 +25,9 @@ const windowsSizes = [16, 24, 32, 48, 64, 128, 256]
 const iconConfigs = {
   prod: {
     source: 'src/assets/icon.png',
+    // Icon Composer document; Electron Packager compiles it into Assets.car, and the
+    // macOS icon.icns fallback is rendered from it too instead of from `source`
+    iconComposer: 'src/assets/icons/prod/icon.icon',
     outputDir: 'src/assets/icons/prod',
     description: 'Production',
   },
@@ -33,17 +36,6 @@ const iconConfigs = {
     outputDir: 'src/assets/icons/dev',
     description: 'Development',
   },
-  installer: {
-    source: 'src/assets/icon-installer.png',
-    outputDir: 'src/assets/icons/installer',
-    description: 'Installer',
-  },
-  // Future extensibility examples:
-  // uninstaller: {
-  //   source: 'src/assets/icon-uninstaller.png',
-  //   outputDir: 'src/assets/icons/uninstaller',
-  //   description: 'Uninstaller'
-  // }
 }
 
 function ensureDirectoryExists(dir: string) {
@@ -98,6 +90,36 @@ function generateMacOSIcon(sourceIcon: string, outputDir: string, description: s
       `Failed to create ${description} .icns file. Make sure you are running on macOS with iconutil available.`
     )
     console.log('Individual PNG files are available in:', tempDir)
+  }
+}
+
+function generateMacOSIconFromIconComposer(iconComposer: string, outputDir: string, description: string) {
+  console.log(`Generating ${description} macOS icon from ${iconComposer}...`)
+
+  ensureDirectoryExists(outputDir)
+
+  // Electron Packager's own actool call (Xcode 26+), which keeps only Assets.car; actool also
+  // renders the flat Icon.icns kept here. `--app-icon Icon` names the document, hence the copy.
+  const tempDir = path.join(outputDir, 'temp')
+  const compileDir = path.join(tempDir, 'out')
+  ensureDirectoryExists(compileDir)
+
+  try {
+    const iconPath = path.join(tempDir, 'Icon.icon')
+    execSync(`cp -R "${iconComposer}" "${iconPath}"`)
+    execSync(
+      `xcrun actool "${iconPath}" --compile "${compileDir}" --output-format human-readable-text --notices --warnings ` +
+        `--output-partial-info-plist "${path.join(compileDir, 'assetcatalog_generated_info.plist')}" ` +
+        '--app-icon Icon --include-all-app-icons --accent-color AccentColor --enable-on-demand-resources NO ' +
+        '--development-region en --target-device mac --minimum-deployment-target 26.0 --platform macosx',
+      { stdio: 'inherit' }
+    )
+    execSync(`cp "${path.join(compileDir, 'Icon.icns')}" "${path.join(outputDir, 'icon.icns')}"`)
+    console.log(`✓ Generated ${description} icon.icns`)
+  } catch {
+    console.error(`Failed to create ${description} .icns file. Make sure Xcode 26 or later is installed.`)
+  } finally {
+    execSync(`rm -rf "${tempDir}"`)
   }
 }
 
@@ -165,7 +187,11 @@ function generateIconsForEnvironment(environment: string) {
 
   console.log(`🎨 Generating ${config.description} icons from ${config.source}...`)
 
-  generateMacOSIcon(config.source, config.outputDir, config.description)
+  if ('iconComposer' in config && existsSync(config.iconComposer)) {
+    generateMacOSIconFromIconComposer(config.iconComposer, config.outputDir, config.description)
+  } else {
+    generateMacOSIcon(config.source, config.outputDir, config.description)
+  }
   generateWindowsIcon(config.source, config.outputDir, config.description)
   generateOtherPlatformIcon(config.source, config.outputDir, config.description)
 

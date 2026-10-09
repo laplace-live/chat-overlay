@@ -67,6 +67,13 @@ pnpm make
 
 The packaged applications will be available in the `out` directory.
 
+Packaging for macOS needs macOS 26 or later with Xcode 26 or later: the app
+icon is an Icon Composer document (`src/assets/icons/prod/icon.icon`), which
+Electron Packager compiles with `actool` into `Assets.car`. Re-export it from
+Icon Composer rather than editing it, then run `pnpm generate-icons prod` to
+re-render the `icon.icns` fallback from it. Development builds keep the PNG-based
+dev icon.
+
 ### Linux: Wayland and XWayland
 
 Always-on-top and click pass-through both require an X11 client. Wayland gives

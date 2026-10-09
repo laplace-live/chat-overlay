@@ -3,6 +3,7 @@ name: Build and Release
 on:
   push:
     branches: [main, master]
+    # Pushed by release.yml when a changesets version PR merges
     tags:
       - "v*"
   pull_request:
@@ -133,12 +134,14 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
+      # release.yml already created this release from the CHANGELOG entry, so
+      # these steps only attach installers. No generate_release_notes: on an
+      # existing release it appends GitHub's notes to the body, once per job.
       - name: Upload Windows Release Assets
         if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3
         with:
           draft: false
-          generate_release_notes: true
           files: |
             out/make/squirrel.windows/x64/*.exe
             out/make/squirrel.windows/x64/*.nupkg
@@ -151,7 +154,6 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           draft: false
-          generate_release_notes: true
           files: |
             out/make/zip/darwin/**/*.zip
             out/make/zip/darwin/**/RELEASES.json
@@ -163,7 +165,6 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           draft: false
-          generate_release_notes: true
           files: |
             out/make/deb/x64/*.deb
             out/make/rpm/x64/*.rpm

@@ -1,0 +1,70 @@
+name: Release
+
+# Changesets flow, ported from laplace-persona: while changesets exist on
+# master, maintain a "chore: version packages" PR (version bump +
+# CHANGELOG.md). Once it merges, `changeset git-tag` tags v<version>, and the
+# action pushes the tag and creates the GitHub Release from the CHANGELOG
+# entry; build.yml then attaches the signed installers to it. A GitHub App
+# token (not the default GITHUB_TOKEN) authenticates the action so the tag
+# fires build.yml's `on: push: tags` trigger — events caused by GITHUB_TOKEN
+# don't start other workflows, so checks on the version PR wouldn't run either.
+
+on:
+  push:
+    branches: [master]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6.1.0
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Requires the laplace-release-bot GitHub App installed on this repo with
+      # Contents and Pull requests read & write, its Client ID and private key
+      # stored in the `RELEASE_APP_CLIENT_ID` and `RELEASE_APP_PRIVATE_KEY` org
+      # secrets.
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - uses: changesets/action@v2
+        with:
+          # Tags only, nothing goes to npm (`changeset publish` would try to,
+          # since the package isn't private). In a single-package repo the tag
+          # is v<version>, which build.yml's `v*` trigger and
+          # update.electronjs.org (semver tags only) both rely on.
+          publish-script: pnpm exec changeset git-tag
+          commit-message: "chore: version packages"
+          pr-title: "chore: version packages"
+          create-github-releases: true
+          # Must be passed as an input: the action stopped reading the
+          # `GITHUB_TOKEN` env var in v2, and no longer falls back to the
+          # credentials `actions/checkout` leaves behind.
+          github-token: ${{ steps.app-token.outputs.token }}

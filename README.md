@@ -113,13 +113,46 @@ mousemove handler re-engages pass-through when the cursor leaves again.
 As a safety net, pressing Escape with the overlay focused always turns
 pass-through off.
 
+## Releasing
+
+Versions and the changelog are managed by [Changesets](https://changesets.dev).
+Never bump `version` in `package.json`, push a `v*` tag, or edit
+`CHANGELOG.md` by hand.
+
+1. Every user-facing change ships with a changeset in the same commit. Run
+   `pnpm exec changeset`, or add a file under `.changeset/` yourself:
+
+   ```md
+   ---
+   'chat-overlay': minor
+   ---
+
+   feat: Add a font size setting for chat messages
+   ```
+
+   Use `minor` for new features and substantial behavior changes, `patch` for
+   fixes and small changes. Start the summary with `feat:`, `fix:`, `perf:` or
+   `chore:`, then one capitalized sentence written for users — the prefix is
+   stripped, and the rest lands verbatim in `CHANGELOG.md` and the GitHub
+   Release. CI, docs, and refactors with no user-visible effect need no
+   changeset; `pnpm exec changeset status` lists what is pending.
+2. While changesets sit on `master`, the Release workflow keeps a
+   `chore: version packages` PR open that bumps the version and updates
+   `CHANGELOG.md`.
+3. Merging that PR tags `v<version>` and creates the GitHub Release from the
+   new changelog entry. The tag triggers Build and Release, which signs every
+   platform and attaches the installers to that release, where macOS and
+   Windows installs pick up the update.
+
 ## Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Add a changeset if the change is user-facing (`pnpm exec changeset`, see
+   [Releasing](#releasing))
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
 
 ## License
 

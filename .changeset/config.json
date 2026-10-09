@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "changelog": "./changelog.mjs",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "restricted",
+  "format": false,
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

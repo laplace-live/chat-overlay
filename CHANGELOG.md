@@ -1,5 +1,12 @@
 # chat-overlay
 
+## 1.2.1
+
+### Patch Changes
+
+- 748ad64: The Windows installer now shows the app icon
+- 748ad64: New macOS app icon with Liquid Glass and dark, clear, and tinted styles
+
 ## 1.2.0
 
 ### Minor Changes

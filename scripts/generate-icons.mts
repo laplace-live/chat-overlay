@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
 import { execSync } from 'child_process'
 import { existsSync, mkdirSync } from 'fs'
@@ -235,6 +235,4 @@ function main() {
   }
 }
 
-if (require.main === module) {
-  main()
-}
+main()

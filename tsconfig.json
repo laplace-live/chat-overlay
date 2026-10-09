@@ -19,6 +19,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "forge.env.d.ts"],
+  "include": ["src/**/*", "*.ts", "*.mts"],
   "exclude": ["node_modules", "dist"]
 }

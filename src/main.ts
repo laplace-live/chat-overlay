@@ -15,8 +15,11 @@ const OZONE_PLATFORM_SWITCH = '--ozone-platform='
 //
 // - Wayland gives clients no control over z-order, so `setAlwaysOnTop` is a
 //   silent no-op there and always will be (electron/electron#50403).
-// - Electron's `setIgnoreMouseEvents` is gated behind `IsX11()`; the Wayland
-//   implementation is still an unmerged PR (electron/electron#51769).
+// - Pass-through hinges on the title-bar sensor below, a second window parked
+//   over the overlay's title bar and kept above it. Wayland lets clients neither
+//   position nor stack their windows, so the sensor can't get there, even though
+//   `setIgnoreMouseEvents` itself works on Wayland since Electron 44.5
+//   (electron/electron#54375).
 //
 // Under XWayland both work, because Mutter honors `_NET_WM_STATE_ABOVE` and the
 // XShape input region for X11 clients. Since Electron 38.2 the ozone platform is
@@ -87,6 +90,15 @@ let mainWindow: BrowserWindow | null = null
 // existing mousemove handler then re-engages pass-through on the way out.
 const usesTitleBarSensor = process.platform === 'linux'
 
+// Still on native Wayland at this point means opted out or developing without
+// the flag (see the ozone platform notes above). The sensor can't reach the title
+// bar there, so pass-through stays off rather than leaving the overlay ignoring
+// the pointer with Escape as the only way back.
+const isNativeWayland =
+  process.platform === 'linux' &&
+  process.env.XDG_SESSION_TYPE === 'wayland' &&
+  !process.argv.includes(`${OZONE_PLATFORM_SWITCH}x11`)
+
 // Click pass-through state. `suspended` covers title-bar overlays (settings,
 // about, the menu) that have to keep capturing input while they are open.
 let clickThroughEnabled = false
@@ -95,7 +107,7 @@ let ignoringMouseEvents = false
 let titleBarSensor: BrowserWindow | null = null
 let titleBarHeight = 48
 
-const isPassThroughActive = () => clickThroughEnabled && !clickThroughSuspended
+const isPassThroughActive = () => clickThroughEnabled && !clickThroughSuspended && !isNativeWayland
 
 // Park the sensor exactly over the main window's title bar.
 const syncSensorBounds = () => {
@@ -151,8 +163,11 @@ const createTitleBarSensor = () => {
     // Never take focus from the overlay it is standing in front of
     focusable: false,
     acceptFirstMouse: true,
+    // Linux rounds frameless windows by clipping the page itself (Electron 43+).
+    // Nothing here is visible, so that would only buy an extra render surface.
+    roundedCorners: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
     },
@@ -176,7 +191,7 @@ const createTitleBarSensor = () => {
 const syncClickThrough = () => {
   if (!mainWindow || mainWindow.isDestroyed()) return
 
-  if (!clickThroughEnabled) {
+  if (!clickThroughEnabled || isNativeWayland) {
     applyIgnoreMouseEvents(false)
     destroyTitleBarSensor()
     return
@@ -309,7 +324,7 @@ const createWindow = () => {
     alwaysOnTop: false,
     hasShadow: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
       devTools: process.env.NODE_ENV === 'development',

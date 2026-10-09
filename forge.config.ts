@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
-import { MakerDeb, type MakerDebConfig } from '@electron-forge/maker-deb'
+import { MakerDeb, type MakerDebConfigOptions } from '@electron-forge/maker-deb'
 import { MakerRpm } from '@electron-forge/maker-rpm'
 import { MakerSquirrel } from '@electron-forge/maker-squirrel'
 import { MakerZIP } from '@electron-forge/maker-zip'
@@ -66,7 +66,7 @@ const config: ForgeConfig = {
       options: {
         execArguments: [LINUX_OZONE_PLATFORM_ARG],
         desktopTemplate: path.resolve('resources/desktop.ejs'),
-      } as NonNullable<MakerDebConfig['options']>,
+      } as MakerDebConfigOptions,
     }),
   ],
   plugins: [
@@ -77,12 +77,12 @@ const config: ForgeConfig = {
         {
           // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
           entry: 'src/main.ts',
-          config: 'vite.main.config.ts',
+          config: 'vite.main.config.mts',
           target: 'main',
         },
         {
           entry: 'src/preload.ts',
-          config: 'vite.preload.config.ts',
+          config: 'vite.preload.config.mts',
           target: 'preload',
         },
       ],

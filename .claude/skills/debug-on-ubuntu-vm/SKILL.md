@@ -156,12 +156,15 @@ window at `input=19200px`.
 
 ## Packaged (.deb) builds
 
-Build on the Mac — but with **Node 22**, since `extract-zip@2.0.1` hangs on Node 24
-and packaging exits 0 with no output:
+Build on the Mac:
 
 ```bash
-PATH="/opt/homebrew/opt/node@22/bin:$PATH" pnpm exec electron-forge make --platform=linux --arch=x64 --targets=deb
+pnpm exec electron-forge make --platform=linux --arch=x64 --targets=deb
 ```
+
+If packaging ever exits 0 with no output, check `pnpm why extract-zip`: Forge 8
+and Electron 44 use `@electron-internal/extract-zip`, but the original
+`extract-zip@2` hangs on Node 24.16+.
 
 `--targets` matches the maker's `name` (`deb`), **not** the package name. Getting
 this wrong silently instantiates a default `MakerDeb` with none of the configured

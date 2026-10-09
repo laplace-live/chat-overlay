@@ -70,9 +70,10 @@ The packaged applications will be available in the `out` directory.
 ### Linux: Wayland and XWayland
 
 Always-on-top and click pass-through both require an X11 client. Wayland gives
-applications no control over window stacking, and Electron's click pass-through
-is implemented only for X11, so on a native Wayland session both toggles do
-nothing at all.
+applications no control over where their windows sit or how they stack, which
+rules out always-on-top as well as the title-bar sensor that click pass-through
+relies on (see below), so on a native Wayland session both toggles do nothing at
+all.
 
 The overlay therefore launches itself under XWayland on Wayland sessions — the
 `.deb` and `.rpm` desktop entries pass `--ozone-platform=x11`, and any other

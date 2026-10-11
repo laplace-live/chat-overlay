@@ -12,7 +12,8 @@
     "make": "electron-forge make",
     "release": "electron-forge release",
     "lint": "eslint .",
-    "generate-icons": "node scripts/generate-icons.mts"
+    "generate-icons": "node scripts/generate-icons.mts",
+    "screenshots": "node scripts/screenshots.mts"
   },
   "keywords": [],
   "author": {

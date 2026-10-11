@@ -14,6 +14,10 @@ This file provides guidance to coding agents when working with code in this repo
 - No changeset for CI, docs, tests, dev-only tooling, or refactors with no user-visible effect.
 - **Never bump `version` in `package.json`, push a `v*` tag, or hand-edit `CHANGELOG.md`** — merging the Release workflow's version PR does all three.
 
+## Screenshots
+
+`pnpm screenshots` captures laplace.live's pictures of the overlay into `screenshots/`, running the real app against a made-up Event Bridge. How it works, and when to rerun it, is in [docs/screenshots.md](docs/screenshots.md).
+
 ## Editing these instructions
 
 `CLAUDE.md` is a symlink to `AGENTS.md` — **edit the real file.**

@@ -74,6 +74,18 @@ Icon Composer rather than editing it, then run `pnpm generate-icons prod` to
 re-render the `icon.icns` fallback from it. Development builds keep the PNG-based
 dev icon.
 
+### Screenshots
+
+laplace.live's pictures of the overlay are committed in `screenshots/`. The app
+takes them itself, on a throwaway profile fed by a made-up Event Bridge:
+
+```bash
+pnpm screenshots
+```
+
+[docs/screenshots.md](docs/screenshots.md) covers how it works and when to rerun
+it.
+
 ### Linux: Wayland and XWayland
 
 Always-on-top and click pass-through both require an X11 client. Wayland gives
@@ -145,7 +157,9 @@ Never bump `version` in `package.json`, push a `v*` tag, or edit
    changeset; `pnpm exec changeset status` lists what is pending.
 2. While changesets sit on `master`, the Release workflow keeps a
    `chore: version packages` PR open that bumps the version and updates
-   `CHANGELOG.md`.
+   `CHANGELOG.md`. When the release changes UI the website's screenshots show,
+   refresh them with `pnpm screenshots` before merging it
+   ([docs/screenshots.md](docs/screenshots.md)).
 3. Merging that PR tags `v<version>` and creates the GitHub Release from the
    new changelog entry. The tag triggers Build and Release, which signs every
    platform and attaches the installers to that release, where macOS and

@@ -15,10 +15,11 @@
     "jsx": "react-jsx",
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "*.ts", "*.mts"],
+  "include": ["src/**/*", "scripts/**/*", "*.ts", "*.mts"],
   "exclude": ["node_modules", "dist"]
 }

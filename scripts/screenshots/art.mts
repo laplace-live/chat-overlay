@@ -1,4 +1,8 @@
 // The showcase's pictures, drawn here so no one's real avatar or a real gift's artwork ships in a screenshot.
+//
+// Each emoji is set with `text-rendering="geometricPrecision"`, so Chromium measures it at its own size. Otherwise it
+// measures SVG text at its size in CSS pixels, where a small Apple Color Emoji runs wider than the one a 2× display
+// draws, and `text-anchor` leaves the emoji a few pixels left of centre.
 
 /** An avatar: `emoji` centred on a diagonal gradient, lit from the top left. */
 export function avatar(emoji: string, from: string, to: string): string {
@@ -10,13 +14,13 @@ export function avatar(emoji: string, from: string, to: string): string {
 </defs>
 <rect width="120" height="120" fill="url(#bg)"/>
 <rect width="120" height="120" fill="url(#lit)"/>
-<text x="60" y="64" font-size="60" text-anchor="middle" dominant-baseline="middle" font-family="Apple Color Emoji" filter="url(#lift)">${emoji}</text>
+<text x="60" y="64" font-size="60" text-anchor="middle" dominant-baseline="middle" font-family="Apple Color Emoji" text-rendering="geometricPrecision" filter="url(#lift)">${emoji}</text>
 </svg>`
 }
 
 /** A gift icon: `emoji` alone, filling its square as Bilibili's gift artwork does. */
 export function giftIcon(emoji: string): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<text x="32" y="35" font-size="54" text-anchor="middle" dominant-baseline="middle" font-family="Apple Color Emoji">${emoji}</text>
+<text x="32" y="35" font-size="54" text-anchor="middle" dominant-baseline="middle" font-family="Apple Color Emoji" text-rendering="geometricPrecision">${emoji}</text>
 </svg>`
 }

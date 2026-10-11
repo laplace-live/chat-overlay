@@ -20,14 +20,14 @@ const SHOWCASE_NOW = Date.UTC(2026, 9, 4, 13, 15)
 /** `.invalid` never resolves, so a picture the showcase can't answer can't leave the machine either. */
 const PICTURE_ORIGIN = 'https://showcase.invalid'
 
-const STREAMER = { uid: 3141592653, name: '星屑电台' }
+const STREAMER = { uid: 25034104, name: '魔兽初见' }
 const ROOM = 31415
 
 /** What the title bar counts as online. */
 export const ONLINE = 2333
 
 /** `guardType`: 0 for none, then 1 总督, 2 提督 and 3 舰长. */
-const GUARD = { none: 0, admiral: 2, captain: 3 } as const
+const GUARD = { none: 0, governor: 1, admiral: 2, captain: 3 } as const
 type Guard = (typeof GUARD)[keyof typeof GUARD]
 
 type Face = [emoji: string, from: string, to: string]
@@ -41,9 +41,9 @@ interface Viewer {
 }
 
 const VIEWERS = {
-  yuzu: { uid: 1414213562, name: '柚子汽水', face: ['🍊', '#fde68a', '#fb923c'], guard: GUARD.admiral },
+  yuzu: { uid: 1414213562, name: 'アイノラパス', face: ['🐢', '#fde68a', '#fb923c'], guard: GUARD.admiral },
   boat: { uid: 1732050807, name: '夜航船', face: ['⛵', '#1e3a8a', '#38bdf8'], guard: GUARD.captain },
-  momo: { uid: 2236067977, name: 'Momo', face: ['🍑', '#fce7f3', '#f472b6'], guard: GUARD.none },
+  momo: { uid: 2236067977, name: 'Momo', face: ['🍑', '#fce7f3', '#f472b6'], guard: GUARD.governor },
   studio: { uid: 6022140760, name: '星海音乐工作室', face: ['🎵', '#38bdf8', '#6366f1'], guard: GUARD.none },
   matcha: { uid: 2997924580, name: '抹茶拿铁', face: ['🍵', '#d9f99d', '#16a34a'], guard: GUARD.none },
   sleepy: { uid: 6626070150, name: '早睡早起身体好', face: ['😴', '#ede9fe', '#a78bfa'], guard: GUARD.none },
@@ -95,7 +95,7 @@ const STREAM: Line[] = [
   { from: 'studio', superchat: 100, text: '恭喜星屑电台一周年！新歌的编曲有我们一份，祝电台越来越好 ✨' },
   { from: 'momo', say: '单曲循环预定' },
   { from: 'cat', say: '第一次来就赶上首唱，运气太好了' },
-  { from: 'yuzu', say: '封面是我画的星空！✨' },
+  { from: 'yuzu', say: '奶宝宝真的好可爱！✨' },
   { from: 'boat', say: '副歌那段太绝了' },
 ]
 

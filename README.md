@@ -2,7 +2,10 @@
 
 A modern, transparent chat overlay application for Bilibili live streaming built with Electron, React, and TypeScript. This overlay connects to the LAPLACE Event Bridge to display real-time chat messages, interactions, and viewer engagement metrics.
 
-![image](https://github.com/user-attachments/assets/4b36bee7-8944-4ce1-9a85-77a62e4fd9d7)
+<p>
+  <img src="screenshots/hero.png" width="400" alt="LAPLACE Chat Overlay showing a live room's chat, with Super Chats and a gift">
+  <img src="screenshots/settings.png" width="400" alt="LAPLACE Chat Overlay with Settings open over the chat">
+</p>
 
 ## Features
 
@@ -76,8 +79,9 @@ dev icon.
 
 ### Screenshots
 
-laplace.live's pictures of the overlay are committed in `screenshots/`. The app
-takes them itself, on a throwaway profile fed by a made-up Event Bridge:
+The pictures of the overlay at the top of this README and on laplace.live are
+committed in `screenshots/`. The app takes them itself, on a throwaway profile
+fed by a made-up Event Bridge:
 
 ```bash
 pnpm screenshots
@@ -155,10 +159,11 @@ Never bump `version` in `package.json`, push a `v*` tag, or edit
    stripped, and the rest lands verbatim in `CHANGELOG.md` and the GitHub
    Release. CI, docs, and refactors with no user-visible effect need no
    changeset; `pnpm exec changeset status` lists what is pending.
+
 2. While changesets sit on `master`, the Release workflow keeps a
    `chore: version packages` PR open that bumps the version and updates
-   `CHANGELOG.md`. When the release changes UI the website's screenshots show,
-   refresh them with `pnpm screenshots` before merging it
+   `CHANGELOG.md`. When the release changes UI the screenshots show, refresh
+   them with `pnpm screenshots` before merging it
    ([docs/screenshots.md](docs/screenshots.md)).
 3. Merging that PR tags `v<version>` and creates the GitHub Release from the
    new changelog entry. The tag triggers Build and Release, which signs every

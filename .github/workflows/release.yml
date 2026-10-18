@@ -61,7 +61,7 @@ jobs:
           # is v<version>, which build.yml's `v*` trigger and
           # update.electronjs.org (semver tags only) both rely on.
           publish-script: pnpm exec changeset git-tag
-          commit-message: "chore: version packages"
+          commit-message: "chore: version packages [skip ci]"
           pr-title: "chore: version packages"
           create-github-releases: true
           # Must be passed as an input: the action stopped reading the

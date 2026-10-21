@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 # Publish a release whole: publish-release.sh <tag> <notes-file> [asset...]
-# Releases are immutable once published, so assets go up while it's a draft. Resumable: a rerun finishes a
-# leftover draft and leaves an already-published release alone.
+# Releases are immutable once published, so assets go up while it's a draft (gh does draft, upload, publish).
+# Safe to rerun: an already-published release is left alone, and a leftover draft is discarded and rebuilt,
+# since its assets may be partial or stale and would be locked in by publishing it.
 set -eu
 tag=$1
 notes=$2
@@ -12,29 +13,22 @@ if ! grep -q '[^[:space:]]' "$notes"; then
   exit 1
 fi
 
-state() {
-  gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none
-}
-
-current=$(state)
-if [ "$current" = none ]; then
+for attempt in 1 2; do
+  case $(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none) in
+    false)
+      echo "$tag is already published; skipping."
+      exit 0
+      ;;
+    true)
+      echo "Discarding a leftover draft of $tag."
+      gh release delete "$tag" --yes
+      ;;
+  esac
   if gh release create "$tag" "$@" --verify-tag --title "$tag" --notes-file "$notes"; then
     exit 0
   fi
-  # A failed create can leave its draft behind, or lose a race to another run: look again before giving up.
-  current=$(state)
-fi
+  echo "Attempt $attempt to publish $tag failed."
+done
 
-case $current in
-  false)
-    echo "$tag is already published; skipping."
-    ;;
-  true)
-    if [ $# -gt 0 ]; then gh release upload "$tag" "$@" --clobber; fi
-    gh release edit "$tag" --title "$tag" --notes-file "$notes" --draft=false
-    ;;
-  *)
-    echo "::error::Could not publish $tag"
-    exit 1
-    ;;
-esac
+echo "::error::Could not publish $tag"
+exit 1

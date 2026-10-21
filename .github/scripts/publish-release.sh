@@ -13,8 +13,24 @@ if ! grep -q '[^[:space:]]' "$notes"; then
   exit 1
 fi
 
+# Prints true (draft), false (published) or none; any other lookup failure (auth, rate limit, network) is fatal.
+release_state() {
+  if out=$(gh release view "$tag" --json isDraft --jq .isDraft 2>&1); then
+    echo "$out"
+    return
+  fi
+  case $out in
+    *"release not found"*) echo none ;;
+    *)
+      echo "::error::Could not look up $tag: $out" >&2
+      return 1
+      ;;
+  esac
+}
+
 for attempt in 1 2; do
-  case $(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none) in
+  state=$(release_state)
+  case $state in
     false)
       echo "$tag is already published; skipping."
       exit 0

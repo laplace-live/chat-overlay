@@ -64,6 +64,9 @@ jobs:
           publish-script: pnpm exec changeset git-tag
           commit-message: "chore: version packages [skip ci]"
           pr-title: "chore: version packages"
+          # Releases are immutable once published, so nothing can be attached
+          # afterwards: the action only pushes the tag, and build.yml, which
+          # the tag fires, publishes the release with its installers.
           create-github-releases: false
           # Must be passed as an input: the action stopped reading the
           # `GITHUB_TOKEN` env var in v2, and no longer falls back to the

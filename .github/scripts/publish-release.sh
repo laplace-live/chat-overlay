@@ -12,8 +12,20 @@ if ! grep -q '[^[:space:]]' "$notes"; then
   exit 1
 fi
 
-state=$(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none)
-case $state in
+state() {
+  gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null || echo none
+}
+
+current=$(state)
+if [ "$current" = none ]; then
+  if gh release create "$tag" "$@" --verify-tag --title "$tag" --notes-file "$notes"; then
+    exit 0
+  fi
+  # A failed create can leave its draft behind, or lose a race to another run: look again before giving up.
+  current=$(state)
+fi
+
+case $current in
   false)
     echo "$tag is already published; skipping."
     ;;
@@ -22,6 +34,7 @@ case $state in
     gh release edit "$tag" --title "$tag" --notes-file "$notes" --draft=false
     ;;
   *)
-    gh release create "$tag" "$@" --verify-tag --title "$tag" --notes-file "$notes"
+    echo "::error::Could not publish $tag"
+    exit 1
     ;;
 esac

@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -134,42 +134,35 @@ jobs:
           timestamp-rfc3161: http://timestamp.acs.microsoft.com
           timestamp-digest: SHA256
 
-      # release.yml already created this release from the CHANGELOG entry, so
-      # these steps only attach installers. No generate_release_notes: on an
-      # existing release it appends GitHub's notes to the body, once per job.
-      - name: Upload Windows Release Assets
+      # Release files for the github-release job, which publishes the release
+      # with all of them attached at once: releases are immutable once published.
+      - name: Upload release files (Windows)
         if: matrix.os == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v3
+        uses: actions/upload-artifact@v7
         with:
-          draft: false
-          files: |
+          name: release-win
+          path: |
             out/make/squirrel.windows/x64/*.exe
             out/make/squirrel.windows/x64/*.nupkg
             out/make/squirrel.windows/x64/RELEASES
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload macOS Release Assets
+      - name: Upload release files (macOS)
         if: matrix.os == 'macos-latest' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v3
+        uses: actions/upload-artifact@v7
         with:
-          draft: false
-          files: |
+          name: release-darwin
+          path: |
             out/make/zip/darwin/**/*.zip
             out/make/zip/darwin/**/RELEASES.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Linux Release Assets
+      - name: Upload release files (Linux)
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v3
+        uses: actions/upload-artifact@v7
         with:
-          draft: false
-          files: |
+          name: release-linux
+          path: |
             out/make/deb/x64/*.deb
             out/make/rpm/x64/*.rpm
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifacts for debugging (Windows)
         if: matrix.os == 'windows-latest' && !startsWith(github.ref, 'refs/tags/v')
@@ -199,3 +192,41 @@ jobs:
             out/make/deb/x64/*.deb
             out/make/rpm/x64/*.rpm
           retention-days: 7
+
+  # The only job with write access. It publishes the release with the CHANGELOG
+  # notes and every installer attached at once, since releases are immutable
+  # once published.
+  github-release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: release-*
+          path: dist
+          merge-multiple: true
+
+      - name: Publish the release with its installers
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          sh .github/scripts/changelog-section.sh CHANGELOG.md "${TAG#v}" > notes.md
+          if [ ! -s notes.md ]; then
+            echo "::error::No CHANGELOG entry for $TAG"
+            exit 1
+          fi
+          if [ -z "$(find dist -type f)" ]; then
+            echo "::error::No release files to attach"
+            exit 1
+          fi
+          # Files sit in per-arch folders and have spaces in their names. With
+          # assets, gh creates a draft, uploads them, then publishes.
+          find dist -type f -print0 | xargs -0 gh release create "$TAG" --verify-tag --title "$TAG" --notes-file notes.md

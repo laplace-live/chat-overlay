@@ -13,18 +13,17 @@ if ! grep -q '[^[:space:]]' "$notes"; then
   exit 1
 fi
 
-# Prints true (draft), false (published) or none; any other lookup failure (auth, rate limit, network) is fatal.
+# Prints true (draft), false (published) or none. One listing covers published releases and drafts, so a failed
+# request is an error: `gh release view` reports "not found" when either of its two lookups fails.
 release_state() {
-  if out=$(gh release view "$tag" --json isDraft --jq .isDraft 2>&1); then
-    echo "$out"
-    return
+  if ! drafts=$(gh api --paginate "repos/{owner}/{repo}/releases" --jq ".[] | select(.tag_name == \"$tag\") | .draft"); then
+    echo "::error::Could not look up $tag" >&2
+    return 1
   fi
-  case $out in
-    *"release not found"*) echo none ;;
-    *)
-      echo "::error::Could not look up $tag: $out" >&2
-      return 1
-      ;;
+  case $drafts in
+    *false*) echo false ;;
+    *true*) echo true ;;
+    *) echo none ;;
   esac
 }
 

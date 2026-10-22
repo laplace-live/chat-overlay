@@ -31,7 +31,7 @@
   "linter": {
     "enabled": false,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "suspicious": {
         "noDuplicateProperties": "off",
         "noDuplicateCustomProperties": "off",
@@ -43,7 +43,7 @@
       },
       "nursery": {
         // https://biomejs.dev/linter/rules/use-sorted-classes/
-        // "useSortedClasses": "error"
+        // "useTailwindSortedClasses": "error"
       }
     },
     "domains": {
@@ -99,6 +99,17 @@
     },
     "parser": {
       "tailwindDirectives": true
+    }
+  },
+  // Biome 2.6 formats Markdown and YAML by default; leave them to the editor, as before.
+  "markdown": {
+    "formatter": {
+      "enabled": false
+    }
+  },
+  "yaml": {
+    "formatter": {
+      "enabled": false
     }
   }
 }

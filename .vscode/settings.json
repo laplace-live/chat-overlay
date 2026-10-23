@@ -20,6 +20,9 @@
   "[tailwindcss]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "[yaml]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   // "files.associations": {
   //   "*.css": "tailwindcss"
   // },

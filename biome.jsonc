@@ -18,8 +18,6 @@
       "!public",
       "!references",
       "!storybook-static",
-      // pnpm-owned: any reformat is undone on the next install.
-      "!pnpm-lock.yaml",
       // Icon Composer document: Xcode-owned JSON, replaced wholesale on re-export.
       "!src/assets/icons/prod/icon.icon"
     ]
@@ -36,9 +34,7 @@
       "preset": "recommended",
       "suspicious": {
         "noDuplicateProperties": "off",
-        "noDuplicateCustomProperties": "off",
-        // https://github.com/biomejs/biome/issues/7223
-        "noUnknownAtRules": "off"
+        "noDuplicateCustomProperties": "off"
       },
       "complexity": {
         "noImportantStyles": "off"
@@ -104,10 +100,6 @@
     }
   },
   "markdown": {
-    // TODO: remove on Biome 2.6.3+; 2.6.2 deletes the blank line between a paragraph and a list (biomejs/biome#12524)
-    "formatter": {
-      "enabled": false
-    },
     // Opt-in: without it Biome formats YAML frontmatter as Markdown and mangles it.
     "parser": {
       "frontmatter": true

@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
 import { MakerDeb, type MakerDebConfigOptions } from '@electron-forge/maker-deb'
-import { MakerRpm } from '@electron-forge/maker-rpm'
+import { MakerRpm, type MakerRpmConfigOptions } from '@electron-forge/maker-rpm'
 import { MakerSquirrel } from '@electron-forge/maker-squirrel'
 import { MakerZIP } from '@electron-forge/maker-zip'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
@@ -53,9 +53,13 @@ const config: ForgeConfig = {
     // click pass-through are both inert. src/main.ts relaunches itself with the
     // same flag for launches that don't go through the desktop entry.
     new MakerRpm({
+      // `specTemplate` is untyped in `@electron-forge/maker-rpm` but forwarded
+      // to `electron-installer-redhat`; ours fixes `%install` for RPM 4.20+
+      // (electron-userland/electron-installer-redhat#343).
       options: {
         execArguments: [LINUX_OZONE_PLATFORM_ARG],
-      },
+        specTemplate: path.resolve('resources/spec.ejs'),
+      } as MakerRpmConfigOptions,
     }),
     new MakerDeb({
       // `execArguments` is untyped for Debian because upstream's desktop

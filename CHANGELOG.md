@@ -1,5 +1,12 @@
 # chat-overlay
 
+## 1.2.2
+
+### Patch Changes
+
+- d5bd4dd: Update Electron to 45.3.1 with Chromium 156
+- cbc3c61: Keep Always on Top above borderless games when switching windows
+
 ## 1.2.1
 
 ### Patch Changes

@@ -294,14 +294,13 @@ const ensureAlwaysOnTop = () => {
     !mainWindow ||
     mainWindow.isDestroyed() ||
     !mainWindow.isVisible() ||
-    mainWindow.isMinimized()
+    mainWindow.isMinimized() ||
+    mainWindow.isAlwaysOnTop()
   ) {
     return
   }
 
-  if (!mainWindow.isAlwaysOnTop()) {
-    applyAlwaysOnTop()
-  }
+  applyAlwaysOnTop()
 }
 
 const syncAlwaysOnTop = () => {
@@ -425,20 +424,18 @@ const createWindow = () => {
   mainWindow.on('focus', ensureAlwaysOnTop)
   mainWindow.on('blur', ensureAlwaysOnTop)
   mainWindow.on('always-on-top-changed', (_event, isAlwaysOnTop) => {
-    if (alwaysOnTopEnabled && !isAlwaysOnTop) ensureAlwaysOnTop()
+    if (!isAlwaysOnTop) ensureAlwaysOnTop()
   })
 
   // Keep always-on-top and the sensor's visibility tied to the overlay's
+  const handleWindowShown = () => {
+    if (alwaysOnTopEnabled) applyAlwaysOnTop()
+    syncClickThrough()
+  }
   mainWindow.on('hide', syncClickThrough)
-  mainWindow.on('show', () => {
-    if (alwaysOnTopEnabled) applyAlwaysOnTop()
-    syncClickThrough()
-  })
+  mainWindow.on('show', handleWindowShown)
   mainWindow.on('minimize', syncClickThrough)
-  mainWindow.on('restore', () => {
-    if (alwaysOnTopEnabled) applyAlwaysOnTop()
-    syncClickThrough()
-  })
+  mainWindow.on('restore', handleWindowShown)
 
   // Clean up reference when window is closed
   mainWindow.on('closed', () => {

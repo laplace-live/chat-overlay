@@ -35,9 +35,6 @@ function PopoverContent({
           'max-w-(--radix-popover-content-available-width)',
           'data-closed:fade-out-0 data-closed:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-closed:animate-out',
           '[&>hr]:-mx-3 [&>hr]:my-2',
-          // pointer-events-auto is necessary to make the popover content clickable due to a Radix UI bug.
-          // See: https://github.com/radix-ui/primitives/issues/3142
-          'pointer-events-auto',
           className
         )}
         // prevent auto focus on open

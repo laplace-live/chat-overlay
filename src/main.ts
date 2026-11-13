@@ -99,6 +99,10 @@ const isNativeWayland =
   process.env.XDG_SESSION_TYPE === 'wayland' &&
   !process.argv.includes(`${OZONE_PLATFORM_SWITCH}x11`)
 
+// Always-on-top state.
+let alwaysOnTopEnabled = false
+let alwaysOnTopWatchdog: ReturnType<typeof setInterval> | null = null
+
 // Click pass-through state. `suspended` covers title-bar overlays (settings,
 // about, the menu) that have to keep capturing input while they are open.
 let clickThroughEnabled = false
@@ -249,6 +253,75 @@ const disableClickThroughOnEscape = () => {
   })
 }
 
+const stopAlwaysOnTopWatchdog = () => {
+  if (!alwaysOnTopWatchdog) return
+
+  clearInterval(alwaysOnTopWatchdog)
+  alwaysOnTopWatchdog = null
+}
+
+// Electron's 1-arg `setAlwaysOnTop(true)` defaults to the `'floating'` level.
+// On Windows, `'floating'` sets `behind_task_bar_ = true`, which calls
+// `SetWindowPos(hwnd, Shell_TrayWnd, ...)` on every window activation
+// (electron/electron#20933, electron/electron#28052). While a borderless
+// fullscreen game is open, Windows demotes `Shell_TrayWnd` out of
+// `WS_EX_TOPMOST`; inserting the overlay behind a non-topmost taskbar clears
+// `WS_EX_TOPMOST` on the overlay too, dropping it behind the game as soon as
+// the overlay is clicked or reached with Alt+Tab.
+//
+// `'screen-saver'` opts out of `behind_task_bar_` on Windows — keeping plain
+// `HWND_TOPMOST` intact across focus changes — and raises the overlay above
+// borderless/fullscreen windows on macOS (`NSScreenSaverWindowLevel`).
+const applyAlwaysOnTop = () => {
+  if (!mainWindow || mainWindow.isDestroyed() || isNativeWayland) return
+
+  if (alwaysOnTopEnabled) {
+    mainWindow.setAlwaysOnTop(true, 'screen-saver')
+    // Restacking the main window on X11 can lift it above the title-bar sensor
+    // while pass-through is armed; keep the sensor in front when needed.
+    if (ignoringMouseEvents && titleBarSensor && !titleBarSensor.isDestroyed()) {
+      titleBarSensor.moveTop()
+    }
+  } else {
+    mainWindow.setAlwaysOnTop(false)
+  }
+}
+
+const ensureAlwaysOnTop = () => {
+  if (
+    !alwaysOnTopEnabled ||
+    isNativeWayland ||
+    !mainWindow ||
+    mainWindow.isDestroyed() ||
+    !mainWindow.isVisible() ||
+    mainWindow.isMinimized()
+  ) {
+    return
+  }
+
+  if (!mainWindow.isAlwaysOnTop()) {
+    applyAlwaysOnTop()
+  }
+}
+
+const syncAlwaysOnTop = () => {
+  applyAlwaysOnTop()
+
+  // Windows shell tools and fullscreen transitions can occasionally clear
+  // `WS_EX_TOPMOST` behind Electron's back (microsoft/PowerToys#19168). Poll
+  // `isAlwaysOnTop()` — a cheap `GetWindowLong(GWL_EXSTYLE)` read — so z-order
+  // is only touched when the flag was genuinely lost, never fighting other
+  // topmost windows or popup menus.
+  if (process.platform === 'win32' && alwaysOnTopEnabled && mainWindow && !mainWindow.isDestroyed()) {
+    if (!alwaysOnTopWatchdog) {
+      alwaysOnTopWatchdog = setInterval(ensureAlwaysOnTop, 1000)
+      alwaysOnTopWatchdog.unref()
+    }
+  } else {
+    stopAlwaysOnTopWatchdog()
+  }
+}
+
 // Register all IPC handlers once at startup
 const registerIpcHandlers = () => {
   // Handle opacity changes
@@ -258,7 +331,8 @@ const registerIpcHandlers = () => {
 
   // Handle always on top toggle
   ipcMain.on('set-always-on-top', (_event, enabled) => {
-    mainWindow?.setAlwaysOnTop(enabled)
+    alwaysOnTopEnabled = Boolean(enabled)
+    syncAlwaysOnTop()
   })
 
   // Handle click pass-through toggle
@@ -333,6 +407,7 @@ const createWindow = () => {
 
   // A fresh window starts out interactive, so drop any state from a previous one
   ignoringMouseEvents = false
+  syncAlwaysOnTop()
   disableClickThroughOnEscape()
 
   // Load the app
@@ -347,15 +422,27 @@ const createWindow = () => {
 
   mainWindow.on('move', syncSensorBounds)
   mainWindow.on('resize', syncSensorBounds)
+  mainWindow.on('focus', ensureAlwaysOnTop)
+  mainWindow.on('blur', ensureAlwaysOnTop)
+  mainWindow.on('always-on-top-changed', (_event, isAlwaysOnTop) => {
+    if (alwaysOnTopEnabled && !isAlwaysOnTop) ensureAlwaysOnTop()
+  })
 
-  // Keep the sensor's visibility tied to the overlay's
+  // Keep always-on-top and the sensor's visibility tied to the overlay's
   mainWindow.on('hide', syncClickThrough)
-  mainWindow.on('show', syncClickThrough)
+  mainWindow.on('show', () => {
+    if (alwaysOnTopEnabled) applyAlwaysOnTop()
+    syncClickThrough()
+  })
   mainWindow.on('minimize', syncClickThrough)
-  mainWindow.on('restore', syncClickThrough)
+  mainWindow.on('restore', () => {
+    if (alwaysOnTopEnabled) applyAlwaysOnTop()
+    syncClickThrough()
+  })
 
   // Clean up reference when window is closed
   mainWindow.on('closed', () => {
+    stopAlwaysOnTopWatchdog()
     destroyTitleBarSensor()
     mainWindow = null
   })

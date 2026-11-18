@@ -1,5 +1,12 @@
 # chat-overlay
 
+## 1.2.3
+
+### Patch Changes
+
+- a82f99f: Update Electron to 45.3.2 with Chromium security fixes
+- bd8c1b0: Update Electron to 45.3.3 with Node.js and Chromium security fixes
+
 ## 1.2.2
 
 ### Patch Changes

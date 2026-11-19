@@ -1,5 +1,11 @@
 # chat-overlay
 
+## 1.2.4
+
+### Patch Changes
+
+- c7a7aa7: Update Electron to 45.3.4 with a memory leak fix
+
 ## 1.2.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # chat-overlay
 
+## 1.2.5
+
+### Patch Changes
+
+- d142c1f: Update Electron to 45.4.1 with Chromium, V8, and media security fixes
+
 ## 1.2.4
 
 ### Patch Changes
